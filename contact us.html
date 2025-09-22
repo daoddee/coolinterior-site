@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design Preference Selector</title>
+  <style>
+    :root {
+      --yellow:#F7C800; 
+      --yellow-strong:#FFB300;
+      --charcoal:#1F2933; 
+      --slate:#3E4C59; 
+      --steel:#E5E7EB;
+      --offwhite:#F7F9FC; 
+      --white:#ffffff; 
+      --success:#2E7D32; 
+      --danger:#C62828;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--offwhite);
+      color: var(--charcoal);
+      line-height: 1.45;
+      padding: 24px;
+    }
+    .shell { max-width: 1100px; margin: 0 auto; }
+    .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .title { font-weight: 750; letter-spacing: .3px; }
+    .kicker { color: var(--slate); font-size: .95rem; }
+    .card { background: var(--white); border: 1px solid var(--steel); border-radius: 16px; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+    form { display: grid; gap: 18px; }
+
+    fieldset { border: none; margin: 0; padding: 0; }
+    legend { font-weight: 700; margin-bottom: 10px; font-size: 1.05rem; }
+    .hint { color: var(--slate); font-size: .92rem; margin-top: 4px; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+
+    /* Card option */
+    .option { position: relative; }
+    .option input { position: absolute; inset: 0; opacity: 0; }
+    .opt-card { border-radius: 14px; border: 1px solid var(--steel); background: var(--offwhite); padding: 10px; display: grid; gap: 8px; place-items: center; text-align: center; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; min-height: 162px; }
+    .opt-card:hover { transform: translateY(-2px); border-color: var(--yellow); box-shadow: 0 6px 14px rgba(247,200,0,.2); }
+    .opt-card img { width: 100%; height: 92px; object-fit: cover; border-radius: 10px; background: #f0f0f0; border: 1px solid var(--steel); }
+    .label { font-weight: 600; font-size: .95rem; }
+
+    .option input:checked + .opt-card { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(247,200,0,.4); }
+    .option input:checked + .opt-card::after { content: "✓"; position: absolute; top: 10px; right: 12px; background: var(--success); color: white; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 999px; font-weight: 800; font-size: .9rem; box-shadow: 0 4px 10px rgba(46,125,50,.35); }
+
+    .swatch { width: 100%; height: 60px; border-radius: 10px; border: 1px solid var(--steel); }
+    .swatch-name { font-size: .9rem; margin-top: 8px; color: var(--slate); }
+
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip { position: relative; }
+    .chip input { position: absolute; inset: 0; opacity: 0; }
+    .chip .chip-card { border-radius: 12px; padding: 8px 12px; border: 1px solid var(--steel); background: var(--offwhite); font-weight: 600; display:grid; gap:8px; justify-items:center; text-align:center; }
+    .chip .chip-card img{ width:100%; height:80px; object-fit:cover; border-radius:10px; background:#f0f0f0; border:1px solid var(--steel); }
+    .chip input:checked + .chip-card { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(247,200,0,.4); }
+
+    .actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn { background: var(--yellow); color: #111; border: none; border-radius: 12px; padding: 12px 16px; font-weight: 750; letter-spacing: .2px; cursor: pointer; }
+    .btn:hover { background: var(--yellow-strong); }
+    .btn.secondary { background: transparent; border: 2px solid var(--yellow); color: var(--charcoal); }
+    .dim-toolbar { display: none; }
+    .summary { flex: 1 1 420px; min-height: 72px; border-radius: 12px; border: 1px dashed var(--steel); padding: 12px 14px; color: var(--slate); }
+
+    @media (max-width: 900px) { .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); } .grid-5 { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+    @media (max-width: 520px) { .grid-4, .grid-5 { grid-template-columns: repeat(1, minmax(0,1fr)); } }
+
+    /* Contact Modal */
+    #contactModal{position:fixed;inset:0;display:none;z-index:2000}
+    #contactModal.is-open{display:block}
+    #contactModal .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+    #contactModal .dialog{
+      position:relative;margin:6vh auto;width:min(560px,92%);
+      background:var(--white);border:1px solid var(--steel);border-radius:16px;
+      box-shadow:0 24px 64px rgba(0,0,0,.25);color:var(--charcoal)
+    }
+    #contactModal header{padding:14px 16px;border-bottom:1px solid var(--steel)}
+    #contactModal h3{margin:0;font-weight:750;font-size:1.05rem}
+    #contactModal .body{padding:14px 16px;display:grid;gap:10px}
+    #contactModal .row{display:grid;gap:10px}
+    #contactModal label{font-weight:700;font-size:.95rem}
+    #contactModal input, #contactModal textarea{
+      width:100%;padding:10px 12px;border:1px solid var(--steel);border-radius:12px;
+      font:400 1rem/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
+    }
+    #contactModal .nav{display:flex;justify-content:flex-end;gap:10px;padding:0 16px 14px}
+    #contactModal .btn{background:var(--yellow);color:#111;border:0;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer}
+    #contactModal .btn:hover{background:var(--yellow-strong)}
+    #contactModal .btn.outline{background:transparent;border:2px solid var(--yellow);color:var(--charcoal)}
+    #contactModal .close{position:absolute;top:8px;right:10px;background:transparent;border:0;font-size:20px;cursor:pointer}
+
+    /* ===== NEW: Custom Background + Dimension Overlay ===== */
+    .dim-wrap { display:grid; gap:10px; }
+    .dim-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .dim-toolbar label { font-weight:700; font-size:.95rem; }
+    .dim-toolbar input[type="url"]{
+      width:min(520px, 100%);
+      padding:10px 12px; border:1px solid var(--steel); border-radius:12px;
+      font:400 1rem/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff;
+    }
+    .btn.small { padding:8px 12px; border-radius:10px; font-weight:800; }
+    .btn.secondary.small { background:transparent; border:2px solid var(--yellow); color:var(--charcoal); }
+
+    .dim-canvas {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: url("https://i.imgur.com/SczBFjm.png") center/contain no-repeat; /* default to your background */
+      border: 1px solid var(--steel);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .slot {
+      position:absolute; transform: translate(-50%,-50%);
+      display:grid; gap:6px; justify-items:center;
+      background: rgba(255,255,255,.92);
+      border: 1px dashed #cbd5e1; border-radius:10px;
+      padding:8px 10px; min-width:96px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+    .slot span{ font:600 12px/1.1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#475569; }
+    .slot input{
+      width: 88px; text-align:center;
+      padding:6px 8px; border-radius:8px; border:1px solid var(--steel);
+      font:600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff;
+    }
+    .dim-output{
+      background:#f8fafc; border:1px solid var(--steel); border-radius:12px; padding:10px; margin:0; min-height:46px; overflow:auto;
+      font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color:#475569;
+    }
+    /* ===== END NEW ===== */
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="header">
+      <div>
+        <div class="kicker">Customer Design Intake</div>
+        <h1 class="title">Design Preference Selector</h1>
+        <div class="kicker">Single-screen workflow to capture visual style, material thickness, colours, and required features.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <form id="designForm" aria-describedby="formHint">
+        <p id="formHint" class="hint">Select exactly one option in each section except “Features Required?”, which supports multiple selections.</p>
+
+        <!-- 1) Primary Design (4 images + names) -->
+        <fieldset>
+          <legend>Choose a Design</legend>
+          <div class="grid-4" role="listbox" aria-label="Design options">
+            <!-- Option A: Marble -->
+            <label class="option" aria-label="Marble">
+              <input type="radio" name="design" value="Marble" required />
+              <div class="opt-card">
+                <img alt="Marble Sample"
+                     src="https://i.imgur.com/WVQspnQ.png"
+                     loading="lazy" />
+                <div class="label">Marble</div>
+              </div>
+            </label>
+          
+            <!-- Option B: Granite -->
+            <label class="option" aria-label="Granite">
+              <input type="radio" name="design" value="Granite" required />
+              <div class="opt-card">
+                <img alt="Granite Sample"
+                     src="https://i.imgur.com/4OAl6TN.png"
+                     loading="lazy" />
+                <div class="label">Granite</div>
+              </div>
+            </label>
+          
+            <!-- Option C: Quartz -->
+            <label class="option" aria-label="Quartz">
+              <input type="radio" name="design" value="Quartz" required />
+              <div class="opt-card">
+                <img alt="Quartz Sample"
+                     src="https://i.imgur.com/Shtlf22.png"
+                     loading="lazy" />
+                <div class="label">Quartz</div>
+              </div>
+            </label>
+          
+            <!-- Option D: Placeholder / Custom -->
+            <label class="option" aria-label="Custom Style">
+              <input type="radio" name="design" value="Custom" required />
+              <div class="opt-card">
+                <img alt=""
+                     src="https://i.imgur.com/SK1EXrO.png"
+                     loading="lazy" />
+                <div class="label">Dekton</div>
+              </div>
+            </label>
+          </div>
+          
+          <p class="hint">Pick the closest visual to the customer’s desired aesthetic.</p>
+        </fieldset>
+
+        <!-- 2) Material Thickness -->
+        <fieldset>
+          <legend>Material Thickness</legend>
+          <div class="grid-3" role="radiogroup" aria-label="Material thickness">
+            <label class="chip">
+              <input type="radio" name="thickness" value="20mm" required />
+              <span class="chip-card">20&nbsp;mm</span>
+            </label>
+            <label class="chip">
+              <input type="radio" name="thickness" value="30mm" required />
+              <span class="chip-card">30&nbsp;mm</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- 3) Colours (5 options) -->
+        <fieldset>
+          <legend>Colour Selection</legend>
+          <div class="grid-5">
+            <label class="option" aria-label="Matte Black">
+              <input type="radio" name="colour" value="Matte Black" required />
+              <div class="opt-card">
+                <div class="swatch" style="background: #111;"></div>
+                <div class="swatch-name">Matte Black</div>
+              </div>
+            </label>
+            <label class="option" aria-label="Polar White">
+              <input type="radio" name="colour" value="Polar White" required />
+              <div class="opt-card">
+                <div class="swatch" style="background: linear-gradient(180deg,#fff,#f0f0f0);"></div>
+                <div class="swatch-name">Polar White</div>
+              </div>
+            </label>
+            <label class="option" aria-label="Red">
+              <input type="radio" name="colour" value="Red" required />
+              <div class="opt-card">
+                <div class="swatch" style="background: linear-gradient(90deg,#c51b18 25%, #b71b1b 25% 50%, #b72619 50% 75%, #b72121 75%); background-size: 40px 100%;"></div>
+                <div class="swatch-name">RED</div>
+              </div>
+            </label>
+            <label class="option" aria-label="Walnut">
+              <input type="radio" name="colour" value="Walnut" required />
+              <div class="opt-card">
+                <div class="swatch" style="background: #5b3a29;"></div>
+                <div class="swatch-name">Walnut</div>
+              </div>
+            </label>
+            <label class="option" aria-label="Slate Grey">
+              <input type="radio" name="colour" value="Slate Grey" required />
+              <div class="opt-card">
+                <div class="swatch" style="background: #6b7280;"></div>
+                <div class="swatch-name">Slate Grey</div>
+              </div>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- 4) Features Required? (8 selectable with images under label) -->
+        <fieldset>
+          <legend>Features Required?</legend>
+          <div class="grid-4" aria-label="Feature checkboxes">
+            <label class="chip">
+              <input type="checkbox" name="features" value="Draining Grooves">
+              <div class="chip-card">
+                <div class="label">Soft-close Hinges</div>
+                <img src="https://i.imgur.com/cDeUC7t.png" alt="Soft-close Hinges">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Hob cut-Out">
+              <div class="chip-card">
+                <div class="label">Hob Cutout</div>
+                <img src="https://i.imgur.com/VjQaCBu.png" alt="Push-to-open">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Integrated Lighting">
+              <div class="chip-card">
+                <div class="label"> Areeced Drianer</div>
+                <img src="https://i.imgur.com/MCK19mh.png" alt="Integrated Lighting">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Cable Management">
+              <div class="chip-card">
+                <div class="label">Upstands</div>
+                <img src="https://i.imgur.com/1AsFEbB.png" alt="Cable Management">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Waterproof Coating">
+              <div class="chip-card">
+                <div class="label">Windowsills</div>
+                <img src="https://i.imgur.com/BPhpIUq.png" alt="Waterproof Coating">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Scratch-resistant Finish">
+              <div class="chip-card">
+                <div class="label">Edge Drop-down</div>
+                <img src="https://i.imgur.com/mzH5ciQ.png" alt="Scratch-resistant Finish">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Fire-rated Panels">
+              <div class="chip-card">
+                <div class="label">Sink Drop-out</div>
+                <img src="https://i.imgur.com/2N0lLyI.png" alt="Fire-rated Panels">
+              </div>
+            </label>
+            <label class="chip">
+              <input type="checkbox" name="features" value="Anti-bacterial Laminate">
+              <div class="chip-card">
+                <div class="label">Hob Splashback</div>
+                <img src="https://i.imgur.com/qgFLdSc.png" alt="Anti-bacterial Laminate">
+              </div>
+            </label>
+          </div>
+          <p class="hint">Select as many features as required by the customer brief.</p>
+        </fieldset>
+
+        <!-- ===== NEW: Custom Background & Dimensions Box ===== -->
+        <fieldset>
+          <legend></legend>
+          <div class="dim-wrap">
+            <div class="dim-toolbar">
+              <label for="bgUrl"></label>
+            </div>
+
+            <div class="dim-canvas" id="dimCanvas">
+              <!-- Example slots (adjust positions as needed) -->
+              <!-- Island -->
+              <label class="slot" style="left:41%; top:59%">
+                <span>Island width (mm)</span>
+                <input type="number" name="island_width" min="0" inputmode="numeric">
+              </label>
+              <label class="slot" style="left:57%; top:58%">
+                <span>Island length (mm)</span>
+                <input type="number" name="island_length" min="0" inputmode="numeric">
+              </label>
+
+              <!-- Top run -->
+              <label class="slot" style="left:18%; top:20%">
+                <span>Top-left width (mm)</span>
+                <input type="number" name="top_left_width" min="0" inputmode="numeric">
+              </label>
+              <label class="slot" style="left:45%; top:22%">
+                <span>Top length (mm)</span>
+                <input type="number" name="top_length" min="0" inputmode="numeric">
+              </label>
+              <label class="slot" style="left:87%; top:45%">
+                <span>Top-right width (mm)</span>
+                <input type="number" name="top_right_width" min="0" inputmode="numeric">
+              </label>
+
+              <!-- Bottom run -->
+              <label class="slot" style="left:13%; top:70%">
+                <span>Bottom-left width (mm)</span>
+                <input type="number" name="bottom_left_width" min="0" inputmode="numeric">
+              </label>
+              <label class="slot" style="left:46%; top:91.5%">
+                <span>Bottom length (mm)</span>
+                <input type="number" name="bottom_length" min="0" inputmode="numeric">
+              </label>
+              <label class="slot" style="left:85%; top:75%">
+                <span>Bottom-right width (mm)</span>
+                <input type="number" name="bottom_right_width" min="0" inputmode="numeric">
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <!-- ===== END NEW ===== -->
+
+        <div class="actions">
+          <button type="submit" class="btn">Confirm Selections</button>
+          <button type="reset" class="btn secondary" id="resetBtn" title="Clear all selections">Reset</button>
+          <div class="summary" id="summary" aria-live="polite">No selections yet.</div>
+        </div>
+      </form>
+
+      <!-- Contact Modal (added) -->
+      <section id="contactModal" aria-hidden="true">
+        <div class="backdrop" data-close="true"></div>
+        <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+          <button class="close" type="button" aria-label="Close" data-close="true">✕</button>
+          <header><h3 id="contactTitle">How can we reach you?</h3></header>
+          <form id="contactForm" novalidate>
+            <div class="body">
+              <div class="row">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="+44 7xxx xxx xxx" required>
+              </div>
+              <div class="row">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" required>
+              </div>
+              <div class="row">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" rows="2" placeholder="House No, Street, City, Postcode" required></textarea>
+              </div>
+              <div class="row">
+                <small class="hint">We’ll only use these details to deliver your quote and coordinate site access.</small>
+              </div>
+            </div>
+            <div class="nav">
+              <button type="button" class="btn outline" data-close="true">Cancel</button>
+              <button type="submit" class="btn">Send Details</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <!-- End Contact Modal -->
+
+    </div>
+  </div>
+
+  <script>
+    const form     = document.getElementById('designForm');
+    const summary  = document.getElementById('summary');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Modal handles
+    const modal = document.getElementById('contactModal');
+    const cForm = document.getElementById('contactForm');
+
+    // ✅ FIXED HELPERS (no backslashes in template literals)
+    const getVal  = (name) => form.querySelector(`[name="${name}"]:checked`)?.value ?? null;
+    const getVals = (name) => Array.from(form.querySelectorAll(`[name="${name}"]:checked`)).map(i => i.value);
+
+    function renderSummary(){
+      const design    = getVal('design');
+      const thickness = getVal('thickness');
+      const colour    = getVal('colour');
+      const features  = getVals('features');
+      summary.style.color = 'var(--charcoal)';
+      summary.innerHTML = `<strong>Captured:</strong> `
+        + `${design ? `Design: <em>${design}</em>` : 'Design: —'} · `
+        + `${thickness ? `Thickness: <em>${thickness}</em>` : 'Thickness: —'} · `
+        + `${colour ? `Colour: <em>${colour}</em>` : 'Colour: —'}<br>`
+        + `Features: ${features.length ? features.join(', ') : '—'}`;
+    }
+
+    function openModal(){
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow='hidden';
+      setTimeout(()=> cForm.querySelector('input, textarea')?.focus({preventScroll:true}), 0);
+    }
+    function closeModal(){
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow='';
+      cForm.reset();
+    }
+
+    // Live updates
+    form.addEventListener('change', renderSummary);
+
+    // Confirm Selections -> validate -> open modal
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      renderSummary();
+      openModal();
+    });
+
+    // Modal close (backdrop / ✕ / Cancel)
+    modal.addEventListener('click', (e)=>{
+      if (e.target.dataset.close !== undefined || e.target.classList.contains('backdrop')) closeModal();
+    });
+
+    // Contact submit -> validate -> final payload
+    cForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if (!cForm.reportValidity()) return;
+      const payload = {
+        design:    getVal('design'),
+        thickness: getVal('thickness'),
+        colour:    getVal('colour'),
+        features:  getVals('features'),
+        contact: {
+          phone:   cForm.phone.value.trim(),
+          email:   cForm.email.value.trim(),
+          address: cForm.address.value.trim()
+        }
+      };
+      console.log('FINAL PAYLOAD:', payload);
+      closeModal();
+      alert('Thanks — your selections and contact details have been captured.');
+    });
+
+    // Reset summary
+    resetBtn.addEventListener('click', ()=>{
+      summary.style.color = 'var(--slate)';
+      summary.textContent = 'No selections yet.';
+    });
+
+    // ESC to close
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    // Initial paint
+    renderSummary();
+
+    /* ===== Background URL + Dimensions logic (guards so no errors if controls hidden) ===== */
+    const dimCanvas   = document.getElementById('dimCanvas');
+    const bgUrlInput  = document.getElementById('bgUrl');        // may be null (hidden/removed)
+    const applyBgBtn  = document.getElementById('applyBg');       // may be null
+    const exportBtn   = document.getElementById('exportDims');    // may be null
+    const dimOut      = document.getElementById('dimOut');        // may be null
+
+    function applyBackground(){
+      const url = (bgUrlInput?.value || '').trim();
+      if (url && dimCanvas) {
+        dimCanvas.style.background = `url("${url}") center/contain no-repeat`;
+      }
+    }
+    function collectDimensions(){
+      const data = {};
+      if (!dimCanvas) return data;
+      dimCanvas.querySelectorAll('input').forEach(i=>{
+        data[i.name] = i.value ? Number(i.value) : 0;
+      });
+      return data;
+    }
+
+    applyBgBtn?.addEventListener('click', applyBackground);
+    exportBtn?.addEventListener('click', ()=>{
+      const dims = collectDimensions();
+      if (dimOut) dimOut.textContent = JSON.stringify(dims, null, 2);
+      console.log('DIMENSIONS:', dims);
+    });
+
+    // Include dimensions when contact is submitted (log only)
+    cForm.addEventListener('submit', ()=>{
+      const dims = collectDimensions();
+      console.log('DIMENSIONS (submitted with contact):', dims);
+    });
+
+    // Auto-apply default on load (only if input exists)
+    if (bgUrlInput) applyBackground();
+    /* ===== END ===== */
+  </script>
+</body>
+</html>
