@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/main.html" },
+    { "source": "/stonework", "destination": "/grante.html" },
+    { "source": "/contact-us", "destination": "/contact%20us.html" }
+  ]
+}
