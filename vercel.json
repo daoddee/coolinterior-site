@@ -2,7 +2,17 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/", "destination": "/main.html" },
+
     { "source": "/stonework", "destination": "/grante.html" },
-    { "source": "/contact-us", "destination": "/contact%20us.html" }
+    { "source": "/grante", "destination": "/grante.html" },
+
+    { "source": "/contact-us", "destination": "/contact%20us.html" },
+    { "source": "/contact-us", "destination": "/contact us.html" },
+    { "source": "/contact", "destination": "/contact%20us.html" },
+
+    { "source": "/main.html", "destination": "/main.html" },
+    { "source": "/grante.html", "destination": "/grante.html" },
+    { "source": "/contact%20us.html", "destination": "/contact%20us.html" },
+    { "source": "/contact us.html", "destination": "/contact%20us.html" }
   ]
 }
