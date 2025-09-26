@@ -34,7 +34,7 @@
     :root{
       --yellow:#F7C800; --yellow-strong:#FFB300;
       --charcoal:#1F2933; --slate:#3E4C59; --steel:#E5E7EB;
-      --offwhite:#F7F9FC; --white:#ffffff; --success:#2E7D32; --danger:#C62828;
+      --offwhite:#F7F9FC; --white:#ffffff;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--offwhite);color:var(--charcoal)}
@@ -108,9 +108,64 @@
     .hero-img img{display:block;max-width:100%;height:auto;transition:transform .2s ease}
     .hero-img img:hover{animation:wiggle .5s ease-in-out}
     @keyframes wiggle{0%{transform:rotate(0)}20%{transform:rotate(-3deg)}40%{transform:rotate(3deg)}60%{transform:rotate(-3deg)}80%{transform:rotate(3deg)}100%{transform:rotate(0)}}
+
+    /* ==== Pop-out Modal (Glassmorphic) ==== */
+    #quote.lead-modal{position:fixed;inset:0;display:none;z-index:2000}
+    #quote.lead-modal.is-open{display:block}
+    #quote .lead-backdrop{
+      position:absolute;inset:0;background:rgba(10,15,20,.4);
+      backdrop-filter:blur(8px) saturate(140%);
+      opacity:0;transition:opacity .25s ease;
+    }
+    #quote.is-open .lead-backdrop{opacity:1}
+    #quote .lead-dialog{
+      position:relative;margin:8vh auto;width:min(720px,92%);
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(10px) saturate(160%);
+      border:1px solid rgba(229,231,235,.7);
+      border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.35);
+      transform:translateY(10px) scale(.96);opacity:0;
+      transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .22s ease;
+    }
+    #quote.is-open .lead-dialog{transform:translateY(0) scale(1);opacity:1}
+    #quote .lead-close{position:absolute;top:10px;right:12px;border:0;background:transparent;
+      font-size:22px;cursor:pointer;opacity:.7}
+    #quote .lead-close:hover{opacity:1}
+    #quote .lead-header{padding:16px 18px;border-bottom:1px solid #E5E7EB}
+    #quote .lead-header h3{margin:0 0 8px;font:800 1.1rem/1.2 Montserrat,system-ui,sans-serif;color:#0f172a}
+    #quote .progress{height:6px;background:#eef2f7;border-radius:999px;overflow:hidden}
+    #quote .progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,#F7C800,#FFB300)}
+    #quote .lead-step{display:none;padding:16px 18px}
+    #quote .lead-step.is-active{display:block}
+    #quote .options{margin:8px auto 10px;display:grid;gap:10px;grid-template-columns:repeat(3,minmax(160px,1fr))}
+    #quote .option{appearance:none;border:1px solid #E5E7EB;background:#f8fafc;color:#0f172a;
+      padding:12px;border-radius:12px;font-weight:800;cursor:pointer;
+      transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease;text-align:center}
+    #quote .option:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+    #quote .option.is-selected,[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
+    .form-field{position:relative;margin:10px 0}
+    .form-field input,.form-field textarea{
+      width:100%;padding:14px 12px 12px;border:1px solid #E5E7EB;border-radius:12px;
+      background:#fff;font:500 1rem/1.2 Montserrat,system-ui,sans-serif
+    }
+    .form-field label{
+      position:absolute;left:12px;top:12px;padding:0 6px;background:#fff;color:#64748b;
+      transition:all .12s ease;pointer-events:none;font-size:.95rem
+    }
+    .form-field input:focus+label,.form-field input:not(:placeholder-shown)+label,
+    .form-field textarea:focus+label,.form-field textarea:not(:placeholder-shown)+label{
+      top:-8px;font-size:.78rem;color:#0f172a
+    }
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:560px){.options{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}}
+    #quote .nav{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+    #quote .btn{background:var(--yellow);color:#111;border:0;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer}
+    #quote .btn:hover{background:var(--yellow-strong)}
+    #quote .btn.btn-outline{background:transparent;border:2px solid var(--yellow);color:#1F2933}
+    #quote .error{color:#C62828;font-size:.9rem;margin-top:4px}
   </style>
 
-  <!-- Organization / LocalBusiness Schema (completed NAP + service areas) -->
+  <!-- Organization / LocalBusiness Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -121,11 +176,7 @@
     "email": "infor@coolinterior.co.uk",
     "image": "https://i.imgur.com/JY242kU.png",
     "priceRange": "££",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "London",
-      "addressCountry": "GB"
-    },
+    "address": {"@type":"PostalAddress","addressLocality":"London","addressCountry":"GB"},
     "areaServed": [
       {"@type":"City","name":"London"},
       {"@type":"AdministrativeArea","name":"Greater London"},
@@ -409,7 +460,7 @@
     </div>
   </section>
 
-  <!-- Quote Modal -->
+  <!-- Quote Modal (glassmorphic pop-out) -->
   <section id="quote" class="lead-modal" aria-hidden="true">
     <div class="lead-backdrop" data-close="true"></div>
 
@@ -418,15 +469,11 @@
 
       <header class="lead-header">
         <h3 id="lead-title">Tell us what you need</h3>
-        <div class="lead-steps">
-          <span class="dot is-active" aria-label="Step 1"></span>
-          <span class="dot" aria-label="Step 2"></span>
-          <span class="dot" aria-label="Step 3"></span>
-        </div>
+        <div class="progress" aria-hidden="true"><span id="lead-progress"></span></div>
       </header>
 
       <form id="lead-form" novalidate>
-        <!-- Step 1: Services -->
+        <!-- Step 1 -->
         <section class="lead-step is-active" data-step="1" aria-label="Choose services">
           <p class="lead-intro">Select the services you need:</p>
           <div class="options">
@@ -446,10 +493,12 @@
           </div>
         </section>
 
-        <!-- Step 2: Location -->
+        <!-- Step 2 -->
         <section class="lead-step" data-step="2" aria-label="Location">
-          <p class="lead-intro">Where is the job located?</p>
-          <input type="text" name="location" placeholder="Postcode / Town or City" required>
+          <div class="form-field">
+            <input type="text" name="location" placeholder=" " required inputmode="text" autocomplete="postal-code">
+            <label>Postcode / Town or City</label>
+          </div>
           <p class="error" id="err-location" hidden>Please provide a location.</p>
           <div class="nav">
             <button type="button" class="btn btn-outline prev">Back</button>
@@ -457,14 +506,22 @@
           </div>
         </section>
 
-        <!-- Step 3: Contact -->
+        <!-- Step 3 -->
         <section class="lead-step" data-step="3" aria-label="Contact details">
-          <p class="lead-intro">Your contact details:</p>
           <div class="contact-grid">
-            <input type="tel" name="phone" placeholder="+44 7xxx xxx xxx" required>
-            <input type="email" name="email" placeholder="you@example.com" required>
+            <div class="form-field">
+              <input type="tel" name="phone" placeholder=" " required inputmode="tel" autocomplete="tel">
+              <label>Phone (mobile)</label>
+            </div>
+            <div class="form-field">
+              <input type="email" name="email" placeholder=" " required autocomplete="email">
+              <label>Email address</label>
+            </div>
           </div>
-          <textarea name="notes" rows="3" placeholder="Brief scope, timelines, access… (optional)"></textarea>
+          <div class="form-field">
+            <textarea name="notes" rows="3" placeholder=" "></textarea>
+            <label>Brief scope, timelines, access… (optional)</label>
+          </div>
           <p class="error" id="err-contact" hidden>Please enter a valid phone and email.</p>
           <div class="nav">
             <button type="button" class="btn btn-outline prev">Back</button>
@@ -475,7 +532,7 @@
     </div>
   </section>
 
-  <!-- Footer with full NAP + Email + Map embed placeholder -->
+  <!-- Footer -->
   <footer>
     <div class="container footer">
       <div>
@@ -498,7 +555,7 @@
         <h3>Find Us</h3>
         <p>Service-Area Business covering London & surrounding counties.</p>
         <p>
-          <!-- Replace the src with your actual Google Business Profile map embed URL -->
+          <!-- Replace the src with your Google Business Profile map embed URL -->
           <iframe
             src="https://www.google.com/maps/embed?pb=YOUR_GBP_EMBED"
             width="320" height="200" style="border:0; border-radius:12px;" allowfullscreen
@@ -538,64 +595,45 @@
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Modal logic
+    // Modal logic (glassmorphic)
     (function(){
       var modal=document.getElementById('quote'); if(!modal) return;
       var dialog=modal.querySelector('.lead-dialog');
       var form=modal.querySelector('#lead-form');
       var steps=[...modal.querySelectorAll('.lead-step')];
-      var dots=[...modal.querySelectorAll('.lead-steps .dot')];
       var chips=[...modal.querySelectorAll('.option')];
-      var i=0, selected=new Set();
+      var progress=document.getElementById('lead-progress');
+      var i=0, selected=new Set(); const total=steps.length;
 
-      function setStep(n){ i=n; steps.forEach((s,si)=>s.classList.toggle('is-active',si===i)); dots.forEach((d,di)=>d.classList.toggle('is-active',di===i)); }
-      function focusFirst(){ var el=steps[i] && steps[i].querySelector('button.option, input, textarea, button.next, button.prev'); if(el) el.focus({preventScroll:true}); }
+      function setProgress(){ if(progress) progress.style.width=((i+1)/total*100)+'%'; }
+      function setStep(n){
+        i=n; steps.forEach((s,si)=>s.classList.toggle('is-active',si===i));
+        setProgress();
+        var el=steps[i] && steps[i].querySelector('button.option, input, textarea, button.next, button.prev');
+        if(el) el.focus({preventScroll:true});
+      }
       function hasServices(){ return selected.size>0; }
       function validLocation(){ return (form.location.value||'').trim().length>=2; }
-      function validContact(){ var p=(form.phone.value||'').trim(), e=(form.email.value||'').trim(); return (/^\+?\d[\d\s\-()]{7,}$/.test(p)) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)); }
+      function validContact(){
+        var p=(form.phone.value||'').trim(), e=(form.email.value||'').trim();
+        return (/^\+?\d[\d\s\-()]{7,}$/).test(p) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(e);
+      }
       function showErr(id){ var el=document.getElementById(id); if(el) el.hidden=false; }
       function hideErr(id){ var el=document.getElementById(id); if(el) el.hidden=true; }
 
       function openModal(e){ if(e){e.preventDefault();e.stopImmediatePropagation();}
         modal.classList.add('is-open'); modal.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden';
-        setStep(0); focusFirst();
+        setStep(0);
       }
       function closeModal(){
         modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true'); document.documentElement.style.overflow='';
-        i=0; steps.forEach(s=>s.classList.remove('is-active')); dots.forEach(d=>d.classList.remove('is-active'));
-        if(steps[0]) steps[0].classList.add('is-active'); if(dots[0]) dots[0].classList.add('is-active');
-        if(form) form.reset();
-        selected.clear();
-        chips.forEach(o=>{o.classList.remove('is-selected');o.setAttribute('aria-pressed','false');});
-        hideErr('err-services'); hideErr('err-location'); hideErr('err-contact');
+        i=0; steps.forEach(s=>s.classList.remove('is-active')); if(steps[0]) steps[0].classList.add('is-active');
+        if(form) form.reset(); selected.clear(); chips.forEach(o=>{o.classList.remove('is-selected');o.setAttribute('aria-pressed','false');});
+        hideErr('err-services'); hideErr('err-location'); hideErr('err-contact'); setProgress();
       }
 
-      function selectChip(val){
-        chips.forEach(ch=>{
-          if(ch.dataset.val===val){
-            ch.classList.add('is-selected'); ch.setAttribute('aria-pressed','true'); selected.add(val);
-          }
-        });
-      }
-
-      // Openers from links
+      // Openers
       document.querySelectorAll('a[href="#quote"]').forEach(a=>a.addEventListener('click',openModal,true));
-
-      // Openers from service cards: preselect + jump to Step 2
-      document.querySelectorAll('#services .card[data-service]').forEach(card=>{
-        card.addEventListener('click', function(e){
-          const link = this.querySelector('a');
-          const isModifierClick = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1;
-          if(link && !isModifierClick){ e.preventDefault(); } // allow modal open without navigating
-          var val=this.dataset.service;
-          openModal();
-          selectChip(val);
-          hideErr('err-services');
-          setStep(1);
-          focusFirst();
-        });
-      });
-
       // Close on backdrop / ✕
       modal.addEventListener('click',e=>{ if(e.target.dataset.close!==undefined || e.target.classList.contains('lead-backdrop')) closeModal(); });
 
@@ -614,13 +652,13 @@
           if(next){
             if(i===0 && !hasServices()){ showErr('err-services'); return; } else hideErr('err-services');
             if(i===1 && !validLocation()){ showErr('err-location'); return; } else hideErr('err-location');
-            setStep(Math.min(i+1, steps.length-1)); focusFirst(); return;
+            setStep(Math.min(i+1, steps.length-1)); return;
           }
-          if(prev){ setStep(Math.max(i-1,0)); focusFirst(); return; }
+          if(prev){ setStep(Math.max(i-1,0)); return; }
         });
       }
 
-      // Submit: validate -> close modal -> alert
+      // Submit
       if(form){
         form.addEventListener('submit',function(e){
           e.preventDefault();
@@ -649,8 +687,9 @@
         }
       });
     })();
-  </script>
 
-  <script>document.getElementById('year').textContent=new Date().getFullYear()</script>
+    // Footer year
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
 </body>
 </html>
