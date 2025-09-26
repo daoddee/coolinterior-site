@@ -9,7 +9,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#F7C800" />
 
-  <!-- Canonical + OpenGraph URL (replace with your live domain if different) -->
+  <!-- Canonical + OpenGraph URL -->
   <link rel="canonical" href="https://coolinterior.co.uk/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="CoolInterior Contractors | Roofing, Marble & Renovation (UK)">
@@ -67,19 +67,28 @@
     .kpi{background:var(--white);border:1px solid var(--steel);padding:1rem;border-radius:16px;text-align:center}
     .kpi b{font-size:1.4rem}
 
-    /* Placeholder block (used elsewhere) */
-    .ph-img{position:relative;background:repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4 12px,#eee 12px,#eee 24px);border:2px dashed #cfd8e3;border-radius:18px;min-height:320px;display:grid;place-items:center;color:#6B7280}
-    .ph-img small{opacity:.9}
-
     /* Sections / Cards */
     section{padding:3rem 0}
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.5rem}
     .section-head h2{margin:0;font-size:1.6rem}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-    .card{background:var(--white);border:1px solid var(--steel);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease}
+
+    /* Services grid: equal card sizing */
+    .grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--white);border:1px solid var(--steel);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .3s ease,box-shadow .3s ease}
     .card:hover{transform:translateY(-8px);box-shadow:0 10px 22px rgba(0,0,0,.18)}
-    .card .body{padding:16px}
+    .card > a{display:flex;flex-direction:column;height:100%;color:inherit}
+    .card .card-image{position:relative;height:180px;overflow:hidden}
+    .card .card-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;will-change:transform}
+    .card .body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .card h3{margin:0;font-size:1.1rem;color:#0f172a}
+    .card p{margin:0;font-size:.95rem;color:#475569}
     .pill{display:inline-block;background:var(--yellow);color:#111;border-radius:999px;padding:.25rem .6rem;font-weight:800;font-size:.8rem}
+
+    /* Partners logos */
+    .logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;align-items:center;justify-items:center}
+    .logos figure{margin:0;background:#fff;border:1px solid var(--steel);border-radius:14px;padding:14px;min-height:90px;display:grid;place-items:center;width:100%}
+    .logos img{max-width:160px;max-height:42px;width:auto;height:auto;filter:grayscale(100%);opacity:.9;transition:opacity .2s ease}
+    .logos img:hover{opacity:1;filter:none}
 
     /* Gallery */
     .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
@@ -99,43 +108,6 @@
     .hero-img img{display:block;max-width:100%;height:auto;transition:transform .2s ease}
     .hero-img img:hover{animation:wiggle .5s ease-in-out}
     @keyframes wiggle{0%{transform:rotate(0)}20%{transform:rotate(-3deg)}40%{transform:rotate(3deg)}60%{transform:rotate(-3deg)}80%{transform:rotate(3deg)}100%{transform:rotate(0)}}
-
-    /* Modal (Get Quote) */
-    #quote.lead-modal{position:fixed;inset:0;display:none;z-index:2000}
-    #quote.lead-modal.is-open{display:block}
-    #quote .lead-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-    #quote .lead-dialog{position:relative;margin:6vh auto;width:clamp(520px,44vw,760px);background:#fff;border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,.35);padding-bottom:12px}
-    #quote .lead-close{position:absolute;top:10px;right:12px;border:0;background:transparent;font-size:20px;cursor:pointer}
-    #quote .lead-header{padding:12px 18px 8px;border-bottom:1px solid #E5E7EB}
-    #quote .lead-header h3{margin:0 0 6px;font:600 1.1rem/1.2 Montserrat,system-ui,sans-serif;color:#1F2933}
-    #quote .lead-steps{display:flex;gap:8px}
-    #quote .lead-steps .dot{width:10px;height:10px;border-radius:50%;background:#cbd5e1}
-    #quote .lead-steps .dot.is-active{background:#0ea5e9}
-    #quote .lead-step{display:none}
-    #quote .lead-step.is-active{display:block}
-    #quote .lead-step,#quote .lead-done{padding:14px 18px}
-    .lead-intro{margin:.25rem 0 .5rem}
-    #quote .options{margin:8px auto 6px;max-width:660px;display:grid;grid-auto-rows:1fr;gap:10px;grid-template-columns:repeat(3,minmax(160px,1fr));justify-items:center}
-    #quote .option{width:100%;max-width:200px;appearance:none;border:1px solid #E5E7EB;background:#f8fafc;color:#0f172a;padding:10px 12px;border-radius:12px;font-weight:800;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease;text-align:center}
-    #quote .option:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
-    #quote .option.is-selected,[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
-    .opt-roofing{background:#FFF8CC}.opt-marble{background:#E6FFFA}.opt-granite{background:#F2F4F7}
-    .opt-tiling{background:#E6F0FF}.opt-repairs{background:#FFEDE5}.opt-painting{background:#F3E8FF}
-    .opt-cleaning{background:#E9FFE9}.opt-furniture{background:#FFF3E0}.opt-engineering{background:#E7ECFF}
-    #quote input,#quote textarea{width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:12px;font:400 1rem/1.2 Montserrat,system-ui,sans-serif}
-    #quote textarea{min-height:90px}
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:780px){#quote .lead-dialog{width:clamp(480px,64vw,680px)}#quote .options{grid-template-columns:repeat(2,minmax(160px,1fr))}}
-    @media (max-width:560px){#quote .lead-dialog{width:min(94%,520px);margin:4vh auto}#quote .options{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}}
-    #quote .nav{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
-    #quote .btn{background:var(--yellow);color:#111;border:0;padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer}
-    #quote .btn:hover{background:var(--yellow-strong)}
-    #quote .btn.btn-outline{background:transparent;border:2px solid var(--yellow);color:#1F2933}
-    #quote .error{color:#C62828;font-size:.9rem;margin-top:4px}
-
-    /* Links cover the whole card for better UX */
-    .card > a{display:block;color:inherit}
-    .card > a:focus{outline:3px solid var(--yellow)}
   </style>
 
   <!-- Organization / LocalBusiness Schema (completed NAP + service areas) -->
@@ -206,7 +178,7 @@
       </div>
     </div>
   </header>
-  
+
   <!-- Hero -->
   <main class="hero">
     <div class="container hero-grid">
@@ -254,17 +226,21 @@
         <!-- Roofing -->
         <article class="card" data-service="Roofing">
           <a href="/roofing/" aria-label="Roofing services">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/ZdnbLhB.png" alt="New roofs, re-roofing, slate & tiles, waterproofing" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Roofing</span><h3>New Roofs & Re-Roofing</h3><p>Pitched & flat systems, slate/tiles, waterproofing, and emergency leak response.</p></div>
+            <div class="body">
+              <span class="pill">Roofing</span>
+              <h3>New Roofs & Re-Roofing</h3>
+              <p>Pitched & flat systems, slate/tiles, waterproofing, and emergency leak response.</p>
+            </div>
           </a>
         </article>
 
-        <!-- Marble: link to GitHub folder page named grante.html (as requested) -->
+        <!-- Marble -> grante.html -->
         <article class="card" data-service="Marble">
           <a href="grante.html" aria-label="Marble supply & installation">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/fXeT9ET.png" alt="Marble supply, templating, precision cutting, installation" width="640" height="400" loading="lazy">
             </div>
             <div class="body">
@@ -278,62 +254,106 @@
         <!-- Maintenance -->
         <article class="card" data-service="Repairs">
           <a href="/maintenance/" aria-label="Property maintenance">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/NBnNZHB.png" alt="Property maintenance and repairs" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Maintenance</h3><p>Responsive maintenance to protect your asset lifecycle and reduce downtime.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Maintenance</h3>
+              <p>Responsive maintenance to protect your asset lifecycle and reduce downtime.</p>
+            </div>
           </a>
         </article>
 
         <!-- Bathroom Tiling -->
         <article class="card" data-service="Tiling">
           <a href="/bathroom-tiling/" aria-label="Bathroom tiling services">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/OSBeZjQ.png" alt="Bathroom tiling and wet room installation" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Bathroom Tiling</h3><p>High-precision tiling, wet rooms, and waterproofing for enduring finishes.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Bathroom Tiling</h3>
+              <p>High-precision tiling, wet rooms, and waterproofing for enduring finishes.</p>
+            </div>
           </a>
         </article>
 
         <!-- Furniture Install -->
         <article class="card" data-service="Furniture Install">
           <a href="/furniture-installation/" aria-label="Furniture installation and fit-out">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/KoO5pkT.png" alt="Furniture installation and fit-out" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Furniture Installation</h3><p>Professional assembly and fit-out for residential and commercial spaces.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Furniture Installation</h3>
+              <p>Professional assembly and fit-out for residential and commercial spaces.</p>
+            </div>
           </a>
         </article>
 
         <!-- Painting -->
         <article class="card" data-service="Painting">
           <a href="/painting/" aria-label="Painting services">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/QHBvDxP.png" alt="Interior and exterior painting services" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Painting</h3><p>Clean, durable finishes using premium materials and best-practice application.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Painting</h3>
+              <p>Clean, durable finishes using premium materials and best-practice application.</p>
+            </div>
           </a>
         </article>
 
         <!-- Cleaning -->
         <article class="card" data-service="Cleaning">
           <a href="/cleaning/" aria-label="Professional cleaning services">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/gW1dUdT.png" alt="Professional cleaning services" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Cleaning Services</h3><p>Post-build, deep cleaning, and maintenance schedules to keep spaces pristine.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Cleaning Services</h3>
+              <p>Post-build, deep cleaning, and maintenance schedules to keep spaces pristine.</p>
+            </div>
           </a>
         </article>
 
         <!-- Engineering -->
         <article class="card" data-service="Engineering">
           <a href="/engineering/" aria-label="Engineering and project support">
-            <div class="card-image" style="min-height:180px">
+            <div class="card-image">
               <img src="https://i.imgur.com/zRfuERV.png" alt="Engineering and project support" width="640" height="400" loading="lazy">
             </div>
-            <div class="body"><span class="pill">Service</span><h3>Engineering Services</h3><p>Method statements, RAMS, and project engineering for safe delivery.</p></div>
+            <div class="body">
+              <span class="pill">Service</span>
+              <h3>Engineering Services</h3>
+              <p>Method statements, RAMS, and project engineering for safe delivery.</p>
+            </div>
           </a>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners / Social Proof -->
+  <section id="partners" aria-labelledby="partners-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="partners-title">Trusted by leading hotels & brands</h2>
+        <span class="badge" aria-hidden="true">Proven delivery</span>
+      </div>
+      <div class="logos" role="list" aria-label="Partners we have worked with">
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Hilcrest+Hotels" alt="Hilcrest Hotels logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Grandline+Resorts" alt="Grandline Resorts logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Metropole+Hotel" alt="Metropole Hotel logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Harbour+%26+Spa" alt="Harbour & Spa logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=City+Suites" alt="City Suites logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Regency+Collection" alt="Regency Collection logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Royalbridge" alt="Royalbridge logo" loading="lazy" width="160" height="42"></figure>
+        <figure role="listitem"><img src="https://dummyimage.com/220x100/edf2f7/334155.png&text=Northbank+Group" alt="Northbank Group logo" loading="lazy" width="160" height="42"></figure>
       </div>
     </div>
   </section>
@@ -344,7 +364,7 @@
       <div class="section-head">
         <h2>Recent Project Snapshots</h2>
         <div class="badge">
-          ⏱️ Time until next project is available: 
+          ⏱️ Time until next project is available:
           <span id="countdown">Loading…</span>
         </div>
       </div>
@@ -479,9 +499,9 @@
         <p>Service-Area Business covering London & surrounding counties.</p>
         <p>
           <!-- Replace the src with your actual Google Business Profile map embed URL -->
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=YOUR_GBP_EMBED" 
-            width="320" height="200" style="border:0; border-radius:12px;" allowfullscreen 
+          <iframe
+            src="https://www.google.com/maps/embed?pb=YOUR_GBP_EMBED"
+            width="320" height="200" style="border:0; border-radius:12px;" allowfullscreen
             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </p>
       </div>
@@ -564,10 +584,9 @@
       // Openers from service cards: preselect + jump to Step 2
       document.querySelectorAll('#services .card[data-service]').forEach(card=>{
         card.addEventListener('click', function(e){
-          // If the card has a link inside, let the link navigate on normal click
           const link = this.querySelector('a');
           const isModifierClick = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1;
-          if(link && !isModifierClick){ e.preventDefault(); }
+          if(link && !isModifierClick){ e.preventDefault(); } // allow modal open without navigating
           var val=this.dataset.service;
           openModal();
           selectChip(val);
