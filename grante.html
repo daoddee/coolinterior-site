@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>Marble, Granite & Quartz Worktops in London | PrimeBuild Contractors</title>
   <meta name="description" content="PrimeBuild Contractors fabricates & installs marble, granite & quartz worktops across London. Fast laser templating to install in 5–10 working days. Get a free quote." />
@@ -29,11 +29,11 @@
   <meta name="twitter:title" content="Marble, Granite & Quartz Worktops in London | PrimeBuild Contractors" />
   <meta name="twitter:description" content="Fabrication & installation across London. Book a free survey and quote." />
 
-  <!-- Icons (replace with your real files when available) -->
+  <!-- Icons -->
   <link rel="icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 
-  <!-- Performance: fonts + hero image -->
+  <!-- Fonts & perf -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://i.imgur.com" crossorigin>
@@ -45,37 +45,51 @@
     :root{
       --yellow:#F7C800; --yellow-strong:#FFB300;
       --charcoal:#1F2933; --slate:#3E4C59; --steel:#E5E7EB;
-      --offwhite:#F7F9FC; --white:#ffffff;
-      --focus:#0ea5e9;
+      --offwhite:#F7F9FC; --white:#ffffff; --focus:#0ea5e9; --nav-h:64px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     html,body{margin:0;padding:0;font-family:Montserrat,system-ui,Segoe UI,sans-serif;background:var(--offwhite);color:var(--charcoal)}
     a{color:inherit;text-decoration:none}
     a:focus-visible, button:focus-visible{outline:3px solid var(--focus); outline-offset:2px; border-radius:8px}
+    img{max-width:100%;height:auto;display:block}
     .container{width:min(1200px,92%);margin-inline:auto}
-    .btn{padding:.9rem 1.25rem;border-radius:12px;font-weight:800;cursor:pointer;display:inline-block}
+
+    .btn{padding:.9rem 1.1rem;border-radius:12px;font-weight:800;cursor:pointer;display:inline-block;line-height:1}
     .btn-primary{background:var(--yellow);border:0;color:#111}
     .btn-primary:hover{background:var(--yellow-strong)}
     .btn-ghost{background:transparent;border:2px solid var(--yellow);color:#111}
 
-    /* Smooth page entrance */
+    /* Page fade-in */
     body{opacity:0; transform:translateY(8px); transition:opacity .6s ease, transform .6s ease}
     body.is-ready{opacity:1; transform:none}
-    @media (prefers-reduced-motion: reduce){
-      html{scroll-behavior:auto}
-      body{transition:none; opacity:1; transform:none}
-    }
+    @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} body{transition:none; opacity:1; transform:none} }
 
     /* Skip link */
     .skip-link{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden}
     .skip-link:focus{position:fixed; left:12px; top:12px; width:auto; height:auto; padding:.6rem 1rem; background:#111; color:#fff; z-index:10000; border-radius:10px}
 
-    /* Header */
-    header{background:#fff;border-bottom:1px solid var(--steel);padding:1rem 0;position:sticky;top:0;z-index:50}
-    .nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+    /* Header + Mobile nav */
+    header{background:#fff;border-bottom:1px solid var(--steel);position:sticky;top:0;z-index:60}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:nowrap;min-height:var(--nav-h)}
     .brand{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.05rem}
-    nav[aria-label="Primary"] a{margin-left:.4rem}
+    .brand .mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--yellow),#FFE16A);display:grid;place-items:center;box-shadow:0 8px 18px rgba(247,200,0,.25)}
+    nav[aria-label="Primary"]{display:none;gap:.4rem}
+    .menu-btn{border:0;background:transparent;width:44px;height:44px;display:grid;place-items:center;border-radius:10px}
+    .menu-btn svg{width:22px;height:22px}
+
+    /* Drawer */
+    .drawer{position:fixed;inset:var(--nav-h) 0 auto 0;background:#fff;border-bottom:1px solid var(--steel);display:none}
+    .drawer.is-open{display:block}
+    .drawer .inner{padding:12px 4% 16px;display:grid;gap:10px}
+    .drawer a{padding:12px;border:1px solid var(--steel);border-radius:12px}
+
+    /* Desktop nav */
+    @media (min-width:900px){
+      nav[aria-label="Primary"]{display:flex}
+      .menu-btn{display:none}
+      .drawer{display:none!important}
+    }
 
     /* Breadcrumbs */
     .breadcrumbs{background:#fff;border-bottom:1px solid var(--steel);font-size:.9rem}
@@ -85,50 +99,50 @@
     .breadcrumbs span.sep{opacity:.5;padding:0 .35rem}
 
     /* Hero */
-    .hero{padding:3.5rem 0 2.25rem;background:linear-gradient(180deg,#fff 0%,#FDFBF2 100%)}
-    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
-    .hero h1{font-size:clamp(2rem,3.2vw,3rem);margin:0 0 .8rem}
+    .hero{padding:3rem 0 2rem;background:linear-gradient(180deg,#fff 0%,#FDFBF2 100%)}
+    .hero-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center}
+    .hero h1{font-size:clamp(1.9rem,5vw,3rem);margin:0 0 .8rem}
     .hero p{color:var(--slate);line-height:1.6;margin:0 0 1.2rem}
-    .hero img{width:100%;border-radius:14px;height:auto;display:block}
+    .hero img{width:100%;border-radius:14px;height:auto}
+    @media (min-width:900px){ .hero{padding:3.5rem 0 2.25rem} .hero-grid{grid-template-columns:1fr 1fr;gap:2rem} }
 
-    /* Album (wrapper) */
-    .album{padding:3rem 0}
-    .section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:1rem}
+    /* Section head */
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin:1rem 0}
     .section-head h2{margin:0}
 
+    /* Album */
+    .album{padding:2.2rem 0}
     .album-card{
       background:var(--white);border:1px solid var(--steel);border-radius:16px;overflow:hidden;
-      display:grid;grid-template-columns:1.2fr .8fr;gap:0;align-items:stretch;
-      box-shadow:0 6px 18px rgba(0,0,0,.08); margin-bottom:1.5rem;
+      display:grid;grid-template-columns:1fr;gap:0;align-items:stretch;
+      box-shadow:0 6px 18px rgba(0,0,0,.08); margin-bottom:1.2rem;
     }
-    .album-cover{position:relative}
+    .album-cover{position:relative;min-height:240px}
     .album-cover img{display:block;width:100%;height:100%;object-fit:cover}
     .album-count{
       position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.7);color:#fff;
       padding:.3rem .6rem;border-radius:999px;font-size:.85rem;font-weight:700
     }
     .album-body{padding:1rem 1.2rem}
-    .album-body h3{margin:.2rem 0 .6rem}
-    .album-body p{margin:0 0 1rem;color:var(--slate)}
     .album-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+    @media (min-width:900px){ .album-card{grid-template-columns:1.2fr .8fr} .album-cover{min-height:unset} }
 
     /* Galleries */
     .galleries{display:grid;gap:1.2rem}
     .gallery-block{background:#fff;border:1px solid var(--steel);border-radius:16px;padding:1rem}
     .gallery-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:.6rem}
-    .gallery-head h3{margin:0}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+    .grid{display:grid;grid-template-columns:1fr;gap:.6rem}
     .grid .thumb{position:relative;border-radius:12px;overflow:hidden;background:#f4f6f9;border:1px solid var(--steel);cursor:pointer}
     .grid .thumb img{display:block;width:100%;height:180px;object-fit:cover;transition:transform .35s ease}
     .grid .thumb:hover img{transform:scale(1.05)}
     .grid .thumb .cap{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;padding:.25rem .5rem;border-radius:999px;font-size:.78rem}
+    @media (min-width:700px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media (min-width:1000px){ .grid{grid-template-columns:repeat(3,1fr)} }
 
-    /* SEO Write-up */
+    /* SEO Write-up & Testimonials */
     .seo{background:#fff;border:1px solid var(--steel);border-radius:16px;padding:1.2rem;margin-top:1.2rem}
     .seo h2,.seo h3{margin:.2rem 0 .6rem}
     .seo p{color:var(--slate);line-height:1.8;margin:.6rem 0}
-
-    /* Testimonials */
     .testimonials{margin-top:1.2rem;display:grid;gap:.8rem}
     .review{background:#fff;border:1px solid var(--steel);border-radius:14px;padding:1rem}
     .review strong{display:block;margin-bottom:.25rem}
@@ -137,7 +151,7 @@
     /* Footer */
     footer{margin-top:2rem;padding:2rem 0;color:#4b5563;background:#fff;border-top:1px solid var(--steel)}
 
-    /* Lightbox / Carousel */
+    /* Lightbox */
     .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:2000}
     .lightbox.is-open{display:flex}
     .lb-stage{position:relative;max-width:92vw;max-height:86vh}
@@ -156,17 +170,8 @@
     .lb-prev::after{left:20px;mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>') center/60% no-repeat}
     .lb-next::after{right:20px;mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="m8.59 16.59 1.41 1.41L16 12 10 6 8.59 7.41 13.17 12z"/></svg>') center/60% no-repeat}
 
-    @media (max-width:900px){
-      .hero-grid{grid-template-columns:1fr}
-      .album-card{grid-template-columns:1fr}
-      .album-cover{height:260px}
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .grid .thumb img{height:160px}
-    }
-    @media (max-width:560px){
-      .grid{grid-template-columns:1fr}
-      .grid .thumb img{height:180px}
-    }
+    /* Image hints */
+    .hero img{content-visibility:auto; contain-intrinsic-size:900px}
   </style>
 </head>
 <body>
@@ -176,15 +181,33 @@
   <!-- Header -->
   <header>
     <div class="container nav">
-      <a class="brand" href="/" aria-label="PrimeBuild Home">🏗 PrimeBuild</a>
+      <a class="brand" href="/" aria-label="PrimeBuild Home">
+        <span class="mark" aria-hidden="true">🏗</span>
+        PrimeBuild
+      </a>
+
+      <!-- Desktop nav -->
       <nav aria-label="Primary">
-        <!-- About now scrolls to the London service area section -->
         <a class="btn btn-ghost" href="#london-service-areas">About</a>
-        <!-- Case Studies replaced with Service Reviews that scrolls to reviews -->
         <a class="btn btn-ghost" href="#testimonials">Service Reviews</a>
         <a class="btn btn-primary" href="/contact-us" rel="nofollow">Get Free Stonework Quote</a>
       </nav>
+
+      <!-- Mobile menu button -->
+      <button class="menu-btn" id="menuBtn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
+
+    <!-- Mobile drawer -->
+    <nav id="mobileMenu" class="drawer" aria-label="Mobile">
+      <div class="inner container">
+        <a href="#album">Project Album</a>
+        <a href="#london-service-areas">About</a>
+        <a href="#testimonials">Service Reviews</a>
+        <a class="btn btn-primary" href="/contact-us" rel="nofollow">Get Free Stonework Quote</a>
+      </div>
+    </nav>
   </header>
 
   <!-- Breadcrumbs -->
@@ -209,17 +232,18 @@
           </div>
         </div>
         <div>
-          <!-- Above-the-fold image performance hints -->
           <img
             src="https://i.imgur.com/BkjSlhH.png"
             alt="Luxury marble kitchen with quartz island"
             width="1200" height="900"
-            fetchpriority="high" decoding="async">
+            fetchpriority="high" decoding="async"
+            srcset="https://i.imgur.com/BkjSlhH.png 900w"
+            sizes="(max-width: 899px) 100vw, 48vw">
         </div>
       </div>
     </section>
 
-    <!-- Album: Cover + Actions -->
+    <!-- Album -->
     <section id="album" class="album">
       <div class="container">
         <div class="section-head">
@@ -237,13 +261,12 @@
             <p>See today’s most-requested looks: <a href="/worktops/quartz">Calacatta-look quartz</a>, <a href="/worktops/quartzite">Taj Mahal quartzite</a>, dramatic-vein granites, and sustainable options like <a href="/worktops/recycled-glass">recycled glass</a>. We craft honed, matte, and leathered finishes with integrated sinks, sculptural edges, and flush-fit hobs.</p>
             <div class="album-actions">
               <button class="btn btn-primary" id="viewAlbumBtn" aria-label="Open album slideshow">Open Slideshow</button>
-              <!-- Replaced Case Studies link with Service Reviews anchor -->
               <a class="btn btn-ghost" href="#testimonials">Service Reviews</a>
             </div>
           </div>
         </article>
 
-        <!-- Galleries with internal links -->
+        <!-- Galleries -->
         <div class="galleries">
           <!-- Kitchen Gallery -->
           <section class="gallery-block" aria-labelledby="gal-kitchen">
@@ -363,7 +386,6 @@
             <small itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">Designer, Hampstead</span></small>
           </div>
 
-          <!-- Added reviews -->
           <div class="review" itemprop="review" itemscope itemtype="https://schema.org/Review">
             <strong itemprop="name">“Quartz worktops look incredible—measured perfectly.”</strong>
             <div class="stars" aria-label="5 out of 5 stars" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
@@ -433,176 +455,84 @@
     </div>
   </div>
 
-  <!-- Structured Data: LocalBusiness -->
+  <!-- Schema: LocalBusiness -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "PrimeBuild Contractors",
-    "image": "https://i.imgur.com/BkjSlhH.png",
-    "url": "https://www.primebuild.co.uk/",
-    "telephone": "+44 20 7123 4567",
-    "priceRange": "££",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "12 Example Street",
-      "addressLocality": "London",
-      "postalCode": "EC1A 1AA",
-      "addressCountry": "GB"
-    },
-    "areaServed": "London",
-    "sameAs": [
-      "https://www.linkedin.com/company/primebuild-contractors",
-      "https://www.facebook.com/primebuildcontractors",
-      "https://www.instagram.com/primebuildcontractors",
-      "https://g.page/r/primebuild-contractors"
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "1200"
-    },
-    "serviceType": "Marble, Granite & Quartz Worktops"
-  }
+  {"@context":"https://schema.org","@type":"LocalBusiness","name":"PrimeBuild Contractors","image":"https://i.imgur.com/BkjSlhH.png","url":"https://www.primebuild.co.uk/","telephone":"+44 20 7123 4567","priceRange":"££","address":{"@type":"PostalAddress","streetAddress":"12 Example Street","addressLocality":"London","postalCode":"EC1A 1AA","addressCountry":"GB"},"areaServed":"London","sameAs":["https://www.linkedin.com/company/primebuild-contractors","https://www.facebook.com/primebuildcontractors","https://www.instagram.com/primebuildcontractors","https://g.page/r/primebuild-contractors"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"1200"},"serviceType":"Marble, Granite & Quartz Worktops"}
   </script>
 
-  <!-- Structured Data: FAQ -->
+  <!-- Schema: FAQ -->
   <script type="application/ld+json">
-  {
-   "@context": "https://schema.org",
-   "@type": "FAQPage",
-   "mainEntity": [
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
     {"@type":"Question","name":"How long from template to install?","acceptedAnswer":{"@type":"Answer","text":"Typically 5–10 working days depending on material availability and scope."}},
     {"@type":"Question","name":"Do you seal marble and granite?","acceptedAnswer":{"@type":"Answer","text":"Yes—sealed on installation with guidance on resealing based on usage."}},
     {"@type":"Question","name":"What do you need for a quote?","acceptedAnswer":{"@type":"Answer","text":"Plans or rough dimensions, preferred material/finish, and your postcode for logistics."}}
-   ]
-  }
+  ]}
   </script>
 
-  <!-- Structured Data: Breadcrumbs -->
+  <!-- Schema: Breadcrumbs -->
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"BreadcrumbList",
-    "itemListElement":[
-      {"@type":"ListItem","position":1,"name":"Home","item":"https://www.primebuild.co.uk/"},
-      {"@type":"ListItem","position":2,"name":"Services","item":"https://www.primebuild.co.uk/services"},
-      {"@type":"ListItem","position":3,"name":"Stone Worktops","item":"https://www.primebuild.co.uk/stonework"}
-    ]
-  }
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://www.primebuild.co.uk/"},
+    {"@type":"ListItem","position":2,"name":"Services","item":"https://www.primebuild.co.uk/services"},
+    {"@type":"ListItem","position":3,"name":"Stone Worktops","item":"https://www.primebuild.co.uk/stonework"}
+  ]}
   </script>
 
-  <!-- Structured Data: ItemList of Services -->
+  <!-- Schema: ItemLists -->
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"ItemList",
-    "itemListElement":[
-      {"@type":"ListItem","position":1,"url":"https://www.primebuild.co.uk/worktops/quartz","name":"Quartz Worktops"},
-      {"@type":"ListItem","position":2,"url":"https://www.primebuild.co.uk/worktops/granite","name":"Granite Worktops"},
-      {"@type":"ListItem","position":3,"url":"https://www.primebuild.co.uk/bathrooms/marble","name":"Marble Bathrooms"},
-      {"@type":"ListItem","position":4,"url":"https://www.primebuild.co.uk/commercial/reception-desks","name":"Commercial Reception Desks"}
-    ]
-  }
+  {"@context":"https://schema.org","@type":"ItemList","itemListElement":[
+    {"@type":"ListItem","position":1,"url":"https://www.primebuild.co.uk/worktops/quartz","name":"Quartz Worktops"},
+    {"@type":"ListItem","position":2,"url":"https://www.primebuild.co.uk/worktops/granite","name":"Granite Worktops"},
+    {"@type":"ListItem","position":3,"url":"https://www.primebuild.co.uk/bathrooms/marble","name":"Marble Bathrooms"},
+    {"@type":"ListItem","position":4,"url":"https://www.primebuild.co.uk/commercial/reception-desks","name":"Commercial Reception Desks"}
+  ]}
   </script>
 
-  <!-- Structured Data: ItemList of Reviews (extended) -->
+  <!-- Schema: Reviews list -->
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"ItemList",
-    "itemListElement":[
-      {
-        "@type":"ListItem","position":1,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Homeowner, Richmond"},
-          "reviewBody":"Immaculate install and tidy crew."
-        }
-      },
-      {
-        "@type":"ListItem","position":2,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Organization","name":"Retail Client, Soho"},
-          "reviewBody":"Delivered on a tight retail programme."
-        }
-      },
-      {
-        "@type":"ListItem","position":3,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Designer, Hampstead"},
-          "reviewBody":"Seamless mitred waterfall legs—spot on."
-        }
-      },
-      {
-        "@type":"ListItem","position":4,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Family Kitchen, Wimbledon"},
-          "reviewBody":"Quartz worktops look incredible—measured perfectly."
-        }
-      },
-      {
-        "@type":"ListItem","position":5,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Home Renovation, Islington"},
-          "reviewBody":"Professional from survey to handover—zero mess."
-        }
-      },
-      {
-        "@type":"ListItem","position":6,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Bathroom Project, Camden"},
-          "reviewBody":"Bookmatched marble feature wall is stunning."
-        }
-      },
-      {
-        "@type":"ListItem","position":7,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Organization","name":"Café Counter, Shoreditch"},
-          "reviewBody":"They coordinated around our trading hours—no downtime."
-        }
-      },
-      {
-        "@type":"ListItem","position":8,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Designer, Notting Hill"},
-          "reviewBody":"Great advice on quartz vs. quartzite—very knowledgeable."
-        }
-      },
-      {
-        "@type":"ListItem","position":9,
-        "item":{
-          "@type":"Review",
-          "reviewRating":{"@type":"Rating","ratingValue":"5"},
-          "author":{"@type":"Person","name":"Landlord Refurb, Battersea"},
-          "reviewBody":"Template to install in a week—excellent communication."
-        }
-      }
-    ]
-  }
+  {"@context":"https://schema.org","@type":"ItemList","itemListElement":[
+    {"@type":"ListItem","position":1,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Homeowner, Richmond"},"reviewBody":"Immaculate install and tidy crew."}},
+    {"@type":"ListItem","position":2,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Organization","name":"Retail Client, Soho"},"reviewBody":"Delivered on a tight retail programme."}},
+    {"@type":"ListItem","position":3,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Designer, Hampstead"},"reviewBody":"Seamless mitred waterfall legs—spot on."}},
+    {"@type":"ListItem","position":4,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Family Kitchen, Wimbledon"},"reviewBody":"Quartz worktops look incredible—measured perfectly."}},
+    {"@type":"ListItem","position":5,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Home Renovation, Islington"},"reviewBody":"Professional from survey to handover—zero mess."}},
+    {"@type":"ListItem","position":6,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Bathroom Project, Camden"},"reviewBody":"Bookmatched marble feature wall is stunning."}},
+    {"@type":"ListItem","position":7,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Organization","name":"Café Counter, Shoreditch"},"reviewBody":"They coordinated around our trading hours—no downtime."}},
+    {"@type":"ListItem","position":8,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Designer, Notting Hill"},"reviewBody":"Great advice on quartz vs. quartzite—very knowledgeable."}},
+    {"@type":"ListItem","position":9,"item":{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5"},"author":{"@type":"Person","name":"Landlord Refurb, Battersea"},"reviewBody":"Template to install in a week—excellent communication."}}
+  ]}
   </script>
 
-  <!-- JS (at end for performance) -->
+  <!-- JS -->
   <script>
-    // Smooth entrance: mark ready on DOM load
+    // Ready
     document.addEventListener('DOMContentLoaded', ()=> document.body.classList.add('is-ready'));
 
-    // Master album image list (used ONLY by the slideshow button)
+    // Mobile drawer
+    (function(){
+      const btn = document.getElementById('menuBtn');
+      const drawer = document.getElementById('mobileMenu');
+      if(!btn || !drawer) return;
+      btn.addEventListener('click', ()=>{
+        const open = drawer.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      drawer.addEventListener('click', e=>{
+        if(e.target.tagName === 'A'){ drawer.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); }
+      });
+    })();
+
+    // Smooth internal links (keep modal/lightbox behavior unaffected)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id=a.getAttribute('href').slice(1);
+        if(!id) return;
+        const el=document.getElementById(id);
+        if(el && !a.closest('#mobileMenu')){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+      });
+    });
+
+    // Album images list (slideshow)
     const IMAGES = [
       "https://i.imgur.com/J3EWa2R.png","https://i.imgur.com/UilzBK2.png","https://i.imgur.com/UmvMFuG.png","https://i.imgur.com/4CNYL2i.png","https://i.imgur.com/ALT2nhu.png",
       "https://i.imgur.com/K68dGOm.png","https://i.imgur.com/28Qcvqd.png","https://i.imgur.com/cJJX3ET.png",
@@ -611,12 +541,10 @@
       "https://i.imgur.com/qlOjert.png","https://i.imgur.com/8oDL7XO.png","https://i.imgur.com/s0TIwqX.png",
       "https://i.imgur.com/P6murv0.png","https://i.imgur.com/KnjjNHY.png","https://i.imgur.com/Rirsxkl.png"
     ];
-
-    // Update visible count
     const albumCountEl = document.getElementById('albumCount');
     if (albumCountEl) albumCountEl.textContent = IMAGES.length + ' photos';
 
-    // Lightbox elements
+    // Lightbox
     const lightbox = document.getElementById('lightbox');
     const lbImg    = document.getElementById('lbImg');
     const openBtn  = document.getElementById('viewAlbumBtn');
@@ -624,7 +552,6 @@
     const btnNext  = document.getElementById('lbNext');
     const btnPrev  = document.getElementById('lbPrev');
 
-    // Maintain current list & index so prev/next works for both album and per-gallery
     let currentList = IMAGES.slice();
     let currentIndex = 0;
 
@@ -637,29 +564,16 @@
       document.documentElement.style.overflow = 'hidden';
       btnClose.focus();
     }
-
     function closeLb(){
       lightbox.classList.remove('is-open');
       lightbox.setAttribute('aria-hidden','true');
       document.documentElement.style.overflow = '';
     }
+    function next(){ if (!currentList.length) return; currentIndex = (currentIndex + 1) % currentList.length; lbImg.src = currentList[currentIndex]; }
+    function prev(){ if (!currentList.length) return; currentIndex = (currentIndex - 1 + currentList.length) % currentList.length; lbImg.src = currentList[currentIndex]; }
 
-    function next(){
-      if (!currentList.length) return;
-      currentIndex = (currentIndex + 1) % currentList.length;
-      lbImg.src = currentList[currentIndex];
-    }
-
-    function prev(){
-      if (!currentList.length) return;
-      currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
-      lbImg.src = currentList[currentIndex];
-    }
-
-    // "Open Slideshow" uses the master album list
     if (openBtn) openBtn.addEventListener('click', () => openList(IMAGES, 0));
 
-    // Thumbnails: build a list per gallery grid, open at clicked index (so nav stays within that section)
     document.querySelectorAll('.gallery-block .grid').forEach(grid => {
       const imgs = Array.from(grid.querySelectorAll('img'));
       const list = imgs.map(img => img.getAttribute('data-full') || img.src);
@@ -668,12 +582,10 @@
       });
     });
 
-    // Controls
     btnClose.addEventListener('click', closeLb);
     btnNext.addEventListener('click', next);
     btnPrev.addEventListener('click', prev);
 
-    // Keyboard + click outside
     document.addEventListener('keydown', e=>{
       if(!lightbox.classList.contains('is-open')) return;
       if(e.key==='Escape') closeLb();
