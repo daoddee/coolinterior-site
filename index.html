@@ -56,9 +56,17 @@
     header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--steel)}
     .nav{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);}
     .brand{display:flex;align-items:center;gap:.6rem}
-    .brand-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--yellow),#FFE16A);display:grid;place-items:center;box-shadow:0 8px 18px rgba(247,200,0,.25)}
     .brand .brand-text{font-size:1rem;margin:0;line-height:1.1;font-weight:800}
     .nav-cta{display:none;gap:.6rem}
+
+    /* NEW: brand logo sizing */
+    .brand-logo{
+      height:36px;
+      width:auto;
+      display:block;
+      object-fit:contain;
+    }
+
     /* Hamburger */
     .menu-btn{border:0;background:transparent;width:44px;height:44px;display:grid;place-items:center;border-radius:10px}
     .menu-btn svg{width:22px;height:22px}
@@ -219,12 +227,14 @@
   <header>
     <div class="container nav" role="navigation" aria-label="Primary">
       <a class="brand" href="#top" aria-label="CoolInterior home">
-        <div class="brand-mark" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M4 13a8 8 0 1116 0v3H4v-3Z" stroke="#111" stroke-width="2"/>
-            <path d="M10 6v7M14 6v7" stroke="#111" stroke-width="2"/>
-          </svg>
-        </div>
+        <!-- Replaced placeholder with your logo from assest/ -->
+        <img
+          class="brand-logo"
+          src="assest/Amazon_Prime-Logo.wine.svg"
+          alt="CoolInterior Contractors logo"
+          width="160"
+          height="40"
+        />
         <span class="brand-text">CoolInterior Contractors</span>
       </a>
 
