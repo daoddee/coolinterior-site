@@ -126,8 +126,17 @@
     /* Partners logos */
     .logos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:center;justify-items:center}
     .logos figure{margin:0;background:#fff;border:1px solid var(--steel);border-radius:14px;padding:12px;min-height:80px;display:grid;place-items:center;width:100%}
-    .logos img{max-width:140px;max-height:40px;width:auto;height:auto;filter:grayscale(100%);opacity:.9;transition:opacity .2s ease}
-    .logos img:hover{opacity:1;filter:none}
+    .logos img {
+  max-width:140px;
+  max-height:40px;
+  width:auto;
+  height:auto;
+  transition:opacity .2s ease;
+}
+.logos img:hover {
+  opacity:1;
+}
+
     @media (min-width:700px){ .logos{grid-template-columns:repeat(4,1fr);gap:14px} }
     @media (min-width:1000px){ .logos{grid-template-columns:repeat(8,1fr);gap:18px} }
 
@@ -416,7 +425,7 @@
     decoding="async"
   />
 </figure>
-       <figure role="listitem">
+        <figure role="listitem">
   <img
     src="assest/1990.jpg"
     alt="Foxtons logo"
