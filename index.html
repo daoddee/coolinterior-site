@@ -127,15 +127,13 @@
     .logos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:center;justify-items:center}
     .logos figure{margin:0;background:#fff;border:1px solid var(--steel);border-radius:14px;padding:12px;min-height:80px;display:grid;place-items:center;width:100%}
     .logos img {
-  max-width:140px;
-  max-height:40px;
-  width:auto;
-  height:auto;
-  transition:opacity .2s ease;
-}
-.logos img:hover {
-  opacity:1;
-}
+      max-width:140px;
+      max-height:40px;
+      width:auto;
+      height:auto;
+      transition:opacity .2s ease;
+    }
+    .logos img:hover { opacity:1; }
 
     @media (min-width:700px){ .logos{grid-template-columns:repeat(4,1fr);gap:14px} }
     @media (min-width:1000px){ .logos{grid-template-columns:repeat(8,1fr);gap:18px} }
@@ -297,12 +295,11 @@
       <div>
         <div class="hero-img" role="img" aria-label="Luxury kitchen with marble installation">
           <img
-            <img
-  src="assest/Spacious%20Modern%20Kitchen%20with%20Island.png"
-  alt="Spacious modern kitchen with island — marble installation by CoolInterior"
-  width="550" height="720" loading="eager" fetchpriority="high"
-  srcset="assest/Spacious%20Modern%20Kitchen%20with%20Island.png 550w"
-  sizes="(max-width: 899px) 100vw, 45vw">
+            src="assest/Spacious%20Modern%20Kitchen%20with%20Island.png"
+            alt="Spacious modern kitchen with island — marble installation by CoolInterior"
+            width="550" height="720" loading="eager" fetchpriority="high"
+            srcset="assest/Spacious%20Modern%20Kitchen%20with%20Island.png 550w"
+            sizes="(max-width: 899px) 100vw, 45vw">
         </div>
       </div>
     </div>
@@ -321,22 +318,27 @@
         <article class="card" data-service="Roofing">
           <a href="/roofing/" aria-label="Roofing services">
             <div class="card-image">
-             <img src="assest/roofing.png"
-     alt="Pitched roofs, slate & tiles, skylight installation — CoolInterior Roofing"
-     width="640" height="400" loading="lazy"
-     srcset="assest/Pitched Roofs and Skylight Detail.png"
-     sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/roofing1.png"
+                alt="Pitched roofs, slate & tiles, skylight installation — CoolInterior Roofing"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/roofing1.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Roofing</span><h3>New Roofs & Re-Roofing</h3><p>Pitched & flat systems, slate/tiles, waterproofing, and emergency leak response.</p></div>
           </a>
         </article>
 
-        <!-- Marble -> grante.html -->
+        <!-- Marble -->
         <article class="card" data-service="Marble">
           <a href="grante.html" aria-label="Marble supply & installation">
             <div class="card-image">
-              <img src="https://i.imgur.com/fXeT9ET.png" alt="Marble supply, templating, precision cutting, installation" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/fXeT9ET.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/marble.png"
+                alt="Marble supply, templating, precision cutting, installation"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/marble.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Marble</span><h3>Marble Supply & Install</h3><p>Premium stoneworks, templating, precision cutting, and sealed finish delivery.</p></div>
           </a>
@@ -346,8 +348,12 @@
         <article class="card" data-service="Repairs">
           <a href="/maintenance/" aria-label="Property maintenance">
             <div class="card-image">
-              <img src="https://i.imgur.com/NBnNZHB.png" alt="Property maintenance and repairs" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/NBnNZHB.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/maintanince.png"
+                alt="Property maintenance and repairs"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/maintanince.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Maintenance</h3><p>Responsive maintenance to protect your asset lifecycle and reduce downtime.</p></div>
           </a>
@@ -357,8 +363,12 @@
         <article class="card" data-service="Tiling">
           <a href="/bathroom-tiling/" aria-label="Bathroom tiling services">
             <div class="card-image">
-              <img src="https://i.imgur.com/OSBeZjQ.png" alt="Bathroom tiling and wet room installation" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/OSBeZjQ.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/bathroomtiling.png"
+                alt="Bathroom tiling and wet room installation"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/bathroomtiling.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Bathroom Tiling</h3><p>High-precision tiling, wet rooms, and waterproofing for enduring finishes.</p></div>
           </a>
@@ -368,8 +378,12 @@
         <article class="card" data-service="Furniture Install">
           <a href="/furniture-installation/" aria-label="Furniture installation and fit-out">
             <div class="card-image">
-              <img src="https://i.imgur.com/KoO5pkT.png" alt="Furniture installation and fit-out" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/KoO5pkT.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/furnitureinstiliation.png"
+                alt="Furniture installation and fit-out"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/furnitureinstiliation.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Furniture Installation</h3><p>Professional assembly and fit-out for residential and commercial spaces.</p></div>
           </a>
@@ -379,8 +393,12 @@
         <article class="card" data-service="Painting">
           <a href="/painting/" aria-label="Painting services">
             <div class="card-image">
-              <img src="https://i.imgur.com/QHBvDxP.png" alt="Interior and exterior painting services" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/QHBvDxP.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/painting.png"
+                alt="Interior and exterior painting services"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/painting.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Painting</h3><p>Clean, durable finishes using premium materials and best-practice application.</p></div>
           </a>
@@ -390,8 +408,12 @@
         <article class="card" data-service="Cleaning">
           <a href="/cleaning/" aria-label="Professional cleaning services">
             <div class="card-image">
-              <img src="https://i.imgur.com/gW1dUdT.png" alt="Professional cleaning services" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/gW1dUdT.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/cleaning.png"
+                alt="Professional cleaning services"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/cleaning.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Cleaning Services</h3><p>Post-build, deep cleaning, and maintenance schedules to keep spaces pristine.</p></div>
           </a>
@@ -401,8 +423,12 @@
         <article class="card" data-service="Engineering">
           <a href="/engineering/" aria-label="Engineering and project support">
             <div class="card-image">
-              <img src="https://i.imgur.com/zRfuERV.png" alt="Engineering and project support" width="640" height="400" loading="lazy"
-                   srcset="https://i.imgur.com/zRfuERV.png 640w" sizes="(max-width:1099px) 50vw, 25vw">
+              <img
+                src="/mainPagePics/engineeringservices.png"
+                alt="Engineering and project support"
+                width="640" height="400" loading="lazy"
+                srcset="/mainPagePics/engineeringservices.png 640w"
+                sizes="(max-width:1099px) 50vw, 25vw">
             </div>
             <div class="body"><span class="pill">Service</span><h3>Engineering Services</h3><p>Method statements, RAMS, and project engineering for safe delivery.</p></div>
           </a>
@@ -419,86 +445,86 @@
         <span class="badge" aria-hidden="true">Proven delivery</span>
       </div>
       <div class="logos" role="list" aria-label="Partners we have worked with">
-       <figure role="listitem">
-  <img
-    src="assest/hardrocklogo.png"
-    alt="Hard Rock Hotel logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure>
         <figure role="listitem">
-  <img
-    src="assest/1990.jpg"
-    alt="Foxtons logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure>       
-       <figure role="listitem">
-  <img
-    src="assest/Amazon_Prime-Logo.wine.svg"
-    alt="Amazon_Prime-Logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
-       <figure role="listitem">
-  <img
-    src="assest/shangri_la_the_shard_london_logo.jpeg"
-    alt="shangri_la_the_shard_london"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
-       <figure role="listitem">
-  <img
-    src="assest/hilton-hotel-logo.png"
-    alt="shangri_la_the_shard_london_"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
+          <img
+            src="assest/hardrocklogo.png"
+            alt="Hard Rock Hotel logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
         <figure role="listitem">
-  <img
-    src="assest/Edwardian_hotels_logo.svg.png"
-    alt="Edwardian_hotels_logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
-       <figure role="listitem">
-  <img
-    src="assest/logo-red-carnation-hotels.jpg"
-    alt="Edwardian_hotels_logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
+          <img
+            src="assest/1990.jpg"
+            alt="Foxtons logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
         <figure role="listitem">
-  <img
-    src="assest/fd252f126e4bc68bb3b31c08f722ae45.jpg"
-    alt="Edwardian_hotels_logo"
-    width="220"
-    height="100"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> 
+          <img
+            src="assest/Amazon_Prime-Logo.wine.svg"
+            alt="Amazon_Prime-Logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="assest/shangri_la_the_shard_london_logo.jpeg"
+            alt="shangri_la_the_shard_london"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="assest/hilton-hotel-logo.png"
+            alt="shangri_la_the_shard_london_"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="assest/Edwardian_hotels_logo.svg.png"
+            alt="Edwardian_hotels_logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="assest/logo-red-carnation-hotels.jpg"
+            alt="Edwardian_hotels_logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="assest/fd252f126e4bc68bb3b31c08f722ae45.jpg"
+            alt="Edwardian_hotels_logo"
+            width="220"
+            height="100"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
       </div>
     </div>
   </section>
@@ -681,104 +707,4 @@
       const m = Math.floor((distance % (1000*60*60)) / (1000*60));
       el.innerText = d>0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m`;
     }
-    const timer = setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // Modal logic (glassmorphic)
-    (function(){
-      var modal=document.getElementById('quote'); if(!modal) return;
-      var dialog=modal.querySelector('.lead-dialog');
-      var form=modal.querySelector('#lead-form');
-      var steps=[...modal.querySelectorAll('.lead-step')];
-      var chips=[...modal.querySelectorAll('.option')];
-      var progress=document.getElementById('lead-progress');
-      var i=0, selected=new Set(); const total=steps.length;
-
-      function setProgress(){ if(progress) progress.style.width=((i+1)/total*100)+'%'; }
-      function setStep(n){
-        i=n; steps.forEach((s,si)=>s.classList.toggle('is-active',si===i));
-        setProgress();
-        var el=steps[i] && steps[i].querySelector('button.option, input, textarea, button.next, button.prev');
-        if(el) el.focus({preventScroll:true});
-      }
-      function hasServices(){ return selected.size>0; }
-      function validLocation(){ return (form.location.value||'').trim().length>=2; }
-      function validContact(){
-        var p=(form.phone.value||'').trim(), e=(form.email.value||'').trim();
-        return (/^\+?\d[\d\s\-()]{7,}$/).test(p) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(e);
-      }
-      function showErr(id){ var el=document.getElementById(id); if(el) el.hidden=false; }
-      function hideErr(id){ var el=document.getElementById(id); if(el) el.hidden=true; }
-
-      function openModal(e){ if(e){e.preventDefault();e.stopImmediatePropagation();}
-        modal.classList.add('is-open'); modal.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden';
-        setStep(0);
-      }
-      function closeModal(){
-        modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true'); document.documentElement.style.overflow='';
-        i=0; steps.forEach(s=>s.classList.remove('is-active')); if(steps[0]) steps[0].classList.add('is-active');
-        if(form) form.reset(); selected.clear(); chips.forEach(o=>{o.classList.remove('is-selected');o.setAttribute('aria-pressed','false');});
-        hideErr('err-services'); hideErr('err-location'); hideErr('err-contact'); setProgress();
-      }
-
-      // Openers
-      document.querySelectorAll('a[href="#quote"]').forEach(a=>a.addEventListener('click',openModal,true));
-      // Close on backdrop / ✕
-      modal.addEventListener('click',e=>{ if(e.target.dataset.close!==undefined || e.target.classList.contains('lead-backdrop')) closeModal(); });
-
-      // Inside dialog
-      if(dialog){
-        dialog.addEventListener('click',function(e){
-          e.stopPropagation();
-          var chip=e.target.closest('.option');
-          if(chip){
-            var val=chip.dataset.val || chip.textContent.trim();
-            if(selected.has(val)){ selected.delete(val); chip.classList.remove('is-selected'); chip.setAttribute('aria-pressed','false'); }
-            else { selected.add(val); chip.classList.add('is-selected'); chip.setAttribute('aria-pressed','true'); }
-            return;
-          }
-          var next=e.target.closest('.next'), prev=e.target.closest('.prev');
-          if(next){
-            if(i===0 && !hasServices()){ showErr('err-services'); return; } else hideErr('err-services');
-            if(i===1 && !validLocation()){ showErr('err-location'); return; } else hideErr('err-location');
-            setStep(Math.min(i+1, steps.length-1)); return;
-          }
-          if(prev){ setStep(Math.max(i-1,0)); return; }
-        });
-      }
-
-      // Submit
-      if(form){
-        form.addEventListener('submit',function(e){
-          e.preventDefault();
-          if(!validContact()){ showErr('err-contact'); return; }
-          hideErr('err-contact');
-
-          var payload={
-            services:[...selected.values()],
-            location:(form.location.value||'').trim(),
-            phone:(form.phone.value||'').trim(),
-            email:(form.email.value||'').trim(),
-            notes:(form.notes?.value||'').trim()
-          };
-          console.log('Lead submitted:', payload);
-
-          closeModal();
-          alert("Thanks — we'll contact you shortly!");
-        });
-      }
-
-      // ESC to close, Enter to advance (except in textarea)
-      document.addEventListener('keydown',function(e){
-        if(e.key==='Escape' && modal.classList.contains('is-open')) closeModal();
-        if(e.key==='Enter' && modal.classList.contains('is-open') && e.target.tagName!=='TEXTAREA'){
-          e.preventDefault(); var next=steps[i]?.querySelector('.next'); if(next) next.click();
-        }
-      });
-    })();
-
-    // Footer year
-    document.getElementById('year').textContent=new Date().getFullYear();
-  </script>
-</body>
-</html>
+    const timer = setInterval(update
