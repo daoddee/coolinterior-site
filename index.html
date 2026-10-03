@@ -141,6 +141,31 @@
       .quote-form{padding:20px}
       .brand span{font-size:.9rem}
     }
+  
+    .portfolio-note{display:inline-flex;align-items:center;gap:8px;background:#fff7cf;border:1px solid #f2dc7a;color:#6a5300;padding:9px 12px;border-radius:999px;font-size:.78rem;font-weight:800}
+    .service-albums{display:grid;gap:30px}
+    .album-section{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 8px 30px rgba(15,23,42,.05);scroll-margin-top:100px}
+    .album-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}
+    .album-head p{margin:7px 0 0;max-width:660px}
+    .album-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;grid-template-rows:220px 220px;gap:12px}
+    .album-grid figure{margin:0;position:relative;overflow:hidden;border-radius:16px;background:#e5e7eb}
+    .album-grid figure:first-child{grid-row:1/3}
+    .album-grid img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+    .album-grid figure:hover img{transform:scale(1.035)}
+    .album-grid figcaption{position:absolute;left:10px;bottom:10px;background:rgba(15,23,42,.8);color:#fff;padding:7px 9px;border-radius:8px;font-size:.76rem;font-weight:700;backdrop-filter:blur(7px)}
+    .service-card a{display:block;height:100%}
+    @media(max-width:1000px){
+      .album-grid{grid-template-columns:1fr 1fr;grid-template-rows:280px 220px 220px}
+      .album-grid figure:first-child{grid-column:1/3;grid-row:auto}
+    }
+    @media(max-width:640px){
+      .album-head{display:block}
+      .album-head .btn{margin-top:12px}
+      .album-grid{grid-template-columns:1fr;grid-template-rows:repeat(5,230px)}
+      .album-grid figure:first-child{grid-column:auto;grid-row:auto}
+      .album-section{padding:16px}
+    }
+
   </style>
 </head>
 <body>
@@ -198,49 +223,73 @@
     </div>
   </section>
 
+
   <section class="section" id="services">
     <div class="container">
       <div class="section-head">
         <div>
           <span class="eyebrow">What we do</span>
           <h2>One contractor. Multiple trades.</h2>
-          <p>From structural exterior work to high-end finishes, we coordinate the key services needed to move your project forward.</p>
+          <p>Every service below now links to its own visual album so you can test a fuller, project-led portfolio layout.</p>
         </div>
         <a class="btn btn-outline" href="#quote">Request pricing</a>
       </div>
 
       <div class="services">
         <article class="service-card">
-          <img src="mainPagePics/roofing1.png" alt="Roofing installation" loading="lazy">
-          <div class="service-body"><span class="tag">Exterior</span><h3>Roofing</h3><p>New roofs, re-roofing, waterproofing and repair support.</p></div>
+          <a href="#album-roofing">
+            <img src="https://eliteroofinggroupny.com/wp-content/uploads/installation-of-ceramic-tiles-on-the-roof-of-the-b-2023-09-08-18-01-20-utc-1024x683.jpg" alt="Roofer installing roof tiles" loading="lazy">
+            <div class="service-body"><span class="tag">Exterior</span><h3>Roofing</h3><p>New roofs, re-roofing, waterproofing and repair support.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="mainPagePics/marble.png" alt="Marble and stone installation" loading="lazy">
-          <div class="service-body"><span class="tag">Stonework</span><h3>Marble & Stone</h3><p>Supply, templating, cutting, fitting and finishing for premium stonework.</p></div>
+          <a href="#album-marble">
+            <img src="https://tiboston.com/images/template/installation.jpg" alt="Marble countertop installation" loading="lazy">
+            <div class="service-body"><span class="tag">Stonework</span><h3>Marble & Stone</h3><p>Supply, templating, cutting, fitting and finishing for premium stonework.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/textured.png" alt="Precision wall and floor tiling finish" loading="lazy">
-          <div class="service-body"><span class="tag">Interiors</span><h3>Tiling</h3><p>Bathroom, kitchen and floor tiling with clean, precise finishes.</p></div>
+          <a href="#album-tiling">
+            <img src="https://snohomishtile.com/photo/snohomishtile-com/backsplash-installation-lg-570e87-5.jpg" alt="Professional kitchen tiling installation" loading="lazy">
+            <div class="service-body"><span class="tag">Interiors</span><h3>Tiling</h3><p>Bathrooms, kitchens, floors, wet rooms, patios and garden tiling.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/IMG_20251004_150132.jpg" alt="Professional interior finishing and painting work" loading="lazy">
-          <div class="service-body"><span class="tag">Finishing</span><h3>Painting</h3><p>Interior and exterior preparation, painting and finishing.</p></div>
+          <a href="#album-painting">
+            <img src="https://pintorescambrils.es/images/pintar-piso-cambrils.jpg" alt="Professional interior painter at work" loading="lazy">
+            <div class="service-body"><span class="tag">Finishing</span><h3>Painting</h3><p>Interior and exterior preparation, painting and finishing.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/windowsills.png" alt="Property maintenance and finishing detail" loading="lazy">
-          <div class="service-body"><span class="tag">Property care</span><h3>Maintenance</h3><p>Responsive maintenance and remedial works for homes and businesses.</p></div>
+          <a href="#album-maintenance">
+            <img src="https://loremflickr.com/1200/900/handyman,home,repair?lock=105" alt="Property maintenance technician carrying out repairs" loading="lazy">
+            <div class="service-body"><span class="tag">Property care</span><h3>Maintenance</h3><p>Responsive maintenance and remedial works for homes and businesses.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/reception%20desk.png" alt="Commercial furniture installation and fit-out" loading="lazy">
-          <div class="service-body"><span class="tag">Fit-out</span><h3>Furniture Installation</h3><p>Professional assembly, installation and fit-out support.</p></div>
+          <a href="#album-fitout">
+            <img src="https://asztalosmesterbudapest.hu/media/pages/home/bb70e1188f-1764841378/asztalos-budapest-1400x-q80.webp" alt="Built-in furniture installation" loading="lazy">
+            <div class="service-body"><span class="tag">Fit-out</span><h3>Furniture Installation</h3><p>Professional assembly, installation and fit-out support.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/Spacious%20Modern%20Kitchen%20with%20Island.png" alt="Professionally finished and cleaned interior" loading="lazy">
-          <div class="service-body"><span class="tag">Handover</span><h3>Cleaning</h3><p>Post-build, deep cleaning and scheduled property cleaning.</p></div>
+          <a href="#album-cleaning">
+            <img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Professional home cleaning team" loading="lazy">
+            <div class="service-body"><span class="tag">Handover</span><h3>Cleaning</h3><p>Post-build, deep cleaning and scheduled property cleaning.</p></div>
+          </a>
         </article>
+
         <article class="service-card">
-          <img src="assest/boardroom%20slab.png" alt="Commercial engineering and project support" loading="lazy">
-          <div class="service-body"><span class="tag">Project support</span><h3>Engineering Support</h3><p>Practical project support, planning and delivery coordination.</p></div>
+          <a href="#album-engineering">
+            <img src="https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA0L3NyLWltYWdlLTAyMDQyMDI1LWtvYTA5LXMtMzAxXzEuanBn.jpg" alt="Construction engineer reviewing plans on site" loading="lazy">
+            <div class="service-body"><span class="tag">Project support</span><h3>Engineering Support</h3><p>Practical project support, planning and delivery coordination.</p></div>
+          </a>
         </article>
       </div>
     </div>
@@ -250,18 +299,105 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Visual portfolio</span>
+          <span class="eyebrow">Service galleries</span>
           <h2>Quality you can see.</h2>
-          <p>A focused look at our tiling, painting and fit-out finishes.</p>
+          <p>Each service has its own album. These are temporary internet images for testing the page style and are not presented as CoolInterior project photography.</p>
         </div>
+        <span class="portfolio-note">Demo imagery • layout preview</span>
       </div>
-      <div class="showcase">
-        <figure><img src="assest/textured.png" alt="Premium tiling finish" loading="lazy"><figcaption>Tiling</figcaption></figure>
-        <figure><img src="assest/IMG_20251004_150132.jpg" alt="Professional painting and interior finish" loading="lazy"><figcaption>Painting</figcaption></figure>
-        <figure><img src="assest/reception%20desk.png" alt="Commercial furniture installation and fit-out" loading="lazy"><figcaption>Fit-out</figcaption></figure>
+
+      <div class="service-albums">
+        <section class="album-section" id="album-roofing">
+          <div class="album-head"><div><span class="tag">Exterior</span><h3>Roofing</h3><p>Tile installation, pitched roofs, repairs, waterproofing and skylights.</p></div><a href="#quote" class="btn btn-outline">Quote roofing</a></div>
+          <div class="album-grid">
+            <figure><img src="https://eliteroofinggroupny.com/wp-content/uploads/installation-of-ceramic-tiles-on-the-roof-of-the-b-2023-09-08-18-01-20-utc-1024x683.jpg" alt="Roofer installing roof tiles"><figcaption>Tile installation</figcaption></figure>
+            <figure><img src="https://dako.nrw/hero-roofer-neuss.png" alt="Roofer fitting clay tiles"><figcaption>Pitched roof</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/flat,roof,waterproofing?lock=111" alt="Flat roof waterproofing"><figcaption>Waterproofing</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/roof,repair,roofer?lock=112" alt="Roof repair"><figcaption>Repairs</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/skylight,roof?lock=113" alt="Skylight roof"><figcaption>Skylights</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-marble">
+          <div class="album-head"><div><span class="tag">Stonework</span><h3>Marble & Stone</h3><p>Worktops, kitchen islands, vanities, granite and installation details.</p></div><a href="#quote" class="btn btn-outline">Quote stonework</a></div>
+          <div class="album-grid">
+            <figure><img src="https://tiboston.com/images/template/installation.jpg" alt="Marble countertop installation"><figcaption>Worktops</figcaption></figure>
+            <figure><img src="https://zicanaboutique.com/cdn/shop/articles/essence-of-emerstone-expert-solutions-for-home-trade-4245868.jpg?v=1773894022" alt="Craftsman installing stone countertop"><figcaption>Installation</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/marble,kitchen,island?lock=121" alt="Marble kitchen island"><figcaption>Kitchen island</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/marble,bathroom,vanity?lock=122" alt="Marble bathroom vanity"><figcaption>Bathrooms</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/granite,countertop?lock=123" alt="Granite countertop"><figcaption>Granite</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-tiling">
+          <div class="album-head"><div><span class="tag">Interiors & exterior</span><h3>Tiling</h3><p>Bathrooms, kitchens, wet rooms, floor tiling and garden patios.</p></div><a href="#quote" class="btn btn-outline">Quote tiling</a></div>
+          <div class="album-grid">
+            <figure><img src="https://snohomishtile.com/photo/snohomishtile-com/backsplash-installation-lg-570e87-5.jpg" alt="Kitchen backsplash tiling"><figcaption>Kitchen tiling</figcaption></figure>
+            <figure><img src="https://casolia.com/img/image0_tub-to-shower-conversion-ideas_opt-for-a-luxurious-walk-in-shower.jpg" alt="Tiled walk-in shower"><figcaption>Bathrooms</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/wetroom,tiles,bathroom?lock=131" alt="Wet room tiles"><figcaption>Wet rooms</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/patio,porcelain,tiles?lock=132" alt="Garden patio tiles"><figcaption>Garden & patio</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/floor,tiles,interior?lock=133" alt="Interior floor tiles"><figcaption>Floor tiling</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-painting">
+          <div class="album-head"><div><span class="tag">Finishing</span><h3>Painting</h3><p>Interior walls, ceilings, trim, decoration and exterior finishes.</p></div><a href="#quote" class="btn btn-outline">Quote painting</a></div>
+          <div class="album-grid">
+            <figure><img src="https://pintorescambrils.es/images/pintar-piso-cambrils.jpg" alt="Interior painter"><figcaption>Interior painting</figcaption></figure>
+            <figure><img src="https://cdn.prod.website-files.com/68c98e283cc41c391b99ca62/68e81ec91f36f94e665ee54a_house-interior-painter.webp" alt="Professional painters"><figcaption>Preparation & trim</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/painter,ceiling?lock=141" alt="Ceiling painting"><figcaption>Ceilings</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/exterior,house,painting?lock=142" alt="Exterior painting"><figcaption>Exterior</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/decorator,painting,room?lock=143" alt="Room decoration"><figcaption>Decoration</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-maintenance">
+          <div class="album-head"><div><span class="tag">Property care</span><h3>Maintenance</h3><p>Kitchen repairs, doors, windows, minor plumbing and general property upkeep.</p></div><a href="#quote" class="btn btn-outline">Quote maintenance</a></div>
+          <div class="album-grid">
+            <figure><img src="https://loremflickr.com/1200/900/handyman,kitchen,repair?lock=151" alt="Kitchen repair"><figcaption>Kitchen repairs</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/handyman,door,repair?lock=152" alt="Door repair"><figcaption>Doors & hardware</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/home,maintenance,tools?lock=153" alt="Home maintenance"><figcaption>General maintenance</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/plumber,repair,home?lock=154" alt="Minor plumbing"><figcaption>Minor repairs</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/window,repair,worker?lock=155" alt="Window repair"><figcaption>Windows</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-fitout">
+          <div class="album-head"><div><span class="tag">Fit-out</span><h3>Furniture Installation</h3><p>Wardrobes, cabinetry, office furniture and fitted interiors.</p></div><a href="#quote" class="btn btn-outline">Quote fit-out</a></div>
+          <div class="album-grid">
+            <figure><img src="https://asztalosmesterbudapest.hu/media/pages/home/bb70e1188f-1764841378/asztalos-budapest-1400x-q80.webp" alt="Wardrobe installation"><figcaption>Wardrobes</figcaption></figure>
+            <figure><img src="https://a.storyblok.com/f/237253/1426x1294/e3c84e3a74/commercial-flat-pack-assembly.png" alt="Office furniture installation"><figcaption>Commercial furniture</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/kitchen,cabinet,installation?lock=161" alt="Kitchen cabinets"><figcaption>Cabinetry</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/office,fitout,interior?lock=162" alt="Office fit out"><figcaption>Office fit-out</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/carpenter,furniture,installation?lock=163" alt="Furniture installer"><figcaption>Installation</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-cleaning">
+          <div class="album-head"><div><span class="tag">Handover</span><h3>Cleaning</h3><p>Deep cleaning, kitchens, bathrooms, commercial spaces and post-build cleans.</p></div><a href="#quote" class="btn btn-outline">Quote cleaning</a></div>
+          <div class="album-grid">
+            <figure><img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Professional cleaning team"><figcaption>Home cleaning</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/cleaner,kitchen?lock=171" alt="Kitchen cleaning"><figcaption>Kitchens</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/cleaner,bathroom?lock=172" alt="Bathroom cleaning"><figcaption>Bathrooms</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/office,cleaning,vacuum?lock=173" alt="Office cleaning"><figcaption>Commercial</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/post,construction,cleaning?lock=174" alt="Post build cleaning"><figcaption>Post-build</figcaption></figure>
+          </div>
+        </section>
+
+        <section class="album-section" id="album-engineering">
+          <div class="album-head"><div><span class="tag">Project support</span><h3>Engineering Support</h3><p>Site engineering, technical planning, inspections and construction coordination.</p></div><a href="#quote" class="btn btn-outline">Discuss a project</a></div>
+          <div class="album-grid">
+            <figure><img src="https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA0L3NyLWltYWdlLTAyMDQyMDI1LWtvYTA5LXMtMzAxXzEuanBn.jpg" alt="Engineer on construction site"><figcaption>Site engineering</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/engineer,blueprint,construction?lock=181" alt="Engineering plans"><figcaption>Technical planning</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/site,inspection,engineer?lock=182" alt="Site inspection"><figcaption>Inspections</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/construction,project,manager?lock=183" alt="Project management"><figcaption>Coordination</figcaption></figure>
+            <figure><img src="https://loremflickr.com/1200/900/architect,engineer,plans?lock=184" alt="Design review"><figcaption>Design review</figcaption></figure>
+          </div>
+        </section>
       </div>
     </div>
   </section>
+
 
   <section class="section" id="why">
     <div class="container">
