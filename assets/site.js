@@ -43,8 +43,6 @@
   const serviceData = [
     {name:'Tiling', key:'tiling', tag:'Bathrooms, kitchens & floors', description:'From a new splashback to a complete tiled space.', items:['Wall & floor tiling','Bathrooms & wet rooms','Kitchens & splashbacks','Patios & outdoor tiling']},
     {name:'Marble', key:'stone', tag:'A beautiful centrepiece', description:'Worktops, islands and vanities with a considered finish.', items:['Kitchen worktops & islands','Natural marble surfaces','Bathroom vanities','Marble fitting & finishing']},
-    {name:'Roofing', key:'roofing', tag:'Protect what matters', description:'Roofing, repairs and waterproofing for your property.', items:['Roof repairs','New & replacement roofs','Waterproofing','Pitched roofs & skylights']},
-    {name:'Engineering Services', key:'engineering', tag:'Keep the project moving', description:'Practical planning and coordination for building projects.', items:['Technical planning','Site coordination','Project support','Discuss your project requirements']}
   ];
   let activeService = '';
   $$('[data-service-open]').forEach(button => button.addEventListener('click', () => {
