@@ -56,6 +56,7 @@
     $('#service-dialog-description').textContent = service.description;
     $('#service-dialog-items').replaceChildren(...service.items.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
     $('#stone-details-link').hidden = service.key !== 'stone';
+    if ($('#tiling-details-link')) $('#tiling-details-link').hidden = service.key !== 'tiling';
     showDialog($('#service-dialog'));
     track('service_view', {service:service.name});
   }));
@@ -76,6 +77,41 @@
     $('#gallery-dialog-description').textContent = button.dataset.description;
     showDialog($('#gallery-dialog'));
   }));
+
+  const albumPhotos = $$('.tiling-photo-open');
+  const albumDialog = $('#tiling-album-dialog');
+  let albumIndex = 0;
+  const renderAlbumPhoto = index => {
+    albumIndex = (index + albumPhotos.length) % albumPhotos.length;
+    const photo = albumPhotos[albumIndex];
+    $('#tiling-album-image').src = photo.dataset.image;
+    $('#tiling-album-image').alt = photo.dataset.description;
+    $('#tiling-album-caption').textContent = photo.dataset.title;
+    $('#tiling-album-counter').textContent = `Photo ${albumIndex + 1} of ${albumPhotos.length}`;
+  };
+  albumPhotos.forEach((photo,index) => photo.addEventListener('click', () => {
+    renderAlbumPhoto(index);
+    showDialog(albumDialog);
+    track('tiling_album_view', {photo:index + 1});
+  }));
+  $('#album-prev')?.addEventListener('click', () => renderAlbumPhoto(albumIndex - 1));
+  $('#album-next')?.addEventListener('click', () => renderAlbumPhoto(albumIndex + 1));
+  albumDialog?.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') { event.preventDefault(); renderAlbumPhoto(albumIndex - 1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); renderAlbumPhoto(albumIndex + 1); }
+  });
+  let touchStart = null;
+  $('#tiling-album-image')?.addEventListener('touchstart', event => {
+    if (event.touches.length === 1) touchStart = {x:event.touches[0].clientX,y:event.touches[0].clientY};
+  }, {passive:true});
+  $('#tiling-album-image')?.addEventListener('touchend', event => {
+    if (!touchStart || !event.changedTouches.length) return;
+    const dx = event.changedTouches[0].clientX - touchStart.x;
+    const dy = event.changedTouches[0].clientY - touchStart.y;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) renderAlbumPhoto(albumIndex + (dx < 0 ? 1 : -1));
+    touchStart = null;
+  }, {passive:true});
+  $('#tiling-details-link')?.addEventListener('click', () => $('#service-dialog').close());
 
   const form = $('#quote-form');
   const selected = new Set();
@@ -142,6 +178,7 @@
     history.replaceState(null, '', '#quote');
     track('quote_start', {service});
   };
+  $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', albumPhotos[albumIndex].dataset.title); });
   $$('[data-quote-service]').forEach(button => button.addEventListener('click', () => startQuote(button.dataset.quoteService, button.dataset.inspiration || '')));
   $('#service-dialog-quote')?.addEventListener('click', () => { $('#service-dialog').close(); startQuote(activeService); });
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
