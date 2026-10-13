@@ -61,21 +61,29 @@
     track('service_view', {service:service.name});
   }));
 
-  const albumPhotos = $$('.tiling-photo-open');
+  const projectGalleries = JSON.parse($('#project-gallery-data')?.textContent || '{}');
   const albumDialog = $('#tiling-album-dialog');
   let albumIndex = 0;
+  let activeProjectKey = 'finchley';
+  let albumPhotos = [];
   const renderAlbumPhoto = index => {
+    if (!albumPhotos.length) return;
     albumIndex = (index + albumPhotos.length) % albumPhotos.length;
     const photo = albumPhotos[albumIndex];
-    $('#tiling-album-image').src = photo.dataset.image;
-    $('#tiling-album-image').alt = photo.dataset.description;
-    $('#tiling-album-caption').textContent = photo.dataset.title;
-    $('#tiling-album-counter').textContent = `Photo ${albumIndex + 1} of ${albumPhotos.length}`;
+    $('#tiling-album-image').src = photo.src;
+    $('#tiling-album-image').alt = photo.alt;
+    $('#tiling-album-caption').textContent = photo.title;
+    $('#project-viewer-label').textContent = projectGalleries[activeProjectKey].name + ' · Tiling project';
+    $('#tiling-album-counter').textContent = 'Photo ' + (albumIndex + 1) + ' of ' + albumPhotos.length;
   };
-  albumPhotos.forEach((photo,index) => photo.addEventListener('click', () => {
-    renderAlbumPhoto(index);
+  $$('.project-gallery-open').forEach(button => button.addEventListener('click', () => {
+    activeProjectKey = button.dataset.project;
+    const project = projectGalleries[activeProjectKey];
+    if (!project) return;
+    albumPhotos = project.photos;
+    renderAlbumPhoto(Number(button.dataset.photo) || 0);
     showDialog(albumDialog);
-    track('tiling_album_view', {photo:index + 1});
+    track('project_view', {project:activeProjectKey});
   }));
   $('#album-prev')?.addEventListener('click', () => renderAlbumPhoto(albumIndex - 1));
   $('#album-next')?.addEventListener('click', () => renderAlbumPhoto(albumIndex + 1));
@@ -161,7 +169,7 @@
     history.replaceState(null, '', '#quote');
     track('quote_start', {service});
   };
-  $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', 'Finchley — outdoor terrace and stair tiling: ' + albumPhotos[albumIndex].dataset.title); });
+  $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', projectGalleries[activeProjectKey].name + ' — ' + projectGalleries[activeProjectKey].title + ': ' + albumPhotos[albumIndex].title); });
   $$('[data-quote-service]').forEach(button => button.addEventListener('click', () => startQuote(button.dataset.quoteService, button.dataset.inspiration || '')));
   $('#service-dialog-quote')?.addEventListener('click', () => { $('#service-dialog').close(); startQuote(activeService); });
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
