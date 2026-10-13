@@ -61,23 +61,6 @@
     track('service_view', {service:service.name});
   }));
 
-  $$('.filter').forEach(button => button.addEventListener('click', () => {
-    const filter = button.dataset.filter;
-    $$('.filter').forEach(item => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
-    let count = 0;
-    $$('.inspiration-card').forEach(card => { const visible = filter === 'all' || card.dataset.category === filter; card.hidden = !visible; if (visible) count++; });
-    $('#gallery-count').textContent = `Showing ${count} inspiration image${count === 1 ? '' : 's'}`;
-    track('gallery_filter', {filter});
-  }));
-  $$('.gallery-open').forEach(button => button.addEventListener('click', () => {
-    const image = $('#gallery-dialog-image');
-    image.src = button.dataset.image;
-    image.alt = button.dataset.description;
-    $('#gallery-dialog-title').textContent = button.dataset.title;
-    $('#gallery-dialog-description').textContent = button.dataset.description;
-    showDialog($('#gallery-dialog'));
-  }));
-
   const albumPhotos = $$('.tiling-photo-open');
   const albumDialog = $('#tiling-album-dialog');
   let albumIndex = 0;
@@ -178,7 +161,7 @@
     history.replaceState(null, '', '#quote');
     track('quote_start', {service});
   };
-  $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', albumPhotos[albumIndex].dataset.title); });
+  $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', 'Finchley — outdoor terrace and stair tiling: ' + albumPhotos[albumIndex].dataset.title); });
   $$('[data-quote-service]').forEach(button => button.addEventListener('click', () => startQuote(button.dataset.quoteService, button.dataset.inspiration || '')));
   $('#service-dialog-quote')?.addEventListener('click', () => { $('#service-dialog').close(); startQuote(activeService); });
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
