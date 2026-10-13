@@ -6,12 +6,8 @@
       "destination": "/index.html"
     },
     {
-      "source": "/main",
-      "destination": "/index.html"
-    },
-    {
       "source": "/stonework",
-      "destination": "/grante.html"
+      "destination": "/stonework.html"
     },
     {
       "source": "/contact-us",
@@ -44,6 +40,18 @@
           "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/main",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/grante",
+      "destination": "/stonework",
+      "permanent": true
     }
   ]
 }
