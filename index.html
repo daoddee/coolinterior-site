@@ -1,599 +1,733 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-GB">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CoolInterior Contractors | Roofing, Stonework, Tiling & Renovation</title>
-  <meta name="description" content="CoolInterior Contractors provides roofing, marble and stone installation, tiling, painting, maintenance, cleaning and fit-out services across London and surrounding areas. Request a fast quote online.">
-  <meta name="theme-color" content="#111827">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --ink:#111827;
-      --muted:#64748b;
-      --line:#e5e7eb;
-      --soft:#f8fafc;
-      --white:#fff;
-      --accent:#f4c430;
-      --accent2:#e8b816;
-      --radius:18px;
-      --shadow:0 18px 50px rgba(15,23,42,.10);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:Manrope,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
-    img{display:block;width:100%;height:auto}
-    a{text-decoration:none;color:inherit}
-    button,input,select,textarea{font:inherit}
-    .container{width:min(1180px,92%);margin:auto}
-    .section{padding:80px 0}
-    .section-soft{background:var(--soft)}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#7a5a00}
-    .eyebrow:before{content:"";width:26px;height:3px;border-radius:99px;background:var(--accent)}
-    h1,h2,h3{line-height:1.12;margin:0}
-    h1{font-size:clamp(2.5rem,6vw,5.2rem);letter-spacing:-.055em}
-    h2{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.04em}
-    h3{font-size:1.15rem}
-    p{color:var(--muted)}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;border-radius:12px;font-weight:800;border:1px solid transparent;cursor:pointer;transition:.2s ease}
-    .btn-primary{background:var(--accent);color:#161616}
-    .btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
-    .btn-dark{background:var(--ink);color:#fff}
-    .btn-dark:hover{background:#020617;transform:translateY(-1px)}
-    .btn-outline{border-color:#cbd5e1;background:#fff}
-    .btn-outline:hover{border-color:#94a3b8}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bottom:1px solid rgba(229,231,235,.8)}
-    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
-    .brand img{width:46px;height:46px;object-fit:contain}
-    .navlinks{display:flex;gap:28px;align-items:center;font-size:.94rem;font-weight:700}
-    .nav-actions{display:flex;gap:10px}
-    .menu{display:none;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px}
-    .hero{padding:72px 0 54px;background:linear-gradient(135deg,#fff 0%,#fffdf5 55%,#f8fafc 100%)}
-    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
-    .hero p{font-size:1.1rem;max-width:660px;margin:24px 0}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .trust-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;color:#475569;font-weight:700;font-size:.9rem}
-    .trust-row span{display:flex;align-items:center;gap:8px}
-    .check{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#fff4b8;color:#6b5300;font-size:.8rem}
-    .hero-media{position:relative}
-    .hero-media img{height:620px;object-fit:cover;border-radius:28px;box-shadow:var(--shadow)}
-    .hero-card{position:absolute;left:-24px;bottom:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);max-width:230px}
-    .hero-card b{display:block;font-size:1.25rem}
-    .hero-card small{color:var(--muted)}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
-    .section-head p{max-width:650px;margin:12px 0 0}
-    .services{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-    .service-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;transition:.25s;box-shadow:0 4px 18px rgba(15,23,42,.04)}
-    .service-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
-    .service-card img{height:190px;object-fit:cover;background:#e5e7eb}
-    .service-body{padding:18px}
-    .service-body p{margin:8px 0 0;font-size:.93rem}
-    .tag{display:inline-block;margin-bottom:10px;padding:5px 9px;border-radius:999px;background:#fff7cf;color:#6a5300;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-    .showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .showcase figure{margin:0;position:relative;overflow:hidden;border-radius:18px;background:#e5e7eb}
-    .showcase figure{min-height:360px}
-    .showcase img{width:100%;height:100%;object-fit:cover;transition:.3s}
-    .showcase figure:hover img{transform:scale(1.03)}
-    .showcase figcaption{position:absolute;left:12px;bottom:12px;background:rgba(17,24,39,.82);color:#fff;padding:8px 11px;border-radius:9px;font-size:.82rem;font-weight:700;backdrop-filter:blur(8px)}
-    .quote-wrap{display:grid;grid-template-columns:.78fr 1.22fr;gap:34px;align-items:start}
-    .quote-copy{position:sticky;top:104px}
-    .quote-copy p{font-size:1.03rem}
-    .contact-cards{display:grid;gap:10px;margin-top:24px}
-    .contact-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}
-    .contact-card b{display:block}
-    .contact-card small{color:var(--muted)}
-    .quote-form{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
-    .progress{height:7px;background:#eef2f7;border-radius:99px;overflow:hidden;margin-bottom:24px}
-    .progress span{display:block;height:100%;width:33%;background:var(--accent);transition:.25s}
-    .step{display:none}
-    .step.active{display:block}
-    .step h3{font-size:1.45rem;margin-bottom:8px}
-    .step .sub{margin:0 0 20px}
-    .choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .choice{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px 10px;font-weight:700;cursor:pointer}
-    .choice.active{border-color:#111827;background:#111827;color:#fff}
-    .fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .field{display:grid;gap:7px;margin-bottom:14px}
-    .field.full{grid-column:1/-1}
-    label{font-size:.84rem;font-weight:800}
-    input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:11px;padding:13px 14px;outline:none;background:#fff}
-    input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.07)}
-    .form-nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
-    .error{color:#b91c1c;font-size:.85rem;font-weight:700;margin-top:8px}
-    .success{display:none;padding:22px;border-radius:16px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;margin-top:16px}
-    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .why-card{padding:24px;border:1px solid var(--line);border-radius:18px;background:#fff}
-    .why-card .num{font-size:2rem;font-weight:800;color:#c89c00}
-    footer{background:#0f172a;color:#cbd5e1;padding:54px 0 24px}
-    footer p,footer a{color:#94a3b8}
-    .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:30px}
-    footer h3{color:#fff;margin-bottom:14px}
-    .footer-bottom{border-top:1px solid #273449;margin-top:34px;padding-top:20px;font-size:.85rem;color:#64748b}
-    .mobile-panel{display:none}
-    @media(max-width:1000px){
-      .navlinks,.nav-actions{display:none}
-      .menu{display:block}
-      .mobile-panel.open{display:grid;gap:10px;padding:14px 4% 18px;border-top:1px solid var(--line)}
-      .mobile-panel a{padding:10px 0;font-weight:700}
-      .hero-grid,.quote-wrap{grid-template-columns:1fr}
-      .hero-media img{height:480px}
-      .quote-copy{position:static}
-      .services{grid-template-columns:repeat(2,1fr)}
-      .showcase{grid-template-columns:1fr 1fr;grid-template-rows:260px 220px 220px}
-      .showcase figure:first-child{grid-column:1/3;grid-row:auto}
-      .why{grid-template-columns:1fr}
-    }
-    @media(max-width:640px){
-      .section{padding:58px 0}
-      .hero{padding-top:48px}
-      .hero-media img{height:390px}
-      .hero-card{left:12px;right:12px;bottom:12px;max-width:none}
-      .services{grid-template-columns:1fr}
-      .showcase{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(5,230px)}
-      .showcase figure:first-child{grid-column:auto}
-      .choice-grid{grid-template-columns:1fr 1fr}
-      .fields{grid-template-columns:1fr}
-      .section-head{display:block}
-      .footer-grid{grid-template-columns:1fr}
-      .quote-form{padding:20px}
-      .brand span{font-size:.9rem}
-    }
-  
-    .portfolio-note{display:inline-flex;align-items:center;gap:8px;background:#fff7cf;border:1px solid #f2dc7a;color:#6a5300;padding:9px 12px;border-radius:999px;font-size:.78rem;font-weight:800}
-    .service-albums{display:grid;gap:30px}
-    .album-section{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 8px 30px rgba(15,23,42,.05);scroll-margin-top:100px}
-    .album-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}
-    .album-head p{margin:7px 0 0;max-width:660px}
-    .album-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;grid-template-rows:220px 220px;gap:12px}
-    .album-grid figure{margin:0;position:relative;overflow:hidden;border-radius:16px;background:#e5e7eb}
-    .album-grid figure:first-child{grid-row:1/3}
-    .album-grid img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-    .album-grid figure:hover img{transform:scale(1.035)}
-    .album-grid figcaption{position:absolute;left:10px;bottom:10px;background:rgba(15,23,42,.8);color:#fff;padding:7px 9px;border-radius:8px;font-size:.76rem;font-weight:700;backdrop-filter:blur(7px)}
-    .service-card a{display:block;height:100%}
-    @media(max-width:1000px){
-      .album-grid{grid-template-columns:1fr 1fr;grid-template-rows:280px 220px 220px}
-      .album-grid figure:first-child{grid-column:1/3;grid-row:auto}
-    }
-    @media(max-width:640px){
-      .album-head{display:block}
-      .album-head .btn{margin-top:12px}
-      .album-grid{grid-template-columns:1fr;grid-template-rows:repeat(5,230px)}
-      .album-grid figure:first-child{grid-column:auto;grid-row:auto}
-      .album-section{padding:16px}
-    }
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#242a27">
+<title>Cool Interior | Tiling, Stonework & Property Services in London</title>
+<meta name="description" content="Create a space you love with CoolInterior. Tiling, marble and stone, painting, fit-out and property care across London. Start your free quote enquiry.">
+<link rel="canonical" href="https://www.coolinterior.co.uk/">
+<meta property="og:title" content="Cool Interior | Tiling, Stonework & Property Services in London">
+<meta property="og:description" content="Create a space you love with CoolInterior. Tiling, marble and stone, painting, fit-out and property care across London. Start your free quote enquiry.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.coolinterior.co.uk/">
+<meta property="og:image" content="https://www.coolinterior.co.uk/assets/hero.webp">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js" defer>
+</script>
 </head>
 <body>
-<header>
-  <div class="container nav">
-    <a href="#top" class="brand" aria-label="CoolInterior home">
-      <img src="assest/logo.png" alt="CoolInterior Contractors logo" onerror="this.style.display='none'">
-      <span>CoolInterior Contractors</span>
-    </a>
-    <nav class="navlinks" aria-label="Primary">
-      <a href="#services">Services</a>
-      <a href="#showcase">Our Work</a>
-      <a href="#why">Why Us</a>
-      <a href="#quote">Get a Quote</a>
-    </nav>
-    <div class="nav-actions">
-      <a class="btn btn-outline" href="tel:+447365155414">Call us</a>
-      <a class="btn btn-primary" href="#quote">Get a Fast Quote</a>
-    </div>
-    <button class="menu" id="menuBtn" aria-label="Open menu">☰</button>
-  </div>
-  <div class="mobile-panel" id="mobilePanel">
-    <a href="#services">Services</a>
-    <a href="#showcase">Our Work</a>
-    <a href="#why">Why Us</a>
-    <a href="#quote">Get a Fast Quote</a>
-    <a href="tel:+447365155414">Call +44 7365 155 414</a>
-  </div>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topbar">
+<div class="container">
+<span>Interiors, property care & fit-out</span>
+<span>London & surrounding areas <span class="dot">
+</span> Homes & businesses</span>
+</div>
+</div>
+<header class="site-header">
+<div class="container nav">
+<a class="brand" href="/" aria-label="Cool Interior home">
+<svg viewBox="0 0 40 40" aria-hidden="true">
+<path d="M5 18 20 6l15 12M9 16v19h22V16M16 35V23h8v12" fill="none" stroke="currentColor" stroke-width="2.2"/>
+<path d="M5 35h30" stroke="currentColor" stroke-width="2.2"/>
+</svg>
+<span>COOL <b>INTERIOR</b>
+<small>CONTRACTORS</small>
+</span>
+</a>
+<nav class="desktop-nav" aria-label="Main navigation">
+<a href="/#services">Our services</a>
+<a href="/#inspiration">Inspiration</a>
+<a href="/#process">How it works</a>
+<a href="/#faq">FAQs</a>
+</nav>
+<div class="nav-actions">
+<a class="nav-phone" href="tel:+447365155414">07365 155 414</a>
+<a class="button small" href="/#quote">Get a free quote <span aria-hidden="true">↗</span>
+</a>
+</div>
+<button class="menu-button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
+<span>
+</span>
+<span>
+</span>
+</button>
+</div>
+<nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" hidden>
+<a href="/#services">Our services</a>
+<a href="/#inspiration">Inspiration</a>
+<a href="/#process">How it works</a>
+<a href="/#faq">FAQs</a>
+<a href="/#quote">Get a free quote</a>
+<a href="tel:+447365155414">Call 07365 155 414</a>
+</nav>
 </header>
-
-<main id="top">
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <span class="eyebrow">London contractors & fit-out specialists</span>
-        <h1>Built properly.<br>Finished beautifully.</h1>
-        <p>Roofing, marble and stone installation, tiling, painting, maintenance, cleaning and fit-out delivered through one reliable contractor.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#quote">Get a Fast Quote →</a>
-          <a class="btn btn-outline" href="#services">Explore Services</a>
-        </div>
-        <div class="trust-row">
-          <span><span class="check">✓</span>Fast quote process</span>
-          <span><span class="check">✓</span>London & surrounding areas</span>
-          <span><span class="check">✓</span>Residential & commercial</span>
-        </div>
-      </div>
-      <div class="hero-media">
-        <img src="assest/Spacious%20Modern%20Kitchen%20with%20Island.png" alt="Modern interior with premium stone finish" loading="eager" onerror="this.src='mainPagePics/marble.png'">
-        <div class="hero-card">
-          <b>Tell us your project</b>
-          <small>Choose a service, add your location and send the details straight to our team.</small>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="section" id="services">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">What we do</span>
-          <h2>One contractor. Multiple trades.</h2>
-          <p>Every service below now links to its own visual album so you can test a fuller, project-led portfolio layout.</p>
-        </div>
-        <a class="btn btn-outline" href="#quote">Request pricing</a>
-      </div>
-
-      <div class="services">
-        <article class="service-card">
-          <a href="#album-roofing">
-            <img src="https://eliteroofinggroupny.com/wp-content/uploads/installation-of-ceramic-tiles-on-the-roof-of-the-b-2023-09-08-18-01-20-utc-1024x683.jpg" alt="Roofer installing roof tiles" loading="lazy">
-            <div class="service-body"><span class="tag">Exterior</span><h3>Roofing</h3><p>New roofs, re-roofing, waterproofing and repair support.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-marble">
-            <img src="https://tiboston.com/images/template/installation.jpg" alt="Marble countertop installation" loading="lazy">
-            <div class="service-body"><span class="tag">Stonework</span><h3>Marble & Stone</h3><p>Supply, templating, cutting, fitting and finishing for premium stonework.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-tiling">
-            <img src="https://snohomishtile.com/photo/snohomishtile-com/backsplash-installation-lg-570e87-5.jpg" alt="Professional kitchen tiling installation" loading="lazy">
-            <div class="service-body"><span class="tag">Interiors</span><h3>Tiling</h3><p>Bathrooms, kitchens, floors, wet rooms, patios and garden tiling.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-painting">
-            <img src="https://pintorescambrils.es/images/pintar-piso-cambrils.jpg" alt="Professional interior painter at work" loading="lazy">
-            <div class="service-body"><span class="tag">Finishing</span><h3>Painting</h3><p>Interior and exterior preparation, painting and finishing.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-maintenance">
-            <img src="https://static.domar.biz.pl/images/posts/jak-wymienic-drzwi-w-mieszkaniu-kilka-porad-praktycznych-hero-1769720432022.png" alt="Property maintenance technician carrying out repairs" loading="lazy">
-            <div class="service-body"><span class="tag">Property care</span><h3>Maintenance</h3><p>Responsive maintenance and remedial works for homes and businesses.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-fitout">
-            <img src="https://asztalosmesterbudapest.hu/media/pages/home/bb70e1188f-1764841378/asztalos-budapest-1400x-q80.webp" alt="Built-in furniture installation" loading="lazy">
-            <div class="service-body"><span class="tag">Fit-out</span><h3>Furniture Installation</h3><p>Professional assembly, installation and fit-out support.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-cleaning">
-            <img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Professional home cleaning team" loading="lazy">
-            <div class="service-body"><span class="tag">Handover</span><h3>Cleaning</h3><p>Post-build, deep cleaning and scheduled property cleaning.</p></div>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <a href="#album-engineering">
-            <img src="https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA0L3NyLWltYWdlLTAyMDQyMDI1LWtvYTA5LXMtMzAxXzEuanBn.jpg" alt="Construction engineer reviewing plans on site" loading="lazy">
-            <div class="service-body"><span class="tag">Project support</span><h3>Engineering Support</h3><p>Practical project support, planning and delivery coordination.</p></div>
-          </a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-soft" id="showcase">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Service galleries</span>
-          <h2>Quality you can see.</h2>
-          <p>Each service has its own album. These are temporary internet images for testing the page style and are not presented as CoolInterior project photography.</p>
-        </div>
-        <span class="portfolio-note">Demo imagery • layout preview</span>
-      </div>
-
-      <div class="service-albums">
-        <section class="album-section" id="album-roofing">
-          <div class="album-head"><div><span class="tag">Exterior</span><h3>Roofing</h3><p>Tile installation, pitched roofs, repairs, waterproofing and skylights.</p></div><a href="#quote" class="btn btn-outline">Quote roofing</a></div>
-          <div class="album-grid">
-            <figure><img src="https://eliteroofinggroupny.com/wp-content/uploads/installation-of-ceramic-tiles-on-the-roof-of-the-b-2023-09-08-18-01-20-utc-1024x683.jpg" alt="Roofer installing roof tiles"><figcaption>Tile installation</figcaption></figure>
-            <figure><img src="https://dako.nrw/hero-roofer-neuss.png" alt="Roofer fitting clay tiles"><figcaption>Pitched roof</figcaption></figure>
-            <figure><img src="https://tjobseu.s3.eu-west-1.amazonaws.com/job/images/80044_1.jpg" alt="Flat roof waterproofing"><figcaption>Waterproofing</figcaption></figure>
-            <figure><img src="https://eliteroofinggroupny.com/wp-content/uploads/installation-of-ceramic-tiles-on-the-roof-of-the-b-2023-09-08-18-01-20-utc-1024x683.jpg" alt="Roof repair"><figcaption>Repairs</figcaption></figure>
-            <figure><img src="https://tjobseu.s3.eu-west-1.amazonaws.com/job/images/80044_1.jpg" alt="Skylight roof"><figcaption>Skylights</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-marble">
-          <div class="album-head"><div><span class="tag">Stonework</span><h3>Marble & Stone</h3><p>Worktops, kitchen islands, vanities, granite and installation details.</p></div><a href="#quote" class="btn btn-outline">Quote stonework</a></div>
-          <div class="album-grid">
-            <figure><img src="https://tiboston.com/images/template/installation.jpg" alt="Marble countertop installation"><figcaption>Worktops</figcaption></figure>
-            <figure><img src="https://zicanaboutique.com/cdn/shop/articles/essence-of-emerstone-expert-solutions-for-home-trade-4245868.jpg?v=1773894022" alt="Craftsman installing stone countertop"><figcaption>Installation</figcaption></figure>
-            <figure><img src="assest/Spacious%20Modern%20Kitchen%20with%20Island.png" alt="Marble kitchen island"><figcaption>Kitchen island</figcaption></figure>
-            <figure><img src="assest/Quartz%20vanity.png" alt="Marble bathroom vanity"><figcaption>Bathrooms</figcaption></figure>
-            <figure><img src="assest/Granite%20L-shape.png" alt="Granite countertop"><figcaption>Granite</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-tiling">
-          <div class="album-head"><div><span class="tag">Interiors & exterior</span><h3>Tiling</h3><p>Bathrooms, kitchens, wet rooms, floor tiling and garden patios.</p></div><a href="#quote" class="btn btn-outline">Quote tiling</a></div>
-          <div class="album-grid">
-            <figure><img src="https://snohomishtile.com/photo/snohomishtile-com/backsplash-installation-lg-570e87-5.jpg" alt="Kitchen backsplash tiling"><figcaption>Kitchen tiling</figcaption></figure>
-            <figure><img src="https://casolia.com/img/image0_tub-to-shower-conversion-ideas_opt-for-a-luxurious-walk-in-shower.jpg" alt="Tiled walk-in shower"><figcaption>Bathrooms</figcaption></figure>
-            <figure><img src="https://hanodecor.com/images/blog/2026/03/23/bathroom-remodel-checklist-planning-guide/tile-installation-phase.png" alt="Wet room tiles"><figcaption>Wet rooms</figcaption></figure>
-            <figure><img src="https://media.azulejossola.com/blog/section-1376.jpg?width=800" alt="Garden patio tiles"><figcaption>Garden & patio</figcaption></figure>
-            <figure><img src="https://leuchtenberg.team/images/header%20Slide/Oliver%20Leuchtenberg_1234_688.webp" alt="Interior floor tiles"><figcaption>Floor tiling</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-painting">
-          <div class="album-head"><div><span class="tag">Finishing</span><h3>Painting</h3><p>Interior walls, ceilings, trim, decoration and exterior finishes.</p></div><a href="#quote" class="btn btn-outline">Quote painting</a></div>
-          <div class="album-grid">
-            <figure><img src="https://pintorescambrils.es/images/pintar-piso-cambrils.jpg" alt="Interior painter"><figcaption>Interior painting</figcaption></figure>
-            <figure><img src="https://cdn.prod.website-files.com/68c98e283cc41c391b99ca62/68e81ec91f36f94e665ee54a_house-interior-painter.webp" alt="Professional painters"><figcaption>Preparation & trim</figcaption></figure>
-            <figure><img src="https://lirp.cdn-website.com/b6c862db/dms3rep/multi/opt/Residential%2BInterior%2BPainting%2BServices-640w.png" alt="Ceiling painting"><figcaption>Ceilings</figcaption></figure>
-            <figure><img src="https://pintorescambrils.es/images/pintar-piso-cambrils.jpg" alt="Exterior painting"><figcaption>Exterior</figcaption></figure>
-            <figure><img src="https://cdn.prod.website-files.com/68c98e283cc41c391b99ca62/68e81ec91f36f94e665ee54a_house-interior-painter.webp" alt="Room decoration"><figcaption>Decoration</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-maintenance">
-          <div class="album-head"><div><span class="tag">Property care</span><h3>Maintenance</h3><p>Kitchen repairs, doors, windows, minor plumbing and general property upkeep.</p></div><a href="#quote" class="btn btn-outline">Quote maintenance</a></div>
-          <div class="album-grid">
-            <figure><img src="https://static.domar.biz.pl/images/posts/jak-wymienic-drzwi-w-mieszkaniu-kilka-porad-praktycznych-hero-1769720432022.png" alt="Kitchen repair"><figcaption>Kitchen repairs</figcaption></figure>
-            <figure><img src="https://static.domar.biz.pl/images/posts/jak-wymienic-drzwi-w-mieszkaniu-kilka-porad-praktycznych-hero-1769720432022.png" alt="Door repair"><figcaption>Doors & hardware</figcaption></figure>
-            <figure><img src="assest/windowsills.png" alt="Home maintenance"><figcaption>General maintenance</figcaption></figure>
-            <figure><img src="assest/sink%20drop-out.png" alt="Minor plumbing"><figcaption>Minor repairs</figcaption></figure>
-            <figure><img src="assest/windowsills.png" alt="Window repair"><figcaption>Windows</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-fitout">
-          <div class="album-head"><div><span class="tag">Fit-out</span><h3>Furniture Installation</h3><p>Wardrobes, cabinetry, office furniture and fitted interiors.</p></div><a href="#quote" class="btn btn-outline">Quote fit-out</a></div>
-          <div class="album-grid">
-            <figure><img src="https://asztalosmesterbudapest.hu/media/pages/home/bb70e1188f-1764841378/asztalos-budapest-1400x-q80.webp" alt="Wardrobe installation"><figcaption>Wardrobes</figcaption></figure>
-            <figure><img src="https://a.storyblok.com/f/237253/1426x1294/e3c84e3a74/commercial-flat-pack-assembly.png" alt="Office furniture installation"><figcaption>Commercial furniture</figcaption></figure>
-            <figure><img src="https://famg-menuiserie.fr/storage/2022/06/artisan-poseur-de-dressing-et-porte-coulissantes-sur-mesure.jpeg" alt="Kitchen cabinets"><figcaption>Cabinetry</figcaption></figure>
-            <figure><img src="assest/reception%20desk.png" alt="Office fit out"><figcaption>Office fit-out</figcaption></figure>
-            <figure><img src="https://www.dsble.de/derivations/image/detail/865/865/eyJpZCI6IjkwM2E3OTEwZTA4YWQ2YzkwNTE2MWI3ZmEwZTMwNzM1LmpwZWciLCJzdG9yYWdlIjoic3RvcmUifQ?signature=a58d15197a596c8328b1cd1a3aeb75a499e7bf631b483054c5eaf63174e8c734" alt="Furniture installer"><figcaption>Installation</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-cleaning">
-          <div class="album-head"><div><span class="tag">Handover</span><h3>Cleaning</h3><p>Deep cleaning, kitchens, bathrooms, commercial spaces and post-build cleans.</p></div><a href="#quote" class="btn btn-outline">Quote cleaning</a></div>
-          <div class="album-grid">
-            <figure><img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Professional cleaning team"><figcaption>Home cleaning</figcaption></figure>
-            <figure><img src="https://go.donerightcleaning.ca/house-cleaning-ottawa-b/90f311d6-58f6-4d25-ae47-2d0f74ce2d00.webp" alt="Kitchen cleaning"><figcaption>Kitchens</figcaption></figure>
-            <figure><img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Bathroom cleaning"><figcaption>Bathrooms</figcaption></figure>
-            <figure><img src="https://go.donerightcleaning.ca/house-cleaning-ottawa-b/90f311d6-58f6-4d25-ae47-2d0f74ce2d00.webp" alt="Office cleaning"><figcaption>Commercial</figcaption></figure>
-            <figure><img src="https://temizlikkibris.com/uploads/images/haftalik-ev-temizligi-025b1d17.jpg" alt="Post build cleaning"><figcaption>Post-build</figcaption></figure>
-          </div>
-        </section>
-
-        <section class="album-section" id="album-engineering">
-          <div class="album-head"><div><span class="tag">Project support</span><h3>Engineering Support</h3><p>Site engineering, technical planning, inspections and construction coordination.</p></div><a href="#quote" class="btn btn-outline">Discuss a project</a></div>
-          <div class="album-grid">
-            <figure><img src="https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA0L3NyLWltYWdlLTAyMDQyMDI1LWtvYTA5LXMtMzAxXzEuanBn.jpg" alt="Engineer on construction site"><figcaption>Site engineering</figcaption></figure>
-            <figure><img src="https://www.gigbi.com/cdn/image/category/710/insaat-muhendislik.jpg" alt="Engineering plans"><figcaption>Technical planning</figcaption></figure>
-            <figure><img src="https://www.reformaos.com/process-architect.png" alt="Site inspection"><figcaption>Inspections</figcaption></figure>
-            <figure><img src="https://www.gigbi.com/cdn/image/category/710/insaat-muhendislik.jpg" alt="Project management"><figcaption>Coordination</figcaption></figure>
-            <figure><img src="https://www.reformaos.com/process-architect.png" alt="Design review"><figcaption>Design review</figcaption></figure>
-          </div>
-        </section>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="section" id="why">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Why CoolInterior</span>
-          <h2>Less friction. Better delivery.</h2>
-        </div>
-      </div>
-      <div class="why">
-        <div class="why-card"><div class="num">01</div><h3>Clear scope</h3><p>We start with your location, service requirement, timeframe and project details so the right information is captured from day one.</p></div>
-        <div class="why-card"><div class="num">02</div><h3>Practical response</h3><p>Your enquiry is formatted into a concise project brief that can be sent directly to our team through WhatsApp or email.</p></div>
-        <div class="why-card"><div class="num">03</div><h3>Multi-trade capability</h3><p>Use one point of contact for several trades instead of coordinating multiple separate contractors.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-soft" id="quote">
-    <div class="container quote-wrap">
-      <div class="quote-copy">
-        <span class="eyebrow">Fast quote</span>
-        <h2>Get your project moving.</h2>
-        <p>Complete the short form and send your project details directly to CoolInterior. No account, no complicated form, no waiting for a portal.</p>
-        <div class="contact-cards">
-          <a class="contact-card" href="tel:+447365155414"><div>☎</div><div><b>Call us</b><small>+44 7365 155 414</small></div></a>
-          <a class="contact-card" href="mailto:infor@coolinterior.co.uk"><div>✉</div><div><b>Email us</b><small>infor@coolinterior.co.uk</small></div></a>
-        </div>
-      </div>
-
-      <form class="quote-form" id="quoteForm">
-        <div class="progress"><span id="progressBar"></span></div>
-
-        <div class="step active" data-step="1">
-          <h3>What do you need?</h3>
-          <p class="sub">Select one or more services.</p>
-          <div class="choice-grid" id="serviceChoices">
-            <button type="button" class="choice" data-value="Roofing">Roofing</button>
-            <button type="button" class="choice" data-value="Marble & Stone">Marble & Stone</button>
-            <button type="button" class="choice" data-value="Tiling">Tiling</button>
-            <button type="button" class="choice" data-value="Painting">Painting</button>
-            <button type="button" class="choice" data-value="Maintenance">Maintenance</button>
-            <button type="button" class="choice" data-value="Furniture Installation">Furniture Install</button>
-            <button type="button" class="choice" data-value="Cleaning">Cleaning</button>
-            <button type="button" class="choice" data-value="Engineering Support">Engineering</button>
-            <button type="button" class="choice" data-value="Other">Other</button>
-          </div>
-          <div id="serviceError" class="error" hidden>Please select at least one service.</div>
-          <div class="form-nav"><span></span><button type="button" class="btn btn-dark" id="toStep2">Continue →</button></div>
-        </div>
-
-        <div class="step" data-step="2">
-          <h3>Project details</h3>
-          <p class="sub">A few details help us understand the scope.</p>
-          <div class="fields">
-            <div class="field"><label for="postcode">Postcode / area *</label><input id="postcode" name="postcode" required placeholder="e.g. SW1A"></div>
-            <div class="field"><label for="timeframe">Preferred timeframe</label><select id="timeframe" name="timeframe"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within 1 month</option><option>1–3 months</option><option>Just planning</option></select></div>
-            <div class="field full"><label for="details">Tell us about the project *</label><textarea id="details" name="details" rows="5" required placeholder="What needs doing, approximate size, access, materials or anything else we should know?"></textarea></div>
-          </div>
-          <div id="detailsError" class="error" hidden>Please add your location and a short project description.</div>
-          <div class="form-nav"><button type="button" class="btn btn-outline" id="back1">← Back</button><button type="button" class="btn btn-dark" id="toStep3">Continue →</button></div>
-        </div>
-
-        <div class="step" data-step="3">
-          <h3>Your contact details</h3>
-          <p class="sub">Choose how we can get back to you.</p>
-          <div class="fields">
-            <div class="field"><label for="name">Name *</label><input id="name" name="name" autocomplete="name" required></div>
-            <div class="field"><label for="phone">Phone *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
-            <div class="field full"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email"></div>
-          </div>
-          <div id="contactError" class="error" hidden>Please enter your name and phone number.</div>
-          <div class="form-nav"><button type="button" class="btn btn-outline" id="back2">← Back</button><button type="submit" class="btn btn-primary">Send quote request →</button></div>
-          <div class="success" id="successBox">
-            <strong>Your quote request is ready.</strong><br>
-            WhatsApp will open with your project brief pre-filled. Tap send to deliver it to CoolInterior.
-          </div>
-        </div>
-      </form>
-    </div>
-  </section>
+<main id="main">
+<section class="hero">
+<img class="hero-image" src="/assets/hero.webp" alt="A light kitchen with a marble island and warm brass details" width="1024" height="1024" fetchpriority="high">
+<div class="hero-shade">
+</div>
+<div class="container hero-content">
+<span class="eyebrow light">Thoughtful spaces. Beautiful finishes.</span>
+<h1>Your space.<br>Our craft.<br>
+<em>A better everyday.</em>
+</h1>
+<p>From the first tile to the final touch.<br>Interiors, renovations and property care<br>across London & surrounding areas.</p>
+<div class="hero-actions">
+<a class="button" href="#quote">Let’s talk about your project <span aria-hidden="true">↗</span>
+</a>
+<a class="hero-link" href="#services">Explore our services <span aria-hidden="true">↓</span>
+</a>
+</div>
+<div class="hero-bottom">
+<span>Homes · Businesses · Managed properties</span>
+<span class="hero-image-note">Interior inspiration</span>
+</div>
+</div>
+<a class="hero-help" href="#quote">
+<span class="help-icon" aria-hidden="true">↗</span>
+<div>
+<small>Have a project in mind?</small>
+<strong>Start with a free quote.</strong>
+</div>
+<span aria-hidden="true">→</span>
+</a>
+</section>
+<div class="value-strip">
+<div class="container">
+<span>
+<i aria-hidden="true">◇</i> One point of contact</span>
+<span>
+<i aria-hidden="true">↗</i> Multiple trades, one enquiry</span>
+<span>
+<i aria-hidden="true">⌂</i> Residential & commercial</span>
+<a href="https://wa.me/447365155414" target="_blank" rel="noopener noreferrer">Chat on WhatsApp ↗</a>
+</div>
+</div>
+<section class="section services-section" id="services">
+<div class="container">
+<div class="section-heading">
+<div>
+<span class="eyebrow">What we can do for you</span>
+<h2>A little refresh.<br>Or a whole new chapter.</h2>
+</div>
+<div>
+<p>Bring your ideas together with a single point of contact for your property. Choose a service to explore what’s possible.</p>
+<a class="text-link" href="#quote">Not sure where to start? Talk to us ↗</a>
+</div>
+</div>
+<div class="service-grid">
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="tiling" aria-label="Explore Tiling">
+<div class="service-image">
+<img src="/assets/tiling.webp" alt="Bathrooms, kitchens & floors" width="900" height="900" loading="lazy">
+<span class="service-number">01</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Tiling</h3>
+<p>From a new splashback to a complete tiled space.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="stone" aria-label="Explore Marble & Stone">
+<div class="service-image">
+<img src="/assets/stone.webp" alt="A beautiful centrepiece" width="900" height="900" loading="lazy">
+<span class="service-number">02</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Marble & Stone</h3>
+<p>Worktops, islands and vanities with a considered finish.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="painting" aria-label="Explore Painting">
+<div class="service-image">
+<img src="/assets/painting.webp" alt="A fresh perspective" width="900" height="900" loading="lazy">
+<span class="service-number">03</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Painting</h3>
+<p>Interior and exterior preparation, painting and finishing.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="furniture" aria-label="Explore Furniture Installation">
+<div class="service-image">
+<img src="/assets/furniture.webp" alt="Everything in its place" width="900" height="900" loading="lazy">
+<span class="service-number">04</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Furniture Installation</h3>
+<p>Assembly, fitted furniture and practical fit-out support.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="maintenance" aria-label="Explore Maintenance">
+<div class="service-image">
+<img src="/assets/maintenance.webp" alt="Look after your space" width="900" height="900" loading="lazy">
+<span class="service-number">05</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Maintenance</h3>
+<p>Repairs and property upkeep for homes and businesses.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="roofing" aria-label="Explore Roofing">
+<div class="service-image">
+<img src="/assets/roofing.webp" alt="Protect what matters" width="900" height="900" loading="lazy">
+<span class="service-number">06</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Roofing</h3>
+<p>Roofing, repairs and waterproofing for your property.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="cleaning" aria-label="Explore Cleaning">
+<div class="service-image">
+<img src="/assets/cleaning.webp" alt="Ready for the next chapter" width="900" height="900" loading="lazy">
+<span class="service-number">07</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Cleaning</h3>
+<p>Deep cleaning, post-build cleans and property handovers.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+<article class="service-card">
+<button class="service-open" type="button" aria-haspopup="dialog" data-service-open="engineering" aria-label="Explore Engineering Support">
+<div class="service-image">
+<img src="/assets/engineering.webp" alt="Keep the project moving" width="900" height="900" loading="lazy">
+<span class="service-number">08</span>
+<span class="service-arrow" aria-hidden="true">↗</span>
+</div>
+<div class="service-text">
+<h3>Engineering Support</h3>
+<p>Practical planning and coordination for building projects.</p>
+<span class="text-link">Explore service <span aria-hidden="true">→</span>
+</span>
+</div>
+</button>
+</article>
+</div>
+</div>
+</section>
+<dialog id="service-dialog" aria-labelledby="service-dialog-title">
+<button class="dialog-close" data-close aria-label="Close service details">×</button>
+<span class="eyebrow" id="service-dialog-tag">
+</span>
+<h2 id="service-dialog-title">
+</h2>
+<p id="service-dialog-description">
+</p>
+<ul id="service-dialog-items" class="check-list">
+</ul>
+<button class="button" type="button" id="service-dialog-quote">Get a quote for this service ↗</button>
+<a id="stone-details-link" class="text-link" href="/stonework" hidden>Explore stone materials →</a>
+</dialog>
+<section class="section inspiration-section" id="inspiration">
+<div class="container">
+<div class="section-heading">
+<div>
+<span class="eyebrow">Find your direction</span>
+<h2>Picture the possibilities.</h2>
+</div>
+<div>
+<p>Explore finishes and spaces that could inspire your project. Save your favourites and tell us what you have in mind.</p>
+</div>
+</div>
+<div class="gallery-toolbar">
+<div class="filter-list" role="group" aria-label="Filter inspiration">
+<button class="filter active" data-filter="all" aria-pressed="true">All inspiration</button>
+<button class="filter" data-filter="interiors" aria-pressed="false">Interiors</button>
+<button class="filter" data-filter="stone" aria-pressed="false">Marble & stone</button>
+<button class="filter" data-filter="exteriors" aria-pressed="false">Exteriors</button>
+</div>
+<span>Illustrative imagery, not a project portfolio</span>
+</div>
+<div class="inspiration-grid">
+<article class="inspiration-card" data-category="stone">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/stone.webp" data-title="Kitchen worktops & islands" data-description="Large surfaces. Carefully considered details." aria-label="View Kitchen worktops & islands">
+<img src="/assets/stone.webp" alt="Large surfaces. Carefully considered details." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Statement stone</span>
+<h3>Kitchen worktops & islands</h3>
+<button class="text-link" type="button" data-quote-service="Marble & Stone" data-inspiration="Kitchen worktops & islands">Discuss a similar project ↗</button>
+</div>
+</article>
+<article class="inspiration-card" data-category="interiors">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/vanity.webp" data-title="A calmer daily routine" data-description="Tiled walls, clean lines and stone finishes." aria-label="View A calmer daily routine">
+<img src="/assets/vanity.webp" alt="Tiled walls, clean lines and stone finishes." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Bathroom inspiration</span>
+<h3>A calmer daily routine</h3>
+<button class="text-link" type="button" data-quote-service="Tiling" data-inspiration="A calmer daily routine">Discuss a similar project ↗</button>
+</div>
+</article>
+<article class="inspiration-card" data-category="interiors">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/kitchen.webp" data-title="The heart of your home" data-description="An inviting space for cooking and gathering." aria-label="View The heart of your home">
+<img src="/assets/kitchen.webp" alt="An inviting space for cooking and gathering." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Interior inspiration</span>
+<h3>The heart of your home</h3>
+<button class="text-link" type="button" data-quote-service="Tiling" data-inspiration="The heart of your home">Discuss a similar project ↗</button>
+</div>
+</article>
+<article class="inspiration-card" data-category="exteriors">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/roofing.webp" data-title="A roof over your plans" data-description="Roofing and property improvements." aria-label="View A roof over your plans">
+<img src="/assets/roofing.webp" alt="Roofing and property improvements." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Exterior inspiration</span>
+<h3>A roof over your plans</h3>
+<button class="text-link" type="button" data-quote-service="Roofing" data-inspiration="A roof over your plans">Discuss a similar project ↗</button>
+</div>
+</article>
+<article class="inspiration-card" data-category="stone">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/island.webp" data-title="Room for a centrepiece" data-description="Stone islands with space to gather." aria-label="View Room for a centrepiece">
+<img src="/assets/island.webp" alt="Stone islands with space to gather." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Kitchen inspiration</span>
+<h3>Room for a centrepiece</h3>
+<button class="text-link" type="button" data-quote-service="Marble & Stone" data-inspiration="Room for a centrepiece">Discuss a similar project ↗</button>
+</div>
+</article>
+<article class="inspiration-card" data-category="stone">
+<button type="button" class="gallery-open" aria-haspopup="dialog" data-image="/assets/granite.webp" data-title="Built around your kitchen" data-description="Granite surfaces and fitted worktops." aria-label="View Built around your kitchen">
+<img src="/assets/granite.webp" alt="Granite surfaces and fitted worktops." width="900" height="900" loading="lazy">
+<span class="gallery-expand" aria-hidden="true">↗</span>
+</button>
+<div class="inspiration-caption">
+<span class="eyebrow">Stone inspiration</span>
+<h3>Built around your kitchen</h3>
+<button class="text-link" type="button" data-quote-service="Marble & Stone" data-inspiration="Built around your kitchen">Discuss a similar project ↗</button>
+</div>
+</article>
+</div>
+<p class="gallery-count" id="gallery-count" role="status">Showing 6 inspiration images</p>
+</div>
+</section>
+<dialog id="gallery-dialog" class="gallery-dialog" aria-labelledby="gallery-dialog-title">
+<button class="dialog-close" data-close aria-label="Close image">×</button>
+<img id="gallery-dialog-image" src="/assets/stone.webp" alt="">
+<div class="gallery-dialog-caption">
+<span class="eyebrow">Interior inspiration · illustrative image</span>
+<h3 id="gallery-dialog-title">
+</h3>
+<p id="gallery-dialog-description">
+</p>
+</div>
+</dialog>
+<section class="section process-section" id="process">
+<div class="container">
+<div class="section-heading">
+<div>
+<span class="eyebrow">From idea to a clear plan</span>
+<h2>Good projects start<br>with a conversation.</h2>
+</div>
+<div>
+<p>No need to have every detail worked out. Start with what you know, and let’s discuss the rest.</p>
+<a class="text-link" href="#quote">Tell us about your project ↗</a>
+</div>
+</div>
+<div class="process-grid">
+<article>
+<span>01</span>
+<h3>Share your idea.</h3>
+<p>Choose the services you need, your area and a few details about the work.</p>
+</article>
+<article>
+<span>02</span>
+<h3>Define the scope.</h3>
+<p>Discuss dimensions, materials, access and timing. A site visit may be needed to prepare an accurate quote.</p>
+</article>
+<article>
+<span>03</span>
+<h3>Agree the next steps.</h3>
+<p>Review the proposed work and costs, then agree availability and a schedule before work begins.</p>
+</article>
+</div>
+</div>
+</section>
+<section class="section calculator-section" id="calculator">
+<div class="container calculator-layout">
+<div>
+<span class="eyebrow">A useful first step</span>
+<h2>How many tiles<br>will you need?</h2>
+<p>Planning a floor, wall or splashback? Calculate an approximate tile quantity, then include the measurements in your enquiry.</p>
+<p class="calculator-disclaimer">This is a materials planning guide, not a price quote. Layout, grout joints, cuts, openings and site conditions affect the final quantity. Confirm measurements before ordering.</p>
+</div>
+<div class="calculator-panel">
+<div class="calculator-title">
+<span aria-hidden="true">▦</span>
+<h3>Tile quantity calculator</h3>
+</div>
+<form id="tile-calculator">
+<div class="fields">
+<div class="field">
+<label for="surface-length">Surface length <span>(m)</span>
+</label>
+<input id="surface-length" type="number" min="0.1" max="100" step="0.01" value="3" required inputmode="decimal">
+</div>
+<div class="field">
+<label for="surface-width">Surface width / height <span>(m)</span>
+</label>
+<input id="surface-width" type="number" min="0.1" max="100" step="0.01" value="2" required inputmode="decimal">
+</div>
+<div class="field">
+<label for="tile-length">Tile length <span>(mm)</span>
+</label>
+<input id="tile-length" type="number" min="10" max="3000" step="1" value="600" required inputmode="numeric">
+</div>
+<div class="field">
+<label for="tile-width">Tile width <span>(mm)</span>
+</label>
+<input id="tile-width" type="number" min="10" max="3000" step="1" value="600" required inputmode="numeric">
+</div>
+<div class="field full">
+<label for="tile-waste">Extra allowance for cuts & breakages</label>
+<select id="tile-waste">
+<option value="10">10% — straight layout</option>
+<option value="15">15% — more cuts or patterned layout</option>
+<option value="20">20% — complex layout</option>
+</select>
+</div>
+</div>
+<div id="tile-result" class="tile-result" role="status" aria-live="polite">
+<div>
+<small>Surface area</small>
+<strong id="area-result">6.00 <em>m²</em>
+</strong>
+</div>
+<div>
+<small>Approx. individual tiles</small>
+<strong id="tile-count-result">19</strong>
+</div>
+<p id="tile-coverage-result">Includes 10% allowance. Target coverage: 6.60 m².</p>
+</div>
+<button type="submit" class="button">Add measurements to my enquiry ↗</button>
+</form>
+</div>
+</div>
+</section>
+<section class="quote-section section" id="quote">
+<div class="container quote-layout">
+<div class="quote-copy">
+<span class="eyebrow">Let’s make it happen</span>
+<h2>Your next project<br>starts here.</h2>
+<p>Tell us what you have in mind. We’ll use your brief to discuss the scope, availability and a quote for your space.</p>
+<ul class="check-list">
+<li>A short enquiry, with no account needed</li>
+<li>One point of contact for multiple trades</li>
+<li>Send directly by WhatsApp or email</li>
+</ul>
+<div class="quote-direct">
+<span>Prefer a conversation?</span>
+<a href="tel:+447365155414">07365 155 414 <span aria-hidden="true">↗</span>
+</a>
+<a class="direct-email" href="mailto:infor@coolinterior.co.uk">infor@coolinterior.co.uk</a>
+</div>
+<p class="quote-photo-tip">Have photos or a drawing? Attach them in WhatsApp or email after opening your enquiry.</p>
+</div>
+<div class="quote-panel">
+<noscript>
+<p>Enable JavaScript to build your enquiry, or contact us directly: <a href="tel:+447365155414">07365 155 414</a> · <a href="mailto:infor@coolinterior.co.uk">Email us</a>.</p>
+</noscript>
+<form id="quote-form" novalidate>
+<div class="wizard-top">
+<span id="step-label">STEP 01 / 03</span>
+<span>Your project brief</span>
+</div>
+<div class="wizard-progress" aria-hidden="true">
+<span>
+</span>
+<span>
+</span>
+<span>
+</span>
+</div>
+<section class="form-step" data-step="1">
+<h3 tabindex="-1">What can we help with?</h3>
+<p>Choose one or more services.</p>
+<div class="choice-grid">
+<button class="service-choice" type="button" data-service="Tiling" aria-pressed="false">
+<span aria-hidden="true">▦</span>Tiling<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Marble & Stone" aria-pressed="false">
+<span aria-hidden="true">◇</span>Marble & Stone<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Painting" aria-pressed="false">
+<span aria-hidden="true">◒</span>Painting<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Furniture Installation" aria-pressed="false">
+<span aria-hidden="true">▤</span>Furniture Installation<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Maintenance" aria-pressed="false">
+<span aria-hidden="true">⌁</span>Maintenance<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Roofing" aria-pressed="false">
+<span aria-hidden="true">⌂</span>Roofing<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Cleaning" aria-pressed="false">
+<span aria-hidden="true">✧</span>Cleaning<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Engineering Support" aria-pressed="false">
+<span aria-hidden="true">⊞</span>Engineering Support<i aria-hidden="true">+</i>
+</button>
+<button class="service-choice" type="button" data-service="Other / Not sure" aria-pressed="false">
+<span aria-hidden="true">?</span>Other / not sure<i aria-hidden="true">+</i>
+</button>
+</div>
+<p class="form-error" id="service-error" role="alert" hidden>Please choose a service, or select “Other / not sure”.</p>
+<div class="form-navigation">
+<span>Free quote enquiry</span>
+<button class="button" type="button" data-next="2">Next: your project <span aria-hidden="true">→</span>
+</button>
+</div>
+</section>
+<section class="form-step" data-step="2" hidden>
+<h3 tabindex="-1">Tell us about your space.</h3>
+<p>A few details help us understand what you need.</p>
+<div class="fields">
+<div class="field">
+<label for="location">Postcode or area <span>*</span>
+</label>
+<input id="location" name="location" required minlength="2" maxlength="80" autocomplete="postal-code" placeholder="e.g. SW11 or Battersea">
+</div>
+<div class="field">
+<label for="property">Property type</label>
+<select id="property" name="property">
+<option>Home</option>
+<option>Business / commercial</option>
+<option>Rental / managed property</option>
+<option>Other</option>
+</select>
+</div>
+<div class="field">
+<label for="timeframe">When are you planning?</label>
+<select id="timeframe" name="timeframe">
+<option>Just exploring</option>
+<option>As soon as possible</option>
+<option>Within a month</option>
+<option>1–3 months</option>
+<option>More than 3 months</option>
+</select>
+</div>
+<div class="field">
+<label for="budget">Indicative budget <small>(optional)</small>
+</label>
+<select id="budget" name="budget">
+<option>Not sure yet</option>
+<option>Under £500</option>
+<option>£500–£2,000</option>
+<option>£2,000–£5,000</option>
+<option>£5,000–£10,000</option>
+<option>£10,000+</option>
+</select>
+</div>
+<div class="field full">
+<label for="details">What would you like done? <span>*</span>
+</label>
+<textarea id="details" name="details" required minlength="10" maxlength="2000" rows="4" placeholder="For example: tile the walls and floor in a small bathroom. Approx. 15 m², tiles already purchased.">
+</textarea>
+<small>Include approximate dimensions, materials and access if you know them.</small>
+</div>
+</div>
+<div class="form-navigation">
+<button class="text-button" type="button" data-back="1">← Back</button>
+<button class="button" type="button" data-next="3">Next: contact details <span aria-hidden="true">→</span>
+</button>
+</div>
+</section>
+<section class="form-step" data-step="3" hidden>
+<h3 tabindex="-1">How can we reach you?</h3>
+<p>Enter your name and at least one contact method.</p>
+<div class="fields">
+<div class="field full">
+<label for="customer-name">Your name <span>*</span>
+</label>
+<input id="customer-name" name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Full name">
+</div>
+<div class="field">
+<label for="phone">Phone number</label>
+<input id="phone" name="phone" type="tel" maxlength="30" autocomplete="tel" placeholder="Your phone number">
+</div>
+<div class="field">
+<label for="email">Email address</label>
+<input id="email" name="email" type="email" maxlength="160" autocomplete="email" placeholder="you@example.com">
+</div>
+</div>
+<p id="contact-error" class="form-error" role="alert" hidden>Please enter a valid phone number or email address.</p>
+<div class="brief-summary">
+<span>Your enquiry</span>
+<p id="brief-summary">
+</p>
+<button class="text-button" type="button" data-back="1">Edit project details</button>
+</div>
+<p class="form-privacy">Your details are used to discuss your project. <button type="button" class="text-button" data-privacy>Privacy information</button>
+</p>
+<div class="form-navigation">
+<button class="text-button" type="button" data-back="2">← Back</button>
+<button class="button" type="submit">Prepare my enquiry <span aria-hidden="true">↗</span>
+</button>
+</div>
+</section>
+</form>
+<section id="enquiry-ready" hidden>
+<div class="ready-icon" aria-hidden="true">✓</div>
+<span class="eyebrow">Ready for the next step</span>
+<h3 tabindex="-1">Your enquiry is ready.</h3>
+<p>Choose how to send it to us. Your project brief will be filled in for you.</p>
+<div class="ready-actions">
+<a id="send-whatsapp" class="button" target="_blank" rel="noopener noreferrer" href="https://wa.me/447365155414">Open in WhatsApp ↗</a>
+<a id="send-email" class="button button-outline" href="mailto:infor@coolinterior.co.uk">Open in email ↗</a>
+</div>
+<p class="send-note">
+<strong>Press send in WhatsApp or your email app to deliver your enquiry.</strong> You can attach photos there too.</p>
+<details class="brief-preview">
+<summary>Review your project brief</summary>
+<pre id="message-preview">
+</pre>
+</details>
+<div class="ready-bottom">
+<button type="button" class="text-button" id="edit-enquiry">← Edit enquiry</button>
+<button type="button" class="text-button" id="copy-enquiry">Copy brief</button>
+</div>
+<p id="copy-status" role="status">
+</p>
+</section>
+</div>
+</div>
+</section>
+<section class="section faq-section" id="faq">
+<div class="container faq-layout">
+<div>
+<span class="eyebrow">Before you begin</span>
+<h2>A few good<br>questions.</h2>
+<p>Still have something on your mind?</p>
+<a class="text-link" href="https://wa.me/447365155414" target="_blank" rel="noopener noreferrer">Ask us on WhatsApp ↗</a>
+</div>
+<div class="faq-list">
+<details>
+<summary>What areas do you cover?<span aria-hidden="true">+</span>
+</summary>
+<p>CoolInterior serves London and surrounding areas. Include your postcode or area in your enquiry so we can confirm coverage and availability for your project.</p>
+</details>
+<details>
+<summary>Can I enquire about more than one service?<span aria-hidden="true">+</span>
+</summary>
+<p>Yes. Select all the services you need in the quote form. This helps us discuss the project as a whole, including the order of work and any dependencies.</p>
+</details>
+<details>
+<summary>What should I include to get a useful quote?<span aria-hidden="true">+</span>
+</summary>
+<p>Tell us the service, location, approximate dimensions and what you would like done. If you have photos, drawings, material choices or a target date, include those too. Attach photos in WhatsApp or email after opening your enquiry.</p>
+</details>
+<details>
+<summary>Can you provide a price from photos?<span aria-hidden="true">+</span>
+</summary>
+<p>Photos and dimensions can help us understand the work, but some projects need a site visit or further discussion. The final scope and price should be agreed before work begins.</p>
+</details>
+<details>
+<summary>Do I need to buy materials first?<span aria-hidden="true">+</span>
+</summary>
+<p>You can enquire whether you already have materials or are still deciding. Tell us what you have purchased, if anything, so we can discuss what else is needed before work starts.</p>
+</details>
+<details>
+<summary>How do I send my quote request?<span aria-hidden="true">+</span>
+</summary>
+<p>Complete the short form and choose WhatsApp or email. Your project brief opens in the selected app. Press send there to deliver it to CoolInterior. You can also call us directly on 07365 155 414.</p>
+</details>
+</div>
+</div>
+</section>
 </main>
-
-<footer>
-  <div class="container footer-grid">
-    <div><h3>CoolInterior Contractors</h3><p>Roofing, stonework, tiling, painting, maintenance, cleaning and fit-out across London and surrounding areas.</p></div>
-    <div><h3>Contact</h3><p><a href="tel:+447365155414">+44 7365 155 414</a><br><a href="mailto:infor@coolinterior.co.uk">infor@coolinterior.co.uk</a></p></div>
-    <div><h3>Quick links</h3><p><a href="#services">Services</a><br><a href="#showcase">Our Work</a><br><a href="#quote">Fast Quote</a></p></div>
-  </div>
-  <div class="container footer-bottom">© <span id="year"></span> CoolInterior Contractors. All rights reserved.</div>
+<footer class="site-footer">
+<div class="container footer-top">
+<div>
+<a class="brand" href="/">COOL <b>INTERIOR</b>
+</a>
+<p>A space you love.<br>A simpler way to get there.</p>
+</div>
+<div>
+<h3>Explore</h3>
+<a href="/#services">Our services</a>
+<a href="/stonework">Marble & stone</a>
+<a href="/#calculator">Tile calculator</a>
+<a href="/contact-us">Contact & quotes</a>
+</div>
+<div>
+<h3>Let’s talk</h3>
+<a href="tel:+447365155414">07365 155 414</a>
+<a href="mailto:infor@coolinterior.co.uk">infor@coolinterior.co.uk</a>
+<a href="https://wa.me/447365155414" target="_blank" rel="noopener noreferrer">Message us on WhatsApp ↗</a>
+<p>London & surrounding areas</p>
+</div>
+</div>
+<div class="container footer-bottom">
+<span>© <span class="year">
+</span> CoolInterior Contractors</span>
+<div>
+<button class="text-button" data-privacy>Privacy</button>
+<span>Residential & commercial</span>
+</div>
+</div>
 </footer>
-
-<script>
-  const menuBtn = document.getElementById('menuBtn');
-  const mobilePanel = document.getElementById('mobilePanel');
-  menuBtn.addEventListener('click', () => mobilePanel.classList.toggle('open'));
-  mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobilePanel.classList.remove('open')));
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  const steps = [...document.querySelectorAll('.step')];
-  const progressBar = document.getElementById('progressBar');
-  const selected = new Set();
-
-  function showStep(n){
-    steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
-    progressBar.style.width = (n * 33.333) + '%';
-    document.getElementById('quote').scrollIntoView({behavior:'smooth',block:'start'});
-  }
-
-  document.querySelectorAll('.choice').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const value = btn.dataset.value;
-      if(selected.has(value)){ selected.delete(value); btn.classList.remove('active'); }
-      else { selected.add(value); btn.classList.add('active'); }
-      document.getElementById('serviceError').hidden = true;
-    });
-  });
-
-  document.getElementById('toStep2').addEventListener('click', () => {
-    if(!selected.size){ document.getElementById('serviceError').hidden = false; return; }
-    showStep(2);
-  });
-
-  document.getElementById('toStep3').addEventListener('click', () => {
-    const postcode = document.getElementById('postcode').value.trim();
-    const details = document.getElementById('details').value.trim();
-    if(!postcode || !details){ document.getElementById('detailsError').hidden = false; return; }
-    document.getElementById('detailsError').hidden = true;
-    showStep(3);
-  });
-
-  document.getElementById('back1').addEventListener('click', () => showStep(1));
-  document.getElementById('back2').addEventListener('click', () => showStep(2));
-
-  document.getElementById('quoteForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
-    if(!name || !phone){ document.getElementById('contactError').hidden = false; return; }
-    document.getElementById('contactError').hidden = true;
-
-    const postcode = document.getElementById('postcode').value.trim();
-    const timeframe = document.getElementById('timeframe').value;
-    const details = document.getElementById('details').value.trim();
-    const services = [...selected].join(', ');
-
-    const message =
-      'FAST QUOTE REQUEST - CoolInterior' + '\n\n' +
-      'Name: ' + name + '\n' +
-      'Phone: ' + phone + '\n' +
-      'Email: ' + (email || 'Not provided') + '\n' +
-      'Location: ' + postcode + '\n' +
-      'Services: ' + services + '\n' +
-      'Timeframe: ' + timeframe + '\n\n' +
-      'Project details:' + '\n' + details;
-
-    document.getElementById('successBox').style.display = 'block';
-    const url = 'https://wa.me/447365155414?text=' + encodeURIComponent(message);
-    window.open(url, '_blank', 'noopener');
-  });
-
-  // Prevent blank gallery cards if a third-party demo image host blocks hotlinking.
-  const galleryFallbacks = {
-    'album-roofing':'mainPagePics/roofing1.png',
-    'album-marble':'assest/Spacious%20Modern%20Kitchen%20with%20Island.png',
-    'album-tiling':'mainPagePics/bathroomtiling.png',
-    'album-painting':'mainPagePics/painting.png',
-    'album-maintenance':'mainPagePics/maintanince.png',
-    'album-fitout':'mainPagePics/furnitureinstiliation.png',
-    'album-cleaning':'mainPagePics/cleaning.png',
-    'album-engineering':'mainPagePics/engineeringservices.png'
-  };
-  document.querySelectorAll('.album-section img, .service-card img').forEach(img => {
-    img.addEventListener('error', function(){
-      const section = this.closest('.album-section');
-      let fallback = null;
-      if(section && galleryFallbacks[section.id]) fallback = galleryFallbacks[section.id];
-      if(!fallback){
-        const card = this.closest('.service-card');
-        const label = card ? card.querySelector('h3')?.textContent || '' : '';
-        if(label.includes('Roof')) fallback = galleryFallbacks['album-roofing'];
-        else if(label.includes('Marble')) fallback = galleryFallbacks['album-marble'];
-        else if(label.includes('Tiling')) fallback = galleryFallbacks['album-tiling'];
-        else if(label.includes('Painting')) fallback = galleryFallbacks['album-painting'];
-        else if(label.includes('Maintenance')) fallback = galleryFallbacks['album-maintenance'];
-        else if(label.includes('Furniture')) fallback = galleryFallbacks['album-fitout'];
-        else if(label.includes('Cleaning')) fallback = galleryFallbacks['album-cleaning'];
-        else if(label.includes('Engineering')) fallback = galleryFallbacks['album-engineering'];
-      }
-      if(fallback && !this.dataset.fallbackApplied){
-        this.dataset.fallbackApplied = '1';
-        this.src = fallback;
-      }
-    });
-  });
-
-</script>
+<div class="mobile-contact">
+<a href="tel:+447365155414">Call us</a>
+<a class="button" href="#quote">Get a free quote ↗</a>
+</div>
+<dialog id="privacy-dialog" aria-labelledby="privacy-title">
+<button class="dialog-close" data-close aria-label="Close privacy information">×</button>
+<span class="eyebrow">Your information</span>
+<h2 id="privacy-title">Privacy, kept simple.</h2>
+<p>This website builds an enquiry from the details you enter. The form does not save your contact information on a website server.</p>
+<p>When you choose WhatsApp or email, your enquiry opens in that service. You must press send there to deliver it. Information you send is handled by that service and by CoolInterior to discuss your project.</p>
+<p>Your details are used to respond to your enquiry. Please avoid including sensitive information. Contact <a href="mailto:infor@coolinterior.co.uk">infor@coolinterior.co.uk</a> with questions about your information.</p>
+<p>The interactive features do not require tracking cookies.</p>
+</dialog>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HomeAndConstructionBusiness", "name": "CoolInterior Contractors", "url": "https://www.coolinterior.co.uk/", "telephone": "+447365155414", "email": "infor@coolinterior.co.uk", "areaServed": {"@type": "City", "name": "London"}, "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Property and interior services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Tiling"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Marble & Stone"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Painting"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Furniture Installation"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Maintenance"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Roofing"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cleaning"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Engineering Support"}}]}}</script>
 </body>
 </html>
