@@ -42,13 +42,9 @@
 
   const serviceData = [
     {name:'Tiling', key:'tiling', tag:'Bathrooms, kitchens & floors', description:'From a new splashback to a complete tiled space.', items:['Wall & floor tiling','Bathrooms & wet rooms','Kitchens & splashbacks','Patios & outdoor tiling']},
-    {name:'Marble & Stone', key:'stone', tag:'A beautiful centrepiece', description:'Worktops, islands and vanities with a considered finish.', items:['Kitchen worktops & islands','Marble, granite & quartz','Bathroom vanities','Stone fitting & finishing']},
-    {name:'Painting', key:'painting', tag:'A fresh perspective', description:'Interior and exterior preparation, painting and finishing.', items:['Walls & ceilings','Doors, trim & woodwork','Interior decorating','Exterior painting']},
-    {name:'Furniture Installation', key:'furniture', tag:'Everything in its place', description:'Assembly, fitted furniture and practical fit-out support.', items:['Furniture assembly','Wardrobes & cabinetry','Office furniture','Installation & fit-out']},
-    {name:'Maintenance', key:'maintenance', tag:'Look after your space', description:'Repairs and property upkeep for homes and businesses.', items:['General property repairs','Doors, windows & hardware','Remedial works','Planned property upkeep']},
+    {name:'Marble', key:'stone', tag:'A beautiful centrepiece', description:'Worktops, islands and vanities with a considered finish.', items:['Kitchen worktops & islands','Natural marble surfaces','Bathroom vanities','Marble fitting & finishing']},
     {name:'Roofing', key:'roofing', tag:'Protect what matters', description:'Roofing, repairs and waterproofing for your property.', items:['Roof repairs','New & replacement roofs','Waterproofing','Pitched roofs & skylights']},
-    {name:'Cleaning', key:'cleaning', tag:'Ready for the next chapter', description:'Deep cleaning, post-build cleans and property handovers.', items:['Post-build cleaning','Deep cleaning','End-of-tenancy enquiries','Residential & commercial cleaning']},
-    {name:'Engineering Support', key:'engineering', tag:'Keep the project moving', description:'Practical planning and coordination for building projects.', items:['Technical planning','Site coordination','Project support','Discuss your project requirements']}
+    {name:'Engineering Services', key:'engineering', tag:'Keep the project moving', description:'Practical planning and coordination for building projects.', items:['Technical planning','Site coordination','Project support','Discuss your project requirements']}
   ];
   let activeService = '';
   $$('[data-service-open]').forEach(button => button.addEventListener('click', () => {
@@ -151,7 +147,7 @@
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
   const params = new URLSearchParams(location.search);
   const presetService = params.get('service');
-  if (presetService && [...serviceData.map(s => s.name),'Other / Not sure'].includes(presetService)) { selected.add(presetService); syncServices(); }
+  if (presetService && serviceData.map(s => s.name).includes(presetService)) { selected.add(presetService); syncServices(); }
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
