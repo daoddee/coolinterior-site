@@ -199,9 +199,6 @@
       $('#send-whatsapp').href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       $('#send-email').href = `mailto:${email}?subject=${encodeURIComponent('Project enquiry — CoolInterior')}&body=${encodeURIComponent(message)}`;
       $('#message-preview').textContent = message;
-      $('#delivery-name').value = $('#customer-name').value.trim();
-      $('#delivery-email').value = $('#email').value.trim();
-      $('#delivery-message').value = message;
       form.hidden = true;
       $('#enquiry-ready').hidden = false;
       $('#enquiry-ready h3').focus({preventScroll:true});
