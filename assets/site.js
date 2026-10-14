@@ -171,6 +171,13 @@
   $('#album-discuss')?.addEventListener('click', () => { albumDialog.close(); startQuote('Tiling', projectGalleries[activeProjectKey].name + ' — ' + projectGalleries[activeProjectKey].title + ': ' + albumPhotos[albumIndex].title); });
   $$('[data-quote-service]').forEach(button => button.addEventListener('click', () => startQuote(button.dataset.quoteService, button.dataset.inspiration || '')));
   $('#service-dialog-quote')?.addEventListener('click', () => { $('#service-dialog').close(); startQuote(activeService); });
+  $$('[data-quote-start]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    closeMenu();
+    showStep(1);
+    history.replaceState(null, '', '#quote-form');
+    track('quote_start');
+  }));
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
   const params = new URLSearchParams(location.search);
   const presetService = params.get('service');
