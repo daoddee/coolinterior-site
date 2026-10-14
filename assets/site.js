@@ -41,6 +41,7 @@
   $$('[data-privacy]').forEach(button => button.addEventListener('click', () => showDialog($('#privacy-dialog'))));
 
   const serviceData = [
+    {name:"Interior Design",key:"design",tag:"A space shaped around you",description:"Room layouts, colours and coordinated finishes.",items:["Room layout ideas","Colour and material palettes","Tile and marble selection","Coordinated interior finishes"]},
     {name:'Tiling', key:'tiling', tag:'Bathrooms, kitchens & floors', description:'From a new splashback to a complete tiled space.', items:['Wall & floor tiling','Bathrooms & wet rooms','Kitchens & splashbacks','Patios & outdoor tiling']},
     {name:'Marble', key:'stone', tag:'A beautiful centrepiece', description:'Worktops, islands and vanities with a considered finish.', items:['Kitchen worktops & islands','Natural marble surfaces','Bathroom vanities','Marble fitting & finishing']},
   ];
