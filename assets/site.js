@@ -3,7 +3,7 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const phone = '447365155414';
-  const email = 'infor@coolinterior.co.uk';
+  const email = 'booking@coolinterior.co.uk';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Consumers may listen for these events. Contact details are never included.
   const track = (action, metadata = {}) => document.dispatchEvent(new CustomEvent('coolinterior:interaction', { detail: { action, ...metadata } }));
@@ -197,6 +197,9 @@
       $('#send-whatsapp').href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       $('#send-email').href = `mailto:${email}?subject=${encodeURIComponent('Project enquiry — CoolInterior')}&body=${encodeURIComponent(message)}`;
       $('#message-preview').textContent = message;
+      $('#delivery-name').value = $('#customer-name').value.trim();
+      $('#delivery-email').value = $('#email').value.trim();
+      $('#delivery-message').value = message;
       form.hidden = true;
       $('#enquiry-ready').hidden = false;
       $('#enquiry-ready h3').focus({preventScroll:true});
