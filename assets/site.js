@@ -174,6 +174,8 @@
   $$('a[href="#quote"],a[href="/#quote"]').forEach(link => link.addEventListener('click', () => { track('quote_start'); }));
   const params = new URLSearchParams(location.search);
   const presetService = params.get('service');
+  const presetArea = params.get('area');
+  if (presetArea && $('#location') && presetArea.length <= 100) $('#location').value = presetArea;
   if (presetService && serviceData.map(s => s.name).includes(presetService)) { selected.add(presetService); syncServices(); }
   if (form) {
     form.addEventListener('submit', e => {
