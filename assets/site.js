@@ -7,6 +7,31 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Consumers may listen for these events. Contact details are never included.
   const track = (action, metadata = {}) => document.dispatchEvent(new CustomEvent('coolinterior:interaction', { detail: { action, ...metadata } }));
+  // Measure intent only after analytics consent. Never send form fields or enquiry text.
+  let analyticsAllowed = /(?:^|,)analytics:yes(?:,|$)/.test(
+    decodeURIComponent((document.cookie.split('; ').find(value => value.startsWith('cookieyes-consent=')) || '').split('=').slice(1).join('='))
+  );
+  const updateAnalyticsConsent = event => {
+    if (Array.isArray(event.detail?.accepted)) analyticsAllowed = event.detail.accepted.includes('analytics');
+  };
+  document.addEventListener('cookieyes_consent_update', updateAnalyticsConsent);
+  document.addEventListener('cookieyes_banner_load', updateAnalyticsConsent);
+  const measuredActions = new Set(['quote_start', 'quote_step', 'enquiry_prepared', 'enquiry_handoff', 'contact_click', 'calculator_to_quote']);
+  document.addEventListener('coolinterior:interaction', event => {
+    const { action, channel, step } = event.detail || {};
+    if (!analyticsAllowed || !measuredActions.has(action) || typeof window.gtag !== 'function') return;
+    const parameters = { send_to: 'G-CMTEW5X2MT' };
+    if (['phone', 'whatsapp', 'email'].includes(channel)) parameters.contact_channel = channel;
+    if ([1, 2, 3].includes(step)) parameters.form_step = step;
+    window.gtag('event', action, parameters);
+  });
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link || link.id === 'send-whatsapp' || link.id === 'send-email') return;
+    const href = link.getAttribute('href');
+    const channel = href.startsWith('tel:') ? 'phone' : href.startsWith('mailto:') ? 'email' : /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(href) ? 'whatsapp' : '';
+    if (channel) track('contact_click', { channel });
+  });
   $$('.year').forEach(el => { el.textContent = new Date().getFullYear(); });
   const menuButton = $('.menu-button');
   const mobileNav = $('#mobile-nav');
