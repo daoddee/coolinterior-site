@@ -55,3 +55,6 @@
 /* Keep project thumbnails within their grid cells on mobile. */
 .seo-photo-grid{align-items:start}.seo-project-photo{display:block;width:100%;min-width:0;overflow:hidden}.seo-project-photo img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}.seo-project-photo>span{overflow-wrap:anywhere}
 @media(max-width:600px){.seo-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}.seo-project-photo img{height:clamp(135px,46vw,235px);aspect-ratio:auto;object-fit:cover}.seo-project-photo>span{font-size:16px;line-height:1.35}.seo-project-photo .arrow-icon{width:.9em;height:.9em}}
+
+/* Readable long-form service guidance */
+.advice-section .advice-intro{max-width:780px;margin:24px 0 36px;line-height:1.8}.advice-section .coverage-grid{row-gap:24px}.advice-section article p{line-height:1.8}.advice-section article a,.advice-sources a{text-decoration:underline;text-underline-offset:3px}.advice-sources{padding-top:20px;padding-bottom:28px;font-size:.9rem;line-height:1.8;overflow-wrap:anywhere}.advice-section h2{max-width:850px}@media(max-width:600px){.advice-section h2{font-size:2.1rem}.advice-section .coverage-grid article{padding:24px}.advice-section .advice-intro{margin-bottom:26px}}
