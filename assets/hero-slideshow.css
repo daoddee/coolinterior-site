@@ -1,0 +1,8 @@
+.hero-image-secondary{opacity:0;object-position:60% 50%}
+.hero.slideshow-ready .hero-image{animation:hero-first 20s linear infinite;will-change:transform,opacity}
+.hero.slideshow-ready .hero-image-secondary{animation-name:hero-second}
+@keyframes hero-first{0%{opacity:1;transform:scale(1)}40%{opacity:1}50%{opacity:0;transform:scale(1.09)}90%{opacity:0;transform:scale(1)}100%{opacity:1;transform:scale(1)}}
+@keyframes hero-second{0%,40%{opacity:0;transform:scale(1)}50%{opacity:1}90%{opacity:1;transform:scale(1.09)}100%{opacity:0;transform:scale(1.09)}}
+.hero.slideshow-paused .hero-image{animation-play-state:paused}
+.hero-motion-toggle{display:inline-block;margin-left:12px;padding:4px 7px;background:#242a2766;color:#fff;border:1px solid #ffffff80;border-radius:3px;font:inherit;cursor:pointer}
+@media(prefers-reduced-motion:reduce){.hero.slideshow-ready .hero-image{animation:none;will-change:auto}.hero-motion-toggle{display:none}}
