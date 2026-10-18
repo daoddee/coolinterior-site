@@ -3,3 +3,6 @@
 .checkatrade-review{grid-column:1/-1;border-top:3px solid #005daa}.checkatrade-review-score{font-size:32px;font-weight:700;color:#005daa;margin-bottom:16px}.checkatrade-review-score span{font-size:17px;margin-left:4px}.checkatrade-review h3{font-size:21px;margin-bottom:18px}.checkatrade-review blockquote p+p{margin-top:12px}.checkatrade-review-breakdown{display:flex;flex-wrap:wrap;gap:18px 35px;margin-top:5px}.checkatrade-review-breakdown>div{display:flex;gap:10px;font-size:12px}.checkatrade-review-breakdown dd{margin:0;font-weight:700;color:#005daa}
 
 .reviews-platform-actions{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:38px;padding-top:32px;border-top:1px solid #dce0d7;align-items:start}.review-invite h3,.reviews-checkatrade h2{font-size:25px;margin-bottom:14px}.review-invite p{font-size:14px;line-height:1.8;margin-bottom:24px;max-width:420px}.reviews-checkatrade .checkatrade-footer-frame{max-width:100%;margin-bottom:0}.review-invite .button{white-space:normal;text-align:center}@media(max-width:700px){.reviews-platform-actions{grid-template-columns:1fr;gap:32px}.review-invite .button{width:100%}}
+
+/* Compact transparent Checkatrade badge, without the former dark iframe panel. */
+.reviews-checkatrade .checkatrade-footer-frame{background:transparent;height:110px;border-radius:0;width:100%;max-width:100%;margin:0}
