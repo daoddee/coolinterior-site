@@ -3,11 +3,6 @@
  if(!track)return;
  const data=JSON.parse(document.querySelector('#project-gallery-data').textContent);
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- let paused=reduced,visible=true;
- const toggle=document.querySelector('#project-preview-toggle');
- const sync=()=>{toggle.textContent=paused?'Play photo previews':'Pause photo previews';toggle.setAttribute('aria-pressed',String(paused));};sync();
- toggle.addEventListener('click',()=>{paused=!paused;sync();});
- if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;},{threshold:.05}).observe(track);
  document.querySelectorAll('.project-carousel-arrow').forEach(button=>button.addEventListener('click',()=>{
  const direction=button.classList.contains('project-carousel-next')?1:-1;
  const max=track.scrollWidth-track.clientWidth;
@@ -15,13 +10,33 @@
  if(left>max+5)left=0;else if(left< -5)left=max;
  track.scrollTo({left:Math.max(0,Math.min(max,left)),behavior:reduced?'auto':'smooth'});
  }));
- setInterval(()=>{
- if(paused||!visible||document.hidden||document.querySelector('#tiling-album-dialog[open]'))return;
- track.querySelectorAll('.project-cover[data-project]').forEach(button=>{
- const photos=data[button.dataset.project]?.photos;if(!photos?.length)return;
- const next=((Number(button.dataset.photo)||0)+1)%photos.length;
- const image=button.querySelector('img'),photo=photos[next],preload=new Image();
- preload.onload=()=>{if(paused)return;image.classList.add('preview-fading');setTimeout(()=>{image.src=photo.src;image.alt=photo.alt;button.dataset.photo=String(next);image.classList.remove('preview-fading');},reduced?0:350);};preload.src=photo.src;
+ track.querySelectorAll('.project-showcase').forEach(card=>{
+ const button=card.querySelector('.project-cover[data-project]');
+ const photos=data[button?.dataset.project]?.photos;
+ if(!photos?.length)return;
+ const image=button.querySelector('img');
+ let timer=null,active=false,generation=0;
+ const advance=()=>{
+  if(!active||document.hidden||document.querySelector('#tiling-album-dialog[open]'))return;
+  const token=generation,next=((Number(button.dataset.photo)||0)+1)%photos.length;
+  const photo=photos[next],preload=new Image();
+  preload.onload=()=>{
+   if(!active||token!==generation)return;
+   image.classList.add('preview-fading');
+   setTimeout(()=>{
+    if(!active||token!==generation)return;
+    image.src=photo.src;image.alt=photo.alt;button.dataset.photo=String(next);image.classList.remove('preview-fading');
+   },350);
+  };
+  preload.src=photo.src;
+ };
+ card.addEventListener('pointerenter',event=>{
+  if(event.pointerType==='touch'||reduced||active)return;
+  active=true;generation++;timer=setInterval(advance,2000);
  });
- },5000);
+ card.addEventListener('pointerleave',()=>{
+  active=false;generation++;clearInterval(timer);timer=null;
+  image.src=photos[0].src;image.alt=photos[0].alt;button.dataset.photo='0';image.classList.remove('preview-fading');
+ });
+ });
 })();
