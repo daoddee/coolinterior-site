@@ -5,3 +5,16 @@
 #google-reviews #reviews-slider>article.customer-review{box-sizing:border-box;height:460px;min-height:460px;max-height:460px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;display:flex;flex-direction:column}
 #google-reviews #reviews-slider>article.customer-review>*{flex-shrink:0}
 #google-reviews #reviews-slider>article.customer-review .review-original{margin-top:auto;padding-top:12px}
+
+/* Equal review-platform actions, with one shared alignment baseline. */
+#google-reviews .reviews-platform-actions{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:12px;margin-top:10px;padding-top:10px}
+#google-reviews .reviews-platform-actions>div{box-sizing:border-box;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:4px;grid-column:auto;grid-row:auto;min-width:0;min-height:116px;margin:0;padding:0}
+#google-reviews .review-invite .button,#google-reviews .trustpilot-profile{box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:90px;min-height:90px;margin:0;padding:12px;font:600 14px/1.4 var(--sans);text-align:center;border-radius:6px;text-decoration:none}
+#google-reviews .trustpilot-profile{border:1px solid #d9dfda;background:#fff;color:var(--ink,#242a27)}
+#google-reviews .reviews-checkatrade iframe{display:block;width:100%!important;max-width:none!important;height:90px!important;min-height:90px;margin:0!important}
+#google-reviews .trustpilot-write{justify-content:center;min-height:22px;line-height:22px;margin:0}
+@media(max-width:700px){
+ #google-reviews .reviews-platform-actions{grid-template-columns:1fr;gap:8px}
+ #google-reviews .reviews-platform-actions>div{width:100%;max-width:340px;justify-self:center;min-height:90px}
+ #google-reviews .review-invite .button{font-size:14px;padding:12px}
+}
