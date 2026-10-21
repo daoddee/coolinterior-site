@@ -4,10 +4,21 @@ const {STAGES,PRIORITIES,HttpError,text,validateEnquiry,sign,verify,verifyPasswo
 const COOKIE='__Host-ci_panel';
 const ready=()=>!!(process.env.PANEL_GATEWAY_URL && process.env.PANEL_GATEWAY_SECRET && process.env.PANEL_SESSION_SECRET?.length>=32);
 const enabled=()=>ready() && process.env.ENQUIRIES_ENABLED==='true';
+function connectionError(code) {
+  const error=new HttpError(503,'The enquiry service is temporarily unavailable. Please try again or contact us directly.');
+  error.connectionCode=code;return error;
+}
 async function db(path,options={}) {
-  const response=await fetch(process.env.PANEL_GATEWAY_URL.trim(),{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+process.env.PANEL_GATEWAY_SECRET.trim(),'Content-Type':'application/json'},body:JSON.stringify({path,method:options.method||'GET',body:options.body,prefer:options.headers?.Prefer})});
-  if(!response.ok) throw new HttpError(503,'The enquiry service is temporarily unavailable. Please try again or contact us directly.');
-  return response.status===204?null:response.json();
+  let endpoint;
+  try {endpoint=new URL(process.env.PANEL_GATEWAY_URL.trim());if(endpoint.protocol!=='https:')throw new Error();}
+  catch {throw connectionError('invalid_gateway_url');}
+  let response;
+  try {
+    response=await fetch(endpoint,{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+process.env.PANEL_GATEWAY_SECRET.trim(),'Content-Type':'application/json'},body:JSON.stringify({path,method:options.method||'GET',body:options.body,prefer:options.headers?.Prefer})});
+  } catch(error) {throw connectionError(error.name==='TimeoutError'?'gateway_timeout':'gateway_network_error');}
+  if(!response.ok)throw connectionError([401,403].includes(response.status)?'gateway_credential_mismatch':response.status===503?'gateway_configuration_missing':'gateway_database_error');
+  if(response.status===204)return null;
+  try{return await response.json();}catch{throw connectionError('invalid_gateway_response');}
 }
 async function rate(req,kind,max) {
   const ip=String(req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
@@ -42,9 +53,16 @@ module.exports=async function handler(req,res) {
   const action=new URL(req.url,'https://local.invalid').searchParams.get('action')||'submit';
   try {
     if(req.method==='GET'&&action==='health') {
-      let accepting=false;
-      if(enabled()) {try{await db('ci_enquiries?select=id&limit=0'); accepting=!!(await owner())?.password_hash;}catch{}}
-      return res.status(200).json({accepting});
+      let accepting=false,connection='configuration_missing';
+      if(ready()) {
+        try {
+          await db('ci_enquiries?select=id&limit=0');
+          const hasOwner=!!(await owner())?.password_hash;
+          connection=!hasOwner?'owner_setup_required':enabled()?'ready':'enquiries_disabled';
+          accepting=hasOwner&&enabled();
+        } catch(error) {connection=error.connectionCode||'service_unavailable';}
+      }
+      return res.status(200).json({accepting,connection,version:'connection-check-v1'});
     }
     if(!ready()) throw new HttpError(503,'The team panel is awaiting its secure database connection.');
     if(!['GET','POST','PATCH','DELETE'].includes(req.method)) {res.setHeader('Allow','GET, POST, PATCH, DELETE');throw new HttpError(405,'Method not allowed.');}
