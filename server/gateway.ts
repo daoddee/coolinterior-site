@@ -1,11 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-const EXPECTED_HASH="9bbec8bde1003fa567b3246ae1c981c8eb551508225361dfeacee5d839795bb2";
 Deno.serve(async(req:Request)=>{
   const headers={"Content-Type":"application/json","Cache-Control":"no-store"};
   if(req.method!=="POST")return new Response('{"error":"Method not allowed"}',{status:405,headers});
+  const configuredSecret=Deno.env.get("PANEL_GATEWAY_SECRET")||"";
+  if(configuredSecret.length<32)return new Response('{"error":"Gateway configuration incomplete"}',{status:503,headers});
+  const expectedHash=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(configuredSecret)))).map(b=>b.toString(16).padStart(2,"0")).join("");
   const token=req.headers.get("Authorization")?.replace(/^Bearer /,"")||"";
   const hash=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(token)))).map(b=>b.toString(16).padStart(2,"0")).join("");
-  if(hash!==EXPECTED_HASH)return new Response('{"error":"Unauthorized"}',{status:401,headers});
+  if(hash!==expectedHash)return new Response('{"error":"Unauthorized"}',{status:401,headers});
   try{
     const raw=await req.text();if(raw.length>1000000)throw new Error();
     const body=JSON.parse(raw);
