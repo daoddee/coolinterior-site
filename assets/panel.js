@@ -15,7 +15,7 @@
   async function api(action,method='GET',body) {
     const response=await fetch('/api/enquiries?action='+action,{method,credentials:'same-origin',cache:'no-store',headers:body?{'Content-Type':'application/json'}:{},...(body?{body:JSON.stringify(body)}:{})});
     const result=await response.json().catch(()=>({error:'Unable to reach the service. Please try again.'}));
-    if(!response.ok){if(response.status===401&&action!=='login'){signedOut();}throw new Error(result.error||'Request failed.');}return result;
+    if(!response.ok){if(response.status===401&&action!=='login'&&!(action==='session'&&demo)){signedOut();}throw new Error(result.error||'Request failed.');}return result;
   }
   const ownerAlerts=window.CIOwnerAlerts({api,open:async id=>{if(!records.some(r=>r.id===id)){const data=await api('record&id='+encodeURIComponent(id));records.push(data.record);render();}openDetail(id);}});
   function signedOut(){ownerAlerts.stop();records=[];$('#app').hidden=true;$('#login-view').hidden=false;$('#password').value='';$('#detail-dialog').close();$('#password-dialog').close();$('#password-form').reset();$('#records').replaceChildren();$('#detail-content').replaceChildren();}
@@ -80,5 +80,5 @@
   $('#close-password').addEventListener('click',()=>$('#password-dialog').close());
   $('#password-form').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;try{await api('password','POST',{current:$('#current-password').value,password:$('#new-password').value});e.target.reset();$('#password-message').textContent='Password updated. Other sessions have been signed out.';}catch(e){$('#password-message').textContent=e.message;}finally{b.disabled=false;}});
   if(setupToken){$('#login-view .auth-form .eyebrow').textContent='YOUR PRIVATE WORKSPACE';$('#login-view .auth-form h2').textContent='Make it yours.';$('#login-view .auth-form > p').textContent='Choose a unique password of at least 14 characters to activate your enquiry desk. This setup link works once.';$('#login-form label').textContent='Choose your workspace password';$('#password').minLength=14;$('#password').autocomplete='new-password';$('#login-form button').textContent='Activate enquiry desk →';}
-  api('session').then(()=>{enter();load();}).catch(()=>{});
+  api('session').then(()=>{if(!demo){enter();load();}}).catch(()=>{});
 })();
