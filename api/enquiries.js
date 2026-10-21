@@ -5,7 +5,7 @@ const COOKIE='__Host-ci_panel';
 const ready=()=>!!(process.env.PANEL_GATEWAY_URL && process.env.PANEL_GATEWAY_SECRET && process.env.PANEL_SESSION_SECRET?.length>=32);
 const enabled=()=>ready() && process.env.ENQUIRIES_ENABLED==='true';
 async function db(path,options={}) {
-  const response=await fetch(process.env.PANEL_GATEWAY_URL,{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+process.env.PANEL_GATEWAY_SECRET,'Content-Type':'application/json'},body:JSON.stringify({path,method:options.method||'GET',body:options.body,prefer:options.headers?.Prefer})});
+  const response=await fetch(process.env.PANEL_GATEWAY_URL.trim(),{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+process.env.PANEL_GATEWAY_SECRET.trim(),'Content-Type':'application/json'},body:JSON.stringify({path,method:options.method||'GET',body:options.body,prefer:options.headers?.Prefer})});
   if(!response.ok) throw new HttpError(503,'The enquiry service is temporarily unavailable. Please try again or contact us directly.');
   return response.status===204?null:response.json();
 }
