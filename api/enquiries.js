@@ -119,6 +119,18 @@ module.exports=async function handler(req,res) {
       return res.status(200).json({ok:true,count:photos.length});
     }
     const account=await session(req);
+    if(action==='alerts'&&req.method==='GET') {
+      const data=await db('rpc/ci_owner_alert_summary',{method:'POST',body:'{}'});
+      return res.status(200).json(data);
+    }
+    if(action==='alerts-read'&&req.method==='POST') {
+      const b=body(req);if(!Array.isArray(b.ids)||b.ids.length>50||b.ids.some(id=>!photo.UUID.test(id)))throw new HttpError(400,'Invalid alerts.');
+      await db('rpc/ci_owner_alerts_read',{method:'POST',body:JSON.stringify({p_ids:b.ids})});return res.status(200).json({ok:true});
+    }
+    if(action==='record'&&req.method==='GET') {
+      const id=new URL(req.url,'https://local.invalid').searchParams.get('id');if(!photo.UUID.test(id||''))throw new HttpError(400,'Invalid enquiry.');
+      const record=(await db('ci_enquiries?id=eq.'+id+'&limit=1'))[0];if(!record)throw new HttpError(404,'Enquiry not found.');return res.status(200).json({record});
+    }
     if(action==='photos'&&req.method==='GET') {
       const id=new URL(req.url,'https://local.invalid').searchParams.get('id');
       if(!photo.UUID.test(id||''))throw new HttpError(400,'Invalid enquiry.');

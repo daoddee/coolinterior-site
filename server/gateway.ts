@@ -37,7 +37,7 @@ Deno.serve(async(req:Request)=>{
       }
       return new Response(JSON.stringify(output),{headers});
     }
-    if(typeof body.path!=="string"||!(/^(ci_(?:enquiries|panel_owner)\?|rpc\/ci_take_rate$)/.test(body.path))||body.path.includes("#")||body.path.includes("..")||!["GET","POST","PATCH","DELETE"].includes(body.method))throw new Error();
+    if(typeof body.path!=="string"||!(/^(ci_(?:enquiries|panel_owner)\?|rpc\/(?:ci_take_rate|ci_refresh_owner_alerts|ci_owner_alert_summary|ci_owner_alerts_read)$)/.test(body.path))||body.path.includes("#")||body.path.includes("..")||!["GET","POST","PATCH","DELETE"].includes(body.method))throw new Error();
     const result=await fetch(Deno.env.get("SUPABASE_URL")+"/rest/v1/"+body.path,{method:body.method,headers:{apikey:Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,Authorization:"Bearer "+Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),"Content-Type":"application/json",...(body.prefer?{Prefer:body.prefer}:{})},...(body.body?{body:body.body}:{})});
     return new Response(result.status===204?null:await result.text(),{status:result.status,headers});
   }catch{return new Response('{"error":"Invalid gateway request"}',{status:400,headers});}

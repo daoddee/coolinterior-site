@@ -38,7 +38,7 @@ After setup, direct delivery activates automatically when `/api/enquiries?action
 - The sample workspace is fictional and held in memory for one visit. It never reads or writes customer records.
 - Permanent deletion requires typing the enquiry reference. Review data retention periodically; keep only what is needed for enquiries, work and applicable record keeping.
 - Internal notes are part of the enquiry; deleting it deletes them. The activity history stores the latest 300 entries per enquiry.
-- No outbound notification emails or photo uploads are implemented in this version. The team can arrange additional information after reviewing the enquiry. This is an enquiry CRM, not invoicing, accounting or a multi-role staff identity system.
+- Private photo uploads are available. Outbound notification emails require a sending service and are not connected. This is an enquiry CRM, not invoicing, accounting or a multi-role staff identity system.
 
 ## Checks
 
@@ -67,3 +67,12 @@ The public form accepts up to five photos of at most 10 MB each and converts the
 The enquiry is saved first, then a 30-minute HMAC ticket permits uploads only to that enquiry. The server reserves up to five UUID object paths. The gateway issues Supabase signed upload URLs (two-hour validity, no overwrite) and verifies actual JPEG bytes and sizes before metadata is marked uploaded. Upload errors clearly distinguish a saved enquiry from unconfirmed photos; retries retain the request and photo IDs. The `ci-enquiry-photos` bucket is private, allows image/jpeg only and enforces a 2 MB object limit. No anonymous read/list policies are granted.
 
 The signed-in owner receives ten-minute photo read links when opening an enquiry. Permanent enquiry deletion removes its reserved/uploaded objects through Storage before deleting the database row. Photo uploads do not require analytics consent and are not sent to analytics.
+
+## Owner alerts and response process
+New enquiries create durable private owner alerts in the same database transaction as the lead. The portal checks every 60 seconds and shows unread alerts, with a link to the enquiry and a mark-read control. Marking read does not mark a customer contacted. Move the stage to Contacted after responding and enter the next follow-up date.
+
+A database cron checks every 15 minutes. On weekdays from 09:00 Europe/London, it creates one reminder per enquiry per day for follow-up dates before today. New enquiries still awaiting first contact after 24 hours also receive a reminder, unless already covered by an overdue follow-up. Updating stages or dates resolves obsolete alerts. Won/Lost enquiries do not receive follow-up reminders. Reminders persist with the portal closed.
+
+Desktop notifications are optional and require the owner's explicit browser permission. They operate while the portal tab is open; browser suspension may delay delivery. Initial sign-in displays existing alerts without flooding desktop notifications. The browser alert body contains no customer contact details. These are not background push or email alerts. Email delivery remains unconnected and is labelled in the portal. A sending provider, verified sender and deployment credentials are required before outbound email can be enabled.
+
+Apply database/owner-alerts.sql once to provision the private alert table, service-only RPCs, trigger and cron job. Gateway RPC paths are allowlisted. No public alert reads or writes are permitted.
