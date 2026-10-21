@@ -1,5 +1,6 @@
 'use strict';
 const crypto = require('node:crypto');
+const {sanitize}=require('../assets/campaign-core');
 const STAGES = ['New', 'Contacted', 'Site visit', 'Quoted', 'Won', 'Lost'];
 const PRIORITIES = ['Normal', 'High'];
 class HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }
@@ -12,7 +13,7 @@ function text(value, max, required = false) {
 function validateEnquiry(body) {
   if (!Array.isArray(body.services)) throw new HttpError(400, 'Choose a valid service.');
   const services = [...new Set(body.services)];
-  if (!services.length || services.length > 3 || services.some(s => !['Tiling','Marble','Interior design'].includes(s))) throw new HttpError(400, 'Choose a valid service.');
+  if (!services.length || services.length > 4 || services.some(s => !['Tiling','Marble','Interior design','Natural stone installation'].includes(s))) throw new HttpError(400, 'Choose a valid service.');
   const name = text(body.name, 100, true), location = text(body.location, 80, true), details = text(body.details, 2000, true);
   if (name.length < 2 || location.length < 2 || details.length < 10) throw new HttpError(400, 'Please provide your name, location and project details.');
   const email = text(body.email, 160), phone = text(body.phone, 30);
@@ -20,7 +21,7 @@ function validateEnquiry(body) {
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new HttpError(400, 'Check your email address.');
   if (phone && (!/^[+\d\s().-]+$/.test(phone) || phone.replace(/\D/g,'').length < 7 || phone.replace(/\D/g,'').length > 15)) throw new HttpError(400, 'Check your phone number.');
   if (!/^[a-f0-9-]{36}$/i.test(body.requestId || '')) throw new HttpError(400, 'Refresh the page and try again.');
-  return { name, location, details, email, phone, services, property: text(body.property,80), timeframe: text(body.timeframe,100), budget: text(body.budget,100), source: text(body.source,200), request_id: body.requestId };
+  return { name, location, details, email, phone, services, property: text(body.property,80), timeframe: text(body.timeframe,100), budget: text(body.budget,100), source: text(body.source,200), attribution: sanitize(body.attribution), request_id: body.requestId };
 }
 function safeEqual(a,b) { const aa=Buffer.from(a),bb=Buffer.from(b); return aa.length===bb.length && crypto.timingSafeEqual(aa,bb); }
 function sign(payload, secret) { const data=Buffer.from(JSON.stringify(payload)).toString('base64url'); return data+'.'+crypto.createHmac('sha256',secret).update(data).digest('base64url'); }

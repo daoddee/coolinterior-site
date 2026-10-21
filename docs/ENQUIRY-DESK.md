@@ -51,3 +51,11 @@ Additional DOM checks exercised sample records, search, board/list, safe note re
 ## Initial activation status
 
 Database and gateway deployed; no public database access granted. Vercel connection lists the user's projects but returned 403 for team `daoddees-projects` (`team_c5zudjHFeCSdIXmaoyqKlWgq`). The user must grant this team access before automated production environment setup can finish. Do not activate a guessed project: confirm which of the three Cool Interior projects serves the live domain first.
+
+
+## Campaign attribution
+Public pages load campaign-core and campaign-attribution before site.js. Analytics consent permits a first and latest touch in browser storage for up to 90 days; advertisement consent additionally permits gclid, gbraid and wbraid. Revocation clears browser storage. Only allowlisted tags, pathname and referring hostname are accepted; no full URL or referrer query is stored. Submitted attribution follows enquiry retention and deletion.
+
+The server sanitizes every touch before saving `ci_enquiries.attribution`. Existing enquiries remain unattributed. Moving a lead to Site visit, Quoted or Won stamps `qualified_at` once. The portal groups loaded enquiries by latest source/medium/campaign and shows qualified counts, current wins and won quotation value. These are not payments or profitability calculations. Load older pages to expand the report. CSV exports include both touches and qualification date.
+
+This release does not upload offline conversions to Google Ads. Captured click IDs are available for a future authorized import with the account's conversion action and consent requirements configured. Do not infer ROI without campaign spend and project costs. Campaign values are browser-reported and should not be treated as verified platform billing data.

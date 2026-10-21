@@ -118,13 +118,14 @@ module.exports=async function handler(req,res) {
       if(followUp&&(!/^\d{4}-\d{2}-\d{2}$/.test(followUp)||Number.isNaN(Date.parse(followUp))))throw new HttpError(400,'Invalid follow-up date.');
       const value=b.value===''||b.value===null?null:Number(b.value);if(value!==null&&(!Number.isFinite(value)||value<0||value>10000000))throw new HttpError(400,'Enter a valid quote value.');
       const activity=[...old.activity];const now=new Date().toISOString();
+      const qualifiedAt=old.qualified_at||(['Site visit','Quoted','Won'].includes(b.status)?now:null);
       if(old.status!==b.status)activity.push({at:now,message:`Stage changed from ${old.status} to ${b.status}`});
       if(old.priority!==b.priority)activity.push({at:now,message:`Priority changed to ${b.priority}`});
       if(old.owner!==owner)activity.push({at:now,message:'Assigned to '+(owner||'unassigned')});
       if(old.follow_up!==(followUp||null))activity.push({at:now,message:'Follow-up '+(followUp||'cleared')});
       if(old.value!==value)activity.push({at:now,message:'Quote value '+(value===null?'cleared':'updated to £'+value)});
       if(note)activity.push({at:now,message:note,type:'note'});
-      const updated=await db('ci_enquiries?id=eq.'+b.id+'&version=eq.'+b.version,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({status:b.status,priority:b.priority,owner,follow_up:followUp||null,value,activity:activity.slice(-300),version:b.version+1,updated_at:now})});
+      const updated=await db('ci_enquiries?id=eq.'+b.id+'&version=eq.'+b.version,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({status:b.status,priority:b.priority,owner,follow_up:followUp||null,value,qualified_at:qualifiedAt,activity:activity.slice(-300),version:b.version+1,updated_at:now})});
       if(!updated.length)throw new HttpError(409,'This enquiry changed in another session. Refresh before saving.');
       return res.status(200).json({record:updated[0]});
     }

@@ -268,7 +268,7 @@
         'Project details:', $('#details').value.trim(), '',
         'Please contact me to discuss the scope, availability and a quote.'
       ].join('\n');
-      const payload={name:$('#customer-name').value.trim(),phone:$('#phone').value.trim(),email:$('#email').value.trim(),services:[...selected],location:$('#location').value.trim(),property:$('#property').value,timeframe:$('#timeframe').value,budget:$('#budget').value,details:$('#details').value.trim(),source:location.pathname};
+      const payload={name:$('#customer-name').value.trim(),phone:$('#phone').value.trim(),email:$('#email').value.trim(),services:[...selected],location:$('#location').value.trim(),property:$('#property').value,timeframe:$('#timeframe').value,budget:$('#budget').value,details:$('#details').value.trim(),source:location.pathname,attribution:window.CIAttribution?.get()||{}};
       if(JSON.stringify(payload)!==JSON.stringify(directPayload && Object.fromEntries(Object.entries(directPayload).filter(([key])=>key!=='requestId')))) directRequestId=crypto.randomUUID();
       directPayload={...payload,requestId:directRequestId};
       directStatus.textContent='';

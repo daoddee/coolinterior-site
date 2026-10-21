@@ -29,3 +29,13 @@ test('one-time owner setup and password rotation revoke old sessions',async()=>{
  r=response();await handler(request('password','POST',{current:'a long unique passphrase',password:'a new unique long passphrase'},oldCookie),r);assert.equal(r.code,200);assert.equal(account.session_version,2);
  r=response();await handler(request('session','GET',undefined,oldCookie),r);assert.equal(r.code,401);
 }finally{global.fetch=original;}});
+test('qualification is recorded once and campaign attribution survives stage updates',async()=>{
+ configure();const original=global.fetch;
+ let record={...core.validateEnquiry({...base,attribution:{version:1,analytics_consent:true,advertising_consent:true,first:{utm_source:'google',gclid:'TEST_CLICK'},last:{utm_source:'google',utm_campaign:'Bathrooms',gclid:'TEST_CLICK'}}}),id:crypto.randomUUID(),status:'New',priority:'Normal',owner:'',follow_up:null,value:null,activity:[],version:1,qualified_at:null};
+ global.fetch=async(url,options)=>{const q=JSON.parse(options.body);let result;if(q.path.startsWith('ci_panel_owner'))result=[{password_hash:'configured',session_version:1}];else if(q.method==='PATCH'){record={...record,...JSON.parse(q.body)};result=[record];}else result=[record];return{ok:true,status:200,json:async()=>result};};
+ const cookie='__Host-ci_panel='+core.sign({role:'owner',version:1,exp:Date.now()+60000},process.env.PANEL_SESSION_SECRET);
+ try{
+  const update=async status=>{const res=response();await handler(request('update','PATCH',{id:record.id,version:record.version,status,priority:'Normal',owner:'',follow_up:'',value:2300,note:''},cookie),res);assert.equal(res.code,200);};
+  await update('Site visit');const qualified=record.qualified_at;assert.ok(qualified);await update('Won');assert.equal(record.qualified_at,qualified);assert.equal(record.attribution.first.gclid,'TEST_CLICK');assert.equal(record.attribution.last.utm_campaign,'Bathrooms');await update('Lost');assert.equal(record.qualified_at,qualified);
+ }finally{global.fetch=original;}
+});

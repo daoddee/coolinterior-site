@@ -36,3 +36,6 @@ alter table public.ci_panel_owner enable row level security;
 revoke all on public.ci_panel_owner from anon,authenticated;
 grant select,insert,update on public.ci_panel_owner to service_role;
 -- Provision a random one-time setup token by inserting only its SHA-256 hash into ci_panel_owner. Never commit the token.
+
+-- Consent-based first/latest campaign details remain private with the enquiry.
+alter table public.ci_enquiries add column if not exists attribution jsonb not null default '{}'::jsonb, add column if not exists qualified_at timestamptz;
