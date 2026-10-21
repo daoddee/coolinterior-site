@@ -21,13 +21,13 @@
     const { action, channel, step } = event.detail || {};
     if (!analyticsAllowed || !measuredActions.has(action) || typeof window.gtag !== 'function') return;
     const parameters = { send_to: 'G-CMTEW5X2MT' };
-    if (['phone', 'whatsapp', 'email'].includes(channel)) parameters.contact_channel = channel;
+    if (['phone', 'email'].includes(channel)) parameters.contact_channel = channel;
     if ([1, 2, 3].includes(step)) parameters.form_step = step;
     window.gtag('event', action, parameters);
   });
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href]');
-    if (!link || link.id === 'send-whatsapp' || link.id === 'send-email') return;
+    if (!link) return;
     const href = link.getAttribute('href');
     const channel = href.startsWith('tel:') ? 'phone' : href.startsWith('mailto:') ? 'email' : /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(href) ? 'whatsapp' : '';
     if (channel) track('contact_click', { channel });
@@ -209,23 +209,16 @@
   const presetArea = params.get('area');
   if (presetArea && $('#location') && presetArea.length <= 100) $('#location').value = presetArea;
   if (presetService && serviceData.map(s => s.name).includes(presetService)) { selected.add(presetService); syncServices(); }
-  // Direct delivery is shown only when the server confirms database readiness.
-  let directEnabled = false;
+  // Quote requests use the website API only; success requires a saved reference.
   let directRequestId = null;
   let directPayload = null;
   let directSending = false;
   const directButton = document.createElement('button');
   directButton.type = 'button'; directButton.className = 'button';
-  directButton.id = 'send-direct'; directButton.textContent = 'Send enquiry to our team';
-  directButton.hidden = true;
+  directButton.id = 'send-direct'; directButton.textContent = 'Submit enquiry';
+  directButton.hidden = false;
   const directStatus = document.createElement('p');
   directStatus.setAttribute('role', 'status'); directStatus.className = 'direct-enquiry-status';
-  const checkDelivery = async () => {
-    try {
-      const response = await fetch('/api/enquiries?action=health', {cache:'no-store', signal:AbortSignal.timeout(6000)});
-      directEnabled = response.ok && (await response.json()).accepting === true;
-    } catch { directEnabled = false; }
-  };
   if (form) {
     $('#enquiry-ready .ready-actions').prepend(directButton);
     $('#enquiry-ready .ready-actions').after(directStatus);
@@ -234,7 +227,6 @@
     honeypot.setAttribute('aria-hidden','true');
     honeypot.style.cssText='position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden';
     form.append(honeypot);
-    checkDelivery();
     directButton.addEventListener('click', async () => {
       if(directSending || !directPayload) return;
       directSending=true; directButton.disabled=true;
@@ -253,8 +245,7 @@
         track('generate_lead', {channel:'website'});
         $('#enquiry-ready h3').focus({preventScroll:true});
       } catch(error) {
-        directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' You can also contact us by email or WhatsApp.';
-        $('#send-whatsapp').hidden=false; $('#send-email').hidden=false;
+        directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' Your project brief is still available below. Please retry using Submit enquiry.';
       } finally {directSending=false;directButton.disabled=false;}
     });
   }
@@ -277,20 +268,17 @@
         'Project details:', $('#details').value.trim(), '',
         'Please contact me to discuss the scope, availability and a quote.'
       ].join('\n');
-      $('#send-whatsapp').href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      $('#send-email').href = `mailto:${email}?subject=${encodeURIComponent('Project enquiry — CoolInterior')}&body=${encodeURIComponent(message)}`;
       const payload={name:$('#customer-name').value.trim(),phone:$('#phone').value.trim(),email:$('#email').value.trim(),services:[...selected],location:$('#location').value.trim(),property:$('#property').value,timeframe:$('#timeframe').value,budget:$('#budget').value,details:$('#details').value.trim(),source:location.pathname};
       if(JSON.stringify(payload)!==JSON.stringify(directPayload && Object.fromEntries(Object.entries(directPayload).filter(([key])=>key!=='requestId')))) directRequestId=crypto.randomUUID();
       directPayload={...payload,requestId:directRequestId};
       directStatus.textContent='';
-      directButton.hidden=!directEnabled;
-      $('#send-whatsapp').hidden=directEnabled; $('#send-email').hidden=directEnabled;
+      directButton.hidden=false;
       $('#enquiry-ready .ready-actions').hidden=false;
       $('#edit-enquiry').hidden=false;
       $('#enquiry-ready h3').textContent='Your enquiry is ready.';
       $('#enquiry-ready > .eyebrow').textContent='Ready for the next step';
-      $('#enquiry-ready > p').textContent=directEnabled?'Review your project brief, then send it securely to our team. No other app is needed.':'Choose WhatsApp or email to send your project brief. Your message will be filled in for you — press send in the app to complete your enquiry.';
-      $('#enquiry-ready .send-note').hidden=directEnabled;
+      $('#enquiry-ready > p').textContent='Review your project brief, then submit it securely to our team. You will receive a reference once delivery is confirmed.';
+      $('#enquiry-ready .send-note').hidden=false;
       $('#message-preview').textContent = message;
       form.hidden = true;
       $('#enquiry-ready').hidden = false;
@@ -303,8 +291,6 @@
       try { await navigator.clipboard.writeText(message); $('#copy-status').textContent = 'Project brief copied.'; }
       catch { $('#copy-status').textContent = 'Open “Review your project brief” to select and copy the text.'; $('.brief-preview').open = true; }
     });
-    $('#send-whatsapp').addEventListener('click', () => track('enquiry_handoff', {channel:'whatsapp'}));
-    $('#send-email').addEventListener('click', () => track('enquiry_handoff', {channel:'email'}));
   }
 
   const calc = $('#tile-calculator');

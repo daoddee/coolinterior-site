@@ -25,7 +25,7 @@ Dashboard-only credential pairing: open the Supabase project → Edge Functions 
 
 The password is not an environment variable. An owner is provisioned with a random, one-time setup token; only its SHA-256 hash is stored in `ci_panel_owner.setup_token_hash`. The setup URL is `/admin#setup=TOKEN`. The fragment is immediately removed from browser history; this page has no analytics. The owner chooses a password of at least 14 characters. Setup is atomic and cannot be repeated after the hash is stored. If the initial token is lost before use, generate a new token and update only its hash in the database. Do not log or commit the token.
 
-After setup, direct delivery activates automatically when `/api/enquiries?action=health` confirms the database and owner password are ready. Until then, the existing WhatsApp/email flow remains available. Do not tell customers a submission has been received before the database acknowledgement succeeds.
+After setup, direct delivery activates automatically when `/api/enquiries?action=health` confirms the database and owner password are ready. The public enquiry flow is portal-only. If delivery fails, the brief stays on the page and the customer can retry using the same request ID; there is no WhatsApp or email handoff. Do not tell customers a submission has been received before the database acknowledgement succeeds.
 
 ## Operations
 
@@ -38,7 +38,7 @@ After setup, direct delivery activates automatically when `/api/enquiries?action
 - The sample workspace is fictional and held in memory for one visit. It never reads or writes customer records.
 - Permanent deletion requires typing the enquiry reference. Review data retention periodically; keep only what is needed for enquiries, work and applicable record keeping.
 - Internal notes are part of the enquiry; deleting it deletes them. The activity history stores the latest 300 entries per enquiry.
-- No outbound notification emails or photo uploads are implemented in this version. Customers can share photographs when the team contacts them. This is an enquiry CRM, not invoicing, accounting or a multi-role staff identity system.
+- No outbound notification emails or photo uploads are implemented in this version. The team can arrange additional information after reviewing the enquiry. This is an enquiry CRM, not invoicing, accounting or a multi-role staff identity system.
 
 ## Checks
 

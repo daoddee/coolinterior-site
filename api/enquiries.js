@@ -3,7 +3,7 @@ const crypto = require('node:crypto');
 const {STAGES,PRIORITIES,HttpError,text,validateEnquiry,sign,verify,verifyPassword}=require('../server/enquiries-core');
 const COOKIE='__Host-ci_panel';
 const ready=()=>!!(process.env.PANEL_GATEWAY_URL && process.env.PANEL_GATEWAY_SECRET && process.env.PANEL_SESSION_SECRET?.length>=32);
-const enabled=()=>ready() && process.env.ENQUIRIES_ENABLED==='true';
+const enabled=()=>ready() && String(process.env.ENQUIRIES_ENABLED||'').trim().toLowerCase()==='true';
 function connectionError(code) {
   const error=new HttpError(503,'The enquiry service is temporarily unavailable. Please try again or contact us directly.');
   error.connectionCode=code;return error;
@@ -84,7 +84,7 @@ module.exports=async function handler(req,res) {
     }
     if(action==='logout'&&req.method==='POST'){setCookie(res,'',0);return res.status(200).json({ok:true});}
     if(action==='submit'&&req.method==='POST') {
-      if(!enabled())throw new HttpError(503,'Direct enquiries are not enabled yet. Please contact us by WhatsApp or email.');
+      if(!enabled())throw new HttpError(503,'Online enquiries are temporarily unavailable. Your brief has not been sent. Please try again shortly.');
       await rate(req,'submit',8);const b=body(req);if(b.website)throw new HttpError(400,'Please try again.');const data=validateEnquiry(b);
       // The unique request ID makes safe retries return the original acknowledgement.
       const record={...data,id:crypto.randomUUID(),reference:'CI-'+crypto.randomBytes(5).toString('hex').toUpperCase(),activity:[{at:new Date().toISOString(),message:'Enquiry received from website'}]};
