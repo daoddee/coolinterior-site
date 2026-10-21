@@ -97,8 +97,8 @@
     $('#tiling-album-image').src = photo.src;
     $('#tiling-album-image').alt = photo.alt;
     $('#tiling-album-caption').textContent = photo.title;
-    $('#project-viewer-label').textContent = projectGalleries[activeProjectKey].name + ' · Tiling project';
-    $('#tiling-album-counter').textContent = 'Photo ' + (albumIndex + 1) + ' of ' + albumPhotos.length;
+    $('#project-viewer-label').textContent = projectGalleries[activeProjectKey].name + (activeProjectKey === 'flooring' ? ' · Design inspiration' : ' · Cool Interior project');
+    $('#tiling-album-counter').textContent = (activeProjectKey === 'flooring' ? 'Image ' : 'Photo ') + (albumIndex + 1) + ' of ' + albumPhotos.length;
   };
   $$('.project-gallery-open').forEach(button => button.addEventListener('click', () => {
     activeProjectKey = button.dataset.project;
