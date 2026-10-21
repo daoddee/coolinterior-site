@@ -59,3 +59,11 @@ Public pages load campaign-core and campaign-attribution before site.js. Analyti
 The server sanitizes every touch before saving `ci_enquiries.attribution`. Existing enquiries remain unattributed. Moving a lead to Site visit, Quoted or Won stamps `qualified_at` once. The portal groups loaded enquiries by latest source/medium/campaign and shows qualified counts, current wins and won quotation value. These are not payments or profitability calculations. Load older pages to expand the report. CSV exports include both touches and qualification date.
 
 This release does not upload offline conversions to Google Ads. Captured click IDs are available for a future authorized import with the account's conversion action and consent requirements configured. Do not infer ROI without campaign spend and project costs. Campaign values are browser-reported and should not be treated as verified platform billing data.
+
+
+## Optional project photos
+The public form accepts up to five photos of at most 10 MB each and converts them in the browser to JPEG at up to 2048 pixels on the longest side, capped at 2 MB per uploaded file. Canvas conversion removes source metadata. Unsupported image formats show a clear error; the enquiry can be sent without photos.
+
+The enquiry is saved first, then a 30-minute HMAC ticket permits uploads only to that enquiry. The server reserves up to five UUID object paths. The gateway issues Supabase signed upload URLs (two-hour validity, no overwrite) and verifies actual JPEG bytes and sizes before metadata is marked uploaded. Upload errors clearly distinguish a saved enquiry from unconfirmed photos; retries retain the request and photo IDs. The `ci-enquiry-photos` bucket is private, allows image/jpeg only and enforces a 2 MB object limit. No anonymous read/list policies are granted.
+
+The signed-in owner receives ten-minute photo read links when opening an enquiry. Permanent enquiry deletion removes its reserved/uploaded objects through Storage before deleting the database row. Photo uploads do not require analytics consent and are not sent to analytics.

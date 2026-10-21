@@ -1,6 +1,7 @@
 'use strict';
 const crypto = require('node:crypto');
 const {STAGES,PRIORITIES,HttpError,text,validateEnquiry,sign,verify,verifyPassword}=require('../server/enquiries-core');
+const photo=require('../server/enquiry-photos');
 const COOKIE='__Host-ci_panel';
 const ready=()=>!!(process.env.PANEL_GATEWAY_URL && process.env.PANEL_GATEWAY_SECRET && process.env.PANEL_SESSION_SECRET?.length>=32);
 const enabled=()=>ready() && String(process.env.ENQUIRIES_ENABLED||'').trim().toLowerCase()==='true';
@@ -89,11 +90,44 @@ module.exports=async function handler(req,res) {
       // The unique request ID makes safe retries return the original acknowledgement.
       const record={...data,id:crypto.randomUUID(),reference:'CI-'+crypto.randomBytes(5).toString('hex').toUpperCase(),activity:[{at:new Date().toISOString(),message:'Enquiry received from website'}]};
       const rows=await db('ci_enquiries?on_conflict=request_id',{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=representation'},body:JSON.stringify(record)});
-      const saved=rows[0] || (await db('ci_enquiries?request_id=eq.'+encodeURIComponent(data.request_id)+'&select=reference'))[0];
+      const saved=rows[0] || (await db('ci_enquiries?request_id=eq.'+encodeURIComponent(data.request_id)+'&select=reference,id,request_id'))[0];
       if(!saved)throw new HttpError(503,'Unable to confirm delivery. Please retry.');
-      return res.status(201).json({reference:saved.reference});
+      return res.status(201).json({reference:saved.reference,photoToken:photo.ticket(saved,process.env.PANEL_SESSION_SECRET)});
+    }
+    if(['photo-prepare','photo-complete'].includes(action)&&req.method==='POST') {
+      await rate(req,'photo',30);const b=body(req),claims=photo.claims(b.token,process.env.PANEL_SESSION_SECRET);
+      const record=(await db('ci_enquiries?id=eq.'+claims.enquiryId+'&request_id=eq.'+claims.requestId+'&select=id,request_id,photos,version'))[0];
+      if(!record)throw new HttpError(404,'This enquiry is no longer available.');
+      const existing=record.photos||[];
+      if(action==='photo-prepare') {
+        const photos=photo.plan(record.id,b.photos,existing);
+        // A reservation limits this enquiry to five objects and makes retries use the same paths.
+        const updated=await db('ci_enquiries?id=eq.'+record.id+'&version=eq.'+record.version,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({photos,version:record.version+1,updated_at:new Date().toISOString()})});
+        if(!updated.length)throw new HttpError(409,'Your enquiry changed. Please retry the upload.');
+        const removed=existing.filter(p=>!photos.some(x=>x.id===p.id));
+        if(removed.length)await db('storage/remove',{method:'POST',body:JSON.stringify({paths:removed.map(p=>p.path)})});
+        const pending=photos.filter(p=>p.status!=='uploaded');
+        const signed=pending.length?await db('storage/sign-upload',{method:'POST',body:JSON.stringify({paths:pending.map(p=>p.path)})}):[];
+        return res.status(200).json({uploads:photos.map(p=>({id:p.id,uploaded:p.status==='uploaded',url:signed.find(x=>x.path===p.path)?.signedUrl}))});
+      }
+      if(!existing.length)return res.status(200).json({ok:true,count:0});
+      const verified=await db('storage/verify',{method:'POST',body:JSON.stringify({paths:existing.map(p=>p.path)})});
+      if(verified.length!==existing.length||existing.some(p=>verified.find(x=>x.path===p.path)?.size!==p.size))throw new HttpError(409,'Some photos are still missing. Please retry the upload.');
+      const photos=existing.map(p=>({...p,size:verified.find(x=>x.path===p.path).size,status:'uploaded'}));
+      const updated=await db('ci_enquiries?id=eq.'+record.id+'&version=eq.'+record.version,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({photos,version:record.version+1,updated_at:new Date().toISOString()})});
+      if(!updated.length)throw new HttpError(409,'Your enquiry changed. Please retry to confirm the photos.');
+      return res.status(200).json({ok:true,count:photos.length});
     }
     const account=await session(req);
+    if(action==='photos'&&req.method==='GET') {
+      const id=new URL(req.url,'https://local.invalid').searchParams.get('id');
+      if(!photo.UUID.test(id||''))throw new HttpError(400,'Invalid enquiry.');
+      const record=(await db('ci_enquiries?id=eq.'+id+'&select=photos'))[0];
+      if(!record)throw new HttpError(404,'Enquiry not found.');
+      const photos=(record.photos||[]).filter(p=>p.status==='uploaded');
+      const signed=photos.length?await db('storage/sign-read',{method:'POST',body:JSON.stringify({paths:photos.map(p=>p.path)})}):[];
+      return res.status(200).json({photos:photos.map(p=>({id:p.id,name:p.name,url:signed.find(x=>x.path===p.path)?.signedUrl})),expiresIn:600});
+    }
     if(action==='password'&&req.method==='POST') {
       await rate(req,'password',8);const b=body(req);
       if(!verifyPassword(text(b.current,256,true),account.password_hash))throw new HttpError(400,'Current password is incorrect.');
@@ -131,6 +165,8 @@ module.exports=async function handler(req,res) {
     }
     if(action==='delete'&&req.method==='DELETE') {
       const b=body(req);if(!/^[a-f0-9-]{36}$/i.test(b.id||'')||!b.reference)throw new HttpError(400,'Invalid enquiry.');
+      const record=(await db('ci_enquiries?id=eq.'+b.id+'&reference=eq.'+encodeURIComponent(b.reference)+'&select=photos'))[0];
+      if(record?.photos?.length)await db('storage/remove',{method:'POST',body:JSON.stringify({paths:record.photos.map(p=>p.path)})});
       const rows=await db('ci_enquiries?id=eq.'+b.id+'&reference=eq.'+encodeURIComponent(b.reference),{method:'DELETE',headers:{Prefer:'return=representation'}});
       if(!rows.length)throw new HttpError(404,'Enquiry not found.');return res.status(200).json({ok:true});
     }

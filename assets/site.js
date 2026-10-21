@@ -159,6 +159,7 @@
       if (!selected.size) { $('#service-error').hidden = false; $('.service-choice').focus(); return false; }
       return true;
     }
+    if(step===2 && window.CIPhotos?.isPreparing()){alert('Please wait for your photos to finish preparing.');return false;}
     const stepElement = $(`.form-step[data-step="${step}"]`);
     for (const input of $$('input,textarea,select', stepElement)) {
       if (input.required) input.value = input.value.trim();
@@ -229,16 +230,19 @@
     form.append(honeypot);
     directButton.addEventListener('click', async () => {
       if(directSending || !directPayload) return;
-      directSending=true; directButton.disabled=true;
+      directSending=true; directButton.disabled=true; $('#edit-enquiry').disabled=true;
       directStatus.textContent='Sending your enquiry…';
       try {
         const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,attribution:window.CIAttribution?.get()||{},website:honeypot.value}),signal:AbortSignal.timeout(20000)});
         const data=await response.json();
         if(!response.ok || !data.reference) throw new Error(data.error || 'We could not confirm delivery. Please try again.');
+        let photoCount=0;
+        try{photoCount=await window.CIPhotos?.upload({token:data.photoToken,reference:data.reference,onProgress:message=>{directStatus.textContent=message;}})||0;}
+        catch(error){throw new Error('Your enquiry '+data.reference+' was saved, but the photos are not confirmed. '+error.message+' Retry Submit enquiry to upload them safely.');}
         $('#enquiry-ready h3').textContent='Thank you. Your enquiry is with us.';
         $('#enquiry-ready > .eyebrow').textContent='Enquiry received';
         $('#enquiry-ready > p').textContent='Our team will review your project and contact you using the details you provided.';
-        directStatus.textContent='Your reference: '+data.reference+'. Please keep this for your records.';
+        directStatus.textContent='Your reference: '+data.reference+'. '+(photoCount?photoCount+' photo'+(photoCount===1?'':'s')+' attached. ':'')+'Please keep this for your records.';
         $('#enquiry-ready .ready-actions').hidden=true;
         $('#enquiry-ready .send-note').hidden=true;
         $('#edit-enquiry').hidden=true;
@@ -246,7 +250,7 @@
         $('#enquiry-ready h3').focus({preventScroll:true});
       } catch(error) {
         directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' Your project brief is still available below. Please retry using Submit enquiry.';
-      } finally {directSending=false;directButton.disabled=false;}
+      } finally {directSending=false;directButton.disabled=false; $('#edit-enquiry').disabled=false;}
     });
   }
   if (form) {
@@ -279,6 +283,7 @@
       $('#enquiry-ready > .eyebrow').textContent='Ready for the next step';
       $('#enquiry-ready > p').textContent='Review your project brief, then submit it securely to our team. You will receive a reference once delivery is confirmed.';
       $('#enquiry-ready .send-note').hidden=false;
+      window.CIPhotos?.refresh();
       $('#message-preview').textContent = message;
       form.hidden = true;
       $('#enquiry-ready').hidden = false;

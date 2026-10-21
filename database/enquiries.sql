@@ -39,3 +39,7 @@ grant select,insert,update on public.ci_panel_owner to service_role;
 
 -- Consent-based first/latest campaign details remain private with the enquiry.
 alter table public.ci_enquiries add column if not exists attribution jsonb not null default '{}'::jsonb, add column if not exists qualified_at timestamptz;
+
+-- Private photo metadata; binary files use the restricted Storage bucket.
+alter table public.ci_enquiries add column if not exists photos jsonb not null default '[]'::jsonb;
+insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types) values ('ci-enquiry-photos','ci-enquiry-photos',false,2097152,array['image/jpeg']) on conflict (id) do nothing;

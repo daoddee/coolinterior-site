@@ -12,7 +12,8 @@ function text(value, max, required = false) {
 }
 function validateEnquiry(body) {
   if (!Array.isArray(body.services)) throw new HttpError(400, 'Choose a valid service.');
-  const services = [...new Set(body.services)];
+  const serviceNames=['Tiling','Marble','Interior design','Natural stone installation'];
+  const services = [...new Set(body.services.map(value=>typeof value==='string'?serviceNames.find(name=>name.toLowerCase()===value.toLowerCase())||value:value))];
   if (!services.length || services.length > 4 || services.some(s => !['Tiling','Marble','Interior design','Natural stone installation'].includes(s))) throw new HttpError(400, 'Choose a valid service.');
   const name = text(body.name, 100, true), location = text(body.location, 80, true), details = text(body.details, 2000, true);
   if (name.length < 2 || location.length < 2 || details.length < 10) throw new HttpError(400, 'Please provide your name, location and project details.');
