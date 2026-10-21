@@ -9,3 +9,9 @@
 /* Reduce the gap from the project carousel into the commercial feature. */
 #projects{padding-bottom:32px}#commercial-work{padding-top:40px;padding-bottom:40px}
 @media(max-width:800px){#projects{padding-bottom:24px}#commercial-work{padding-top:28px;padding-bottom:32px}}
+
+/* A compact inspiration gallery kept separate from completed installations. */
+.design-ideas-section{padding:40px 0;background:var(--cream);border-top:1px solid var(--line)}
+.design-ideas-heading{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:24px}.design-ideas-heading .eyebrow{margin-bottom:10px}.design-ideas-heading h2{font-size:clamp(30px,3vw,42px)}.design-ideas-heading p{font-size:14px;max-width:560px}
+.design-ideas-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:20px}.design-ideas-grid figure{min-width:0;margin:0}.design-ideas-grid button{position:relative;display:block;width:100%;padding:0;border:0;overflow:hidden;border-radius:6px;background:#e9e5dd}.design-ideas-grid img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}.design-ideas-grid button span{position:absolute;right:10px;bottom:10px;background:var(--paper);padding:5px 10px;border-radius:3px;font-size:12px}.design-ideas-grid figcaption{padding-top:9px;font-size:13px;color:var(--muted)}
+@media(max-width:700px){.design-ideas-section{padding:28px 0}.design-ideas-heading{grid-template-columns:1fr;gap:12px;margin-bottom:20px}.design-ideas-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-bottom:10px}.design-ideas-grid figure{flex:0 0 82%;scroll-snap-align:start}}
