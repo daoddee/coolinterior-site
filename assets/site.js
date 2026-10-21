@@ -16,7 +16,7 @@
   };
   document.addEventListener('cookieyes_consent_update', updateAnalyticsConsent);
   document.addEventListener('cookieyes_banner_load', updateAnalyticsConsent);
-  const measuredActions = new Set(['quote_start', 'quote_step', 'enquiry_prepared', 'enquiry_handoff', 'contact_click', 'calculator_to_quote']);
+  const measuredActions = new Set(['quote_start', 'quote_step', 'enquiry_prepared', 'generate_lead', 'enquiry_handoff', 'contact_click', 'calculator_to_quote']);
   document.addEventListener('coolinterior:interaction', event => {
     const { action, channel, step } = event.detail || {};
     if (!analyticsAllowed || !measuredActions.has(action) || typeof window.gtag !== 'function') return;
@@ -209,6 +209,55 @@
   const presetArea = params.get('area');
   if (presetArea && $('#location') && presetArea.length <= 100) $('#location').value = presetArea;
   if (presetService && serviceData.map(s => s.name).includes(presetService)) { selected.add(presetService); syncServices(); }
+  // Direct delivery is shown only when the server confirms database readiness.
+  let directEnabled = false;
+  let directRequestId = null;
+  let directPayload = null;
+  let directSending = false;
+  const directButton = document.createElement('button');
+  directButton.type = 'button'; directButton.className = 'button';
+  directButton.id = 'send-direct'; directButton.textContent = 'Send enquiry to our team';
+  directButton.hidden = true;
+  const directStatus = document.createElement('p');
+  directStatus.setAttribute('role', 'status'); directStatus.className = 'direct-enquiry-status';
+  const checkDelivery = async () => {
+    try {
+      const response = await fetch('/api/enquiries?action=health', {cache:'no-store', signal:AbortSignal.timeout(6000)});
+      directEnabled = response.ok && (await response.json()).accepting === true;
+    } catch { directEnabled = false; }
+  };
+  if (form) {
+    $('#enquiry-ready .ready-actions').prepend(directButton);
+    $('#enquiry-ready .ready-actions').after(directStatus);
+    const honeypot = document.createElement('input');
+    honeypot.name = 'website'; honeypot.autocomplete = 'off'; honeypot.tabIndex = -1;
+    honeypot.setAttribute('aria-hidden','true');
+    honeypot.style.cssText='position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden';
+    form.append(honeypot);
+    checkDelivery();
+    directButton.addEventListener('click', async () => {
+      if(directSending || !directPayload) return;
+      directSending=true; directButton.disabled=true;
+      directStatus.textContent='Sending your enquiry…';
+      try {
+        const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,website:honeypot.value}),signal:AbortSignal.timeout(20000)});
+        const data=await response.json();
+        if(!response.ok || !data.reference) throw new Error(data.error || 'We could not confirm delivery. Please try again.');
+        $('#enquiry-ready h3').textContent='Thank you. Your enquiry is with us.';
+        $('#enquiry-ready > .eyebrow').textContent='Enquiry received';
+        $('#enquiry-ready > p').textContent='Our team will review your project and contact you using the details you provided.';
+        directStatus.textContent='Your reference: '+data.reference+'. Please keep this for your records.';
+        $('#enquiry-ready .ready-actions').hidden=true;
+        $('#enquiry-ready .send-note').hidden=true;
+        $('#edit-enquiry').hidden=true;
+        track('generate_lead', {channel:'website'});
+        $('#enquiry-ready h3').focus({preventScroll:true});
+      } catch(error) {
+        directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' You can also contact us by email or WhatsApp.';
+        $('#send-whatsapp').hidden=false; $('#send-email').hidden=false;
+      } finally {directSending=false;directButton.disabled=false;}
+    });
+  }
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -230,6 +279,18 @@
       ].join('\n');
       $('#send-whatsapp').href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       $('#send-email').href = `mailto:${email}?subject=${encodeURIComponent('Project enquiry — CoolInterior')}&body=${encodeURIComponent(message)}`;
+      const payload={name:$('#customer-name').value.trim(),phone:$('#phone').value.trim(),email:$('#email').value.trim(),services:[...selected],location:$('#location').value.trim(),property:$('#property').value,timeframe:$('#timeframe').value,budget:$('#budget').value,details:$('#details').value.trim(),source:location.pathname};
+      if(JSON.stringify(payload)!==JSON.stringify(directPayload && Object.fromEntries(Object.entries(directPayload).filter(([key])=>key!=='requestId')))) directRequestId=crypto.randomUUID();
+      directPayload={...payload,requestId:directRequestId};
+      directStatus.textContent='';
+      directButton.hidden=!directEnabled;
+      $('#send-whatsapp').hidden=directEnabled; $('#send-email').hidden=directEnabled;
+      $('#enquiry-ready .ready-actions').hidden=false;
+      $('#edit-enquiry').hidden=false;
+      $('#enquiry-ready h3').textContent='Your enquiry is ready.';
+      $('#enquiry-ready > .eyebrow').textContent='Ready for the next step';
+      $('#enquiry-ready > p').textContent=directEnabled?'Review your project brief, then send it securely to our team. No other app is needed.':'Choose WhatsApp or email to send your project brief. Your message will be filled in for you — press send in the app to complete your enquiry.';
+      $('#enquiry-ready .send-note').hidden=directEnabled;
       $('#message-preview').textContent = message;
       form.hidden = true;
       $('#enquiry-ready').hidden = false;
