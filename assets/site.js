@@ -232,7 +232,7 @@
       directSending=true; directButton.disabled=true;
       directStatus.textContent='Sending your enquiry…';
       try {
-        const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,website:honeypot.value}),signal:AbortSignal.timeout(20000)});
+        const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,attribution:window.CIAttribution?.get()||{},website:honeypot.value}),signal:AbortSignal.timeout(20000)});
         const data=await response.json();
         if(!response.ok || !data.reference) throw new Error(data.error || 'We could not confirm delivery. Please try again.');
         $('#enquiry-ready h3').textContent='Thank you. Your enquiry is with us.';
