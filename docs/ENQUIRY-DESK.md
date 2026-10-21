@@ -8,7 +8,7 @@ The existing Vercel/GitHub website now includes `/admin`, a private customer enq
 - Tables: `ci_enquiries`, `ci_rate_limits`, `ci_panel_owner`.
 - Edge gateway: `https://ysvmbvnnwpsqtqgnsccb.supabase.co/functions/v1/ci-panel-gateway`.
 - Tables have RLS enabled with no client read/write grants. This intentionally denies anonymous and ordinary authenticated access. Only the server-side gateway uses the service role.
-- Gateway requires a high-entropy bearer credential; only its SHA-256 fingerprint is in its deployed source. Never put the credential in browser code or Git.
+- Gateway requires a high-entropy bearer credential of at least 32 characters. Set `PANEL_GATEWAY_SECRET` in Supabase Edge Function Secrets and the identical value in Vercel Production environment variables. The function reads the secret server-side and compares SHA-256 digests. It fails closed when the secret is missing or too short. Never put the credential in browser code or Git.
 
 ## Vercel production configuration
 
@@ -17,11 +17,11 @@ Set these **sensitive, production-only** environment variables on the Vercel pro
 | Key | Value |
 | --- | --- |
 | `PANEL_GATEWAY_URL` | The gateway URL above |
-| `PANEL_GATEWAY_SECRET` | The matching generated gateway credential, supplied securely during setup |
+| `PANEL_GATEWAY_SECRET` | The same random credential (at least 32 characters) stored in Supabase Edge Function Secrets |
 | `PANEL_SESSION_SECRET` | Independent random secret of at least 32 characters |
 | `ENQUIRIES_ENABLED` | `true` |
 
-Redeploy the exact approved GitHub source after configuring variables. Do not configure a live customer database on arbitrary preview deployments.
+Dashboard-only credential pairing: open the Supabase project → Edge Functions → Secrets, save `PANEL_GATEWAY_SECRET`, then save the identical value as a Secret in Vercel Production. If a previously saved value cannot be recovered, generate a new strong value with a password manager and replace both. Never paste it into chat. Supabase applies secret changes immediately; Vercel needs a new deployment.\n\nRedeploy the exact approved GitHub source after configuring variables. Do not configure a live customer database on arbitrary preview deployments.
 
 The password is not an environment variable. An owner is provisioned with a random, one-time setup token; only its SHA-256 hash is stored in `ci_panel_owner.setup_token_hash`. The setup URL is `/admin#setup=TOKEN`. The fragment is immediately removed from browser history; this page has no analytics. The owner chooses a password of at least 14 characters. Setup is atomic and cannot be repeated after the hash is stored. If the initial token is lost before use, generate a new token and update only its hash in the database. Do not log or commit the token.
 
