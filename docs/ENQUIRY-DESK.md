@@ -76,3 +76,12 @@ A database cron checks every 15 minutes. On weekdays from 09:00 Europe/London, i
 Desktop notifications are optional and require the owner's explicit browser permission. They operate while the portal tab is open; browser suspension may delay delivery. Initial sign-in displays existing alerts without flooding desktop notifications. The browser alert body contains no customer contact details. These are not background push or email alerts. Email delivery remains unconnected and is labelled in the portal. A sending provider, verified sender and deployment credentials are required before outbound email can be enabled.
 
 Apply database/owner-alerts.sql once to provision the private alert table, service-only RPCs, trigger and cron job. Gateway RPC paths are allowlisted. No public alert reads or writes are permitted.
+
+## Phase 3: compact enquiry and contact intent
+All 34 public enquiry forms use a single visible form requiring name, one phone number or email, postcode and a short description. Photos and service/property/timing/budget details are optional disclosures. The service defaults to the relevant page and can be changed. Submitting saves directly; no separate review-stage confirmation click is required. The editable brief and safe retry controls remain available if saving or photo transfer fails. A response target of one working day is displayed before sending and on confirmation, as confirmed by the owner.
+
+The mobile contact bar provides Call, Get a quote and WhatsApp, with safe-area spacing. It hides during input focus, keyboard display or an open dialog. WhatsApp opens the business number +44 7365 155 414 with a generic project introduction; no form fields are automatically forwarded.
+
+Analytics (with consent) records WhatsApp as contact_click with contact_channel=whatsapp. It never counts as generate_lead. A confirmed server save emits generate_lead once per reference in the current page, even if optional photo transfer needs a retry. form_variant=compact distinguishes this journey. GA4 event settings and Google Ads conversion selections must continue to use confirmed lead events for enquiry reporting; a WhatsApp click alone cannot establish that a message was sent. No external WhatsApp delivery callback is implemented.
+
+Owner alerts and weekday follow-up reminders remain in the portal. Email notification delivery is not connected; desktop notifications require the portal tab to remain open. This limitation must not be presented as guaranteed background email delivery.

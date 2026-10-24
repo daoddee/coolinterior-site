@@ -6,7 +6,7 @@
  let photos=[],processing=false,uploading=false,attempted=false,problem='';
  const box=document.createElement('div');box.className='enquiry-photo-picker';
  box.innerHTML='<label for="project-photos">Project photos <span>(optional)</span></label><p id="photo-help">Add up to 5 photos, up to 10 MB each. JPG, PNG and WebP are supported. Photos are resized and location metadata is removed before upload.</p><input id="project-photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple aria-describedby="photo-help photo-status"><div id="photo-previews" class="enquiry-photo-grid"></div><p id="photo-status" role="status"></p>';
- step.querySelector('.form-navigation').before(box);
+ if(form.classList.contains('compact-enquiry')){const optional=document.createElement('details'),summary=document.createElement('summary');optional.className='compact-photos';summary.textContent='Add project photos (optional)';optional.append(summary,box);step.querySelector('.compact-extras').before(optional);}else step.querySelector('.form-navigation').before(box);
  const input=box.querySelector('input'),previews=box.querySelector('#photo-previews'),status=box.querySelector('#photo-status');
  const review=document.createElement('p');review.className='enquiry-photo-review';document.querySelector('#enquiry-ready .ready-actions').before(review);
  const update=()=>{

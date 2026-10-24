@@ -20,8 +20,8 @@
   document.addEventListener('coolinterior:interaction', event => {
     const { action, channel, step } = event.detail || {};
     if (!analyticsAllowed || !measuredActions.has(action) || typeof window.gtag !== 'function') return;
-    const parameters = { send_to: 'G-CMTEW5X2MT' };
-    if (['phone', 'email'].includes(channel)) parameters.contact_channel = channel;
+    const parameters = { send_to: 'G-CMTEW5X2MT', form_variant: document.querySelector('#quote-form.compact-enquiry') ? 'compact' : 'guided' };
+    if (['phone', 'email', 'whatsapp', 'website'].includes(channel)) parameters.contact_channel = channel;
     if ([1, 2, 3].includes(step)) parameters.form_step = step;
     window.gtag('event', action, parameters);
   });
@@ -129,7 +129,10 @@
   $('#tiling-details-link')?.addEventListener('click', () => $('#service-dialog').close());
 
   const form = $('#quote-form');
+  const compact = form?.classList.contains('compact-enquiry');
   const selected = new Set();
+  const defaultService = location.pathname.includes('stonework') ? 'Marble' : location.pathname.includes('natural-stone') ? 'Natural stone installation' : 'Tiling';
+  if(compact) selected.add(defaultService);
   let currentStep = 1;
   let message = '';
   const syncServices = () => {
@@ -141,6 +144,7 @@
     $('#brief-summary').textContent = `${[...selected].join(', ')} · ${location} · ${$('#property').value} · ${$('#timeframe').value}`;
   };
   const showStep = (step, focus = true) => {
+    if(compact){form.hidden=false;$('#enquiry-ready').hidden=true;if(focus){form.querySelector('h3').focus({preventScroll:true});$('.quote-panel').scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'start'});}return;}
     currentStep = step;
     $$('.form-step').forEach(el => { el.hidden = Number(el.dataset.step) !== step; });
     $('#step-label').textContent = `STEP ${String(step).padStart(2, '0')} / 03`;
@@ -155,6 +159,14 @@
     }
   };
   const validateStep = step => {
+    if(compact){
+      if(window.CIPhotos?.isPreparing()){alert('Please wait for your photos to finish preparing.');return false;}
+      for(const input of $$('input:not([type=hidden]),textarea,select',form)){if(input.required)input.value=input.value.trim();if(!input.checkValidity()){input.closest('details')?.setAttribute('open','');input.reportValidity();input.focus();return false;}}
+      const value=$('#contact').value.trim(),isEmail=value.includes('@');
+      const valid=isEmail?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value):/^[+\d\s().-]+$/.test(value)&&value.replace(/\D/g,'').length>=7&&value.replace(/\D/g,'').length<=15;
+      $('#contact-error').hidden=valid;$('#contact').setAttribute('aria-invalid',String(!valid));if(!valid){$('#contact').focus();return false;}
+      $('#email').value=isEmail?value:'';$('#phone').value=isEmail?'':value;if(!selected.size){selected.add(defaultService);syncServices();}return true;
+    }
     if (step === 1) {
       if (!selected.size) { $('#service-error').hidden = false; $('.service-choice').focus(); return false; }
       return true;
@@ -185,7 +197,7 @@
   $$('[data-back]').forEach(button => button.addEventListener('click', () => showStep(Number(button.dataset.back))));
   // One entry point ensures every service CTA populates the same enquiry flow.
   const startQuote = (service, inspiration = '') => {
-    if (service) { selected.add(service); syncServices(); }
+    if (service) { if(compact)selected.clear();selected.add(service); syncServices(); }
     if (inspiration) {
       const note = `Interested in: ${inspiration}.`;
       if (!$('#details').value.includes(note)) $('#details').value = [$('#details').value.trim(), note].filter(Boolean).join('\n');
@@ -209,11 +221,12 @@
   const presetService = params.get('service');
   const presetArea = params.get('area');
   if (presetArea && $('#location') && presetArea.length <= 100) $('#location').value = presetArea;
-  if (presetService && serviceData.map(s => s.name).includes(presetService)) { selected.add(presetService); syncServices(); }
+  if (presetService && serviceData.map(s => s.name).includes(presetService)) { if(compact)selected.clear();selected.add(presetService); syncServices(); }
   // Quote requests use the website API only; success requires a saved reference.
   let directRequestId = null;
   let directPayload = null;
   let directSending = false;
+  const confirmedReferences=new Set();
   const directButton = document.createElement('button');
   directButton.type = 'button'; directButton.className = 'button';
   directButton.id = 'send-direct'; directButton.textContent = 'Submit enquiry';
@@ -236,17 +249,17 @@
         const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,attribution:window.CIAttribution?.get()||{},website:honeypot.value}),signal:AbortSignal.timeout(20000)});
         const data=await response.json();
         if(!response.ok || !data.reference) throw new Error(data.error || 'We could not confirm delivery. Please try again.');
+        if(!confirmedReferences.has(data.reference)){confirmedReferences.add(data.reference);track('generate_lead',{channel:'website'});}
         let photoCount=0;
         try{photoCount=await window.CIPhotos?.upload({token:data.photoToken,reference:data.reference,onProgress:message=>{directStatus.textContent=message;}})||0;}
         catch(error){throw new Error('Your enquiry '+data.reference+' was saved, but the photos are not confirmed. '+error.message+' Retry Submit enquiry to upload them safely.');}
         $('#enquiry-ready h3').textContent='Thank you. Your enquiry is with us.';
         $('#enquiry-ready > .eyebrow').textContent='Enquiry received';
-        $('#enquiry-ready > p').textContent='Our team will review your project and contact you using the details you provided.';
+        $('#enquiry-ready > p').textContent='We aim to reply within one working day using the contact details you provided.';
         directStatus.textContent='Your reference: '+data.reference+'. '+(photoCount?photoCount+' photo'+(photoCount===1?'':'s')+' attached. ':'')+'Please keep this for your records.';
         $('#enquiry-ready .ready-actions').hidden=true;
         $('#enquiry-ready .send-note').hidden=true;
         $('#edit-enquiry').hidden=true;
-        track('generate_lead', {channel:'website'});
         $('#enquiry-ready h3').focus({preventScroll:true});
       } catch(error) {
         directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' Your project brief is still available below. Please retry using Submit enquiry.';
@@ -257,8 +270,8 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
       // Enter in a field moves the wizard forward without bypassing validation.
-      if (currentStep < 3) { if (validateStep(currentStep)) showStep(currentStep + 1); return; }
-      for (const step of [1,2,3]) { if (!validateStep(step)) { showStep(step); validateStep(step); return; } }
+      if (!compact && currentStep < 3) { if (validateStep(currentStep)) showStep(currentStep + 1); return; }
+      if(compact){if(!validateStep(2))return;}else for (const step of [1,2,3]) { if (!validateStep(step)) { showStep(step); validateStep(step); return; } }
       message = [
         'PROJECT ENQUIRY — CoolInterior', '',
         `Name: ${$('#customer-name').value.trim()}`,
@@ -290,13 +303,21 @@
       $('#enquiry-ready h3').focus({preventScroll:true});
       $('.quote-panel').scrollIntoView({behavior:reducedMotion ? 'instant' : 'smooth',block:'start'});
       track('enquiry_prepared', {services:[...selected]});
+      if(compact) directButton.click();
     });
-    $('#edit-enquiry').addEventListener('click', () => showStep(3));
+    $('#edit-enquiry').addEventListener('click', () => {showStep(3);if(compact)$('#compact-submit').focus();});
     $('#copy-enquiry').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(message); $('#copy-status').textContent = 'Project brief copied.'; }
       catch { $('#copy-status').textContent = 'Open “Review your project brief” to select and copy the text.'; $('.brief-preview').open = true; }
     });
   }
+
+  if(compact)syncServices();
+  // Hide the fixed contact controls while typing or a dialog is open.
+  const updateContactBar=()=>{const typing=/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||''),keyboard=window.visualViewport&&window.innerHeight-window.visualViewport.height>140;document.body.classList.toggle('contact-controls-hidden',typing||!!keyboard||!!document.querySelector('dialog[open]'));};
+  document.addEventListener('focusin',updateContactBar);document.addEventListener('focusout',()=>requestAnimationFrame(updateContactBar));window.visualViewport?.addEventListener('resize',updateContactBar);
+  document.querySelectorAll('dialog').forEach(dialog=>new MutationObserver(updateContactBar).observe(dialog,{attributes:true,attributeFilter:['open']}));
+  updateContactBar();
 
   const calc = $('#tile-calculator');
   let calculation = null;
