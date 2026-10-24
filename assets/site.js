@@ -220,7 +220,7 @@
   const params = new URLSearchParams(location.search);
   const presetService = params.get('service');
   const presetArea = params.get('area');
-  if (presetArea && $('#location') && presetArea.length <= 100) $('#location').value = presetArea;
+  if (presetArea && $('#location') && presetArea.length <= 100) {if(!compact || /[0-9]/.test(presetArea)&&presetArea.length<=10) $('#location').value = presetArea;}
   if (presetService && serviceData.map(s => s.name).includes(presetService)) { if(compact)selected.clear();selected.add(presetService); syncServices(); }
   // Quote requests use the website API only; success requires a saved reference.
   let directRequestId = null;
@@ -245,6 +245,7 @@
       if(directSending || !directPayload) return;
       directSending=true; directButton.disabled=true; $('#edit-enquiry').disabled=true;
       directStatus.textContent='Sending your enquiry…';
+      if(compact){$('#enquiry-ready h3').textContent='Sending your enquiry…';$('#enquiry-ready > p').textContent='Please keep this page open while we save your details and optional photos.';}
       try {
         const response=await fetch('/api/enquiries?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...directPayload,attribution:window.CIAttribution?.get()||{},website:honeypot.value}),signal:AbortSignal.timeout(20000)});
         const data=await response.json();
@@ -262,6 +263,7 @@
         $('#edit-enquiry').hidden=true;
         $('#enquiry-ready h3').focus({preventScroll:true});
       } catch(error) {
+        if(compact){$('#enquiry-ready h3').textContent='Please check your enquiry.';$('#enquiry-ready > p').textContent='Your details are retained below. Check the delivery status before retrying.';}
         directStatus.textContent=(error.name==='TimeoutError'?'Delivery has not been confirmed. Retry safely using this button; duplicate enquiries will not be created.':error.message)+' Your project brief is still available below. Please retry using Submit enquiry.';
       } finally {directSending=false;directButton.disabled=false; $('#edit-enquiry').disabled=false;}
     });
