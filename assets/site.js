@@ -363,3 +363,18 @@
   }
   // If scripting is disabled, the always-visible contact links remain available.
 })();
+
+// Unfold optional enquiry sections once the customer's core brief is ready.
+document.addEventListener('DOMContentLoaded',()=>{
+ const form=document.querySelector('form.compact-enquiry');if(!form)return;
+ const required=['customer-name','contact','location','details'].map(id=>form.querySelector('#'+id));
+ if(required.some(field=>!field))return;
+ let unfolded=false;
+ const ready=()=>required.every(field=>field.value.trim()&&field.checkValidity())&&(()=>{const value=required[1].value.trim();return value.includes('@')?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value):/^[+\d\s().-]+$/.test(value)&&value.replace(/\D/g,'').length>=7&&value.replace(/\D/g,'').length<=15;})();
+ const unfold=()=>{if(unfolded||!ready())return;unfolded=true;form.querySelectorAll('.compact-photos,.compact-extras').forEach(section=>{section.open=true;});};
+ // Wait for a completed field, rather than moving the page while someone types.
+ form.addEventListener('focusout',unfold);form.addEventListener('change',unfold);
+ // Also handles browser autofill without requiring a second interaction.
+ let idle;form.addEventListener('input',()=>{clearTimeout(idle);idle=setTimeout(unfold,1200);});
+ unfold();
+});
