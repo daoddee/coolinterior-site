@@ -1,0 +1,9 @@
+/* Advice hub uses a readable grid rather than unstyled intrinsic image heights. */
+#blog .blog-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;min-width:0}
+#blog .blog-card{min-width:0;align-self:stretch}
+#blog .blog-card-image{position:relative;display:block;width:100%;height:auto;aspect-ratio:16/9;overflow:hidden;background:#f1f0ea;flex:none}
+#blog .blog-card-image img{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:cover;object-position:center}
+#blog .blog-card-image img[src*="/assets/blog/"]{object-fit:contain}
+#blog .blog-card-copy{padding:24px;overflow-wrap:break-word}
+#blog .blog-card h3{font-size:26px}
+@media(max-width:650px){#blog .blog-card-grid{grid-template-columns:minmax(0,1fr);gap:22px}#blog .blog-card-image{aspect-ratio:16/9;max-height:260px}#blog .blog-card-copy{padding:20px}#blog .blog-card h3{font-size:24px;margin:10px 0 14px}#blog .blog-card p{font-size:14px;line-height:1.7;margin-bottom:14px}.design-ideas-grid figure{flex-basis:86%}.design-ideas-grid figure>a{aspect-ratio:4/3}.design-ideas-grid figure>a img{width:100%;height:100%;object-fit:cover}.home-detail-header h1{font-size:clamp(32px,8vw,44px)}}
