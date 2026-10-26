@@ -4,3 +4,6 @@
 #google-reviews .review-person-avatar{display:flex;align-items:center;justify-content:center;width:48px;height:48px;min-width:48px;min-height:48px;flex:0 0 48px;border-radius:50%;overflow:hidden}
 #google-reviews .review-person-avatar img{display:block!important;width:48px!important;height:48px!important;min-width:48px;max-width:none;object-fit:cover;border-radius:50%;opacity:1;visibility:visible}
 @media(max-width:650px){#google-reviews .review-person-header{display:flex;align-items:center;gap:12px}#google-reviews .review-person-identity{min-width:0;flex:1}}
+
+/* Decorative check accents; no platform verification status is asserted. */
+#google-reviews .review-person-avatar{position:relative;overflow:visible!important;isolation:isolate}#google-reviews .review-person-avatar .review-profile-tick{position:absolute;right:-5px;bottom:-3px;width:20px;height:20px;min-width:20px;z-index:2;display:block;pointer-events:none;flex:none}
