@@ -11,3 +11,6 @@
 .hero-reassurance .page-jumps{width:100%;margin:0;padding:6px 0 12px;min-width:0;justify-content:flex-start;flex-wrap:wrap;gap:8px 18px}
 @media(min-width:761px){.hero-reassurance>.container{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);column-gap:48px;row-gap:2px;align-items:start}.hero-reassurance .hero-actions{grid-column:1;grid-row:1}.hero-reassurance .hero-link{display:none}.hero-reassurance .hero-sales-benefits{grid-column:2;grid-row:1/4;justify-self:end;width:100%;max-width:650px}.hero-reassurance .hero-bottom{grid-column:1;grid-row:2}.hero-reassurance .page-jumps{grid-column:1;grid-row:3}.hero-reassurance .page-jumps a{font-size:12px}.hero-reassurance{padding-bottom:18px}}
 @media(max-width:760px){.hero-reassurance .page-jumps{grid-column:1;margin-top:4px;margin-bottom:12px}}
+
+/* Match the 26px inset of the photo frame in the right half of the hero. */
+@media(min-width:761px){.hero-reassurance>.container{grid-template-columns:calc(50% + 26px) minmax(0,1fr);column-gap:0}.hero-reassurance .hero-sales-benefits{justify-self:start;max-width:none;margin:0;padding:0}.hero-reassurance .hero-sales-benefits li{display:flex;align-items:flex-start;gap:11px}.hero-reassurance .hero-sales-benefits li>span{min-width:0;flex:1}.hero-reassurance .hero-actions,.hero-reassurance .hero-bottom,.hero-reassurance .page-jumps{padding-right:26px}}
