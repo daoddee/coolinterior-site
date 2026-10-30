@@ -364,7 +364,7 @@
   // If scripting is disabled, the always-visible contact links remain available.
 })();
 
-// A single-question quote flow with automatic advance and editable answers.
+// Customer-controlled quote steps: typing and pauses never advance the form.
 document.addEventListener('DOMContentLoaded',()=>{
  const form=document.querySelector('form.compact-enquiry');if(!form)return;
  const fields=['customer-name','contact','location','details'].map(id=>form.querySelector('#'+id));
@@ -372,20 +372,22 @@ document.addEventListener('DOMContentLoaded',()=>{
  const rows=fields.map(field=>field.closest('.field'));
  const optional=[...form.querySelectorAll('.compact-photos,.compact-extras')];
  const finish=[...form.querySelectorAll('.compact-response,.form-privacy,.form-navigation')];
- const intro=form.querySelector('.compact-intro');if(intro)intro.textContent='One quick question at a time. Photos and extra information are optional.';
+ const intro=form.querySelector('.compact-intro');if(intro)intro.textContent='Take your time. Use Continue when you are ready; Back lets you edit an answer.';
  const controls=document.createElement('div');controls.className='quote-step-controls';
  const back=document.createElement('button');back.type='button';back.className='text-button';back.textContent='← Back';
  const progress=document.createElement('span');progress.className='quote-step-progress';progress.setAttribute('aria-live','polite');
  const next=document.createElement('button');next.type='button';next.className='button';next.textContent='Continue →';
  controls.append(back,progress,next);form.querySelector('.fields').after(controls);
- form.classList.add('quote-single-question');let stage=0,busy=false,idle;
+ form.classList.add('quote-single-question');let stage=0,busy=false;
  const valid=i=>{const field=fields[i],value=field.value.trim();if(!value||!field.checkValidity())return false;if(i!==1)return true;return value.includes('@')?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value):/^[+\d\s().-]+$/.test(value)&&value.replace(/\D/g,'').length>=7&&value.replace(/\D/g,'').length<=15;};
  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
  function render(){rows.forEach((row,i)=>row.hidden=i!==stage);[...optional,...finish].forEach(el=>el.hidden=stage!==4);back.hidden=stage===0;next.hidden=stage===4;progress.textContent=stage===4?'Ready to send':`Question ${stage+1} of 4`;if(stage===4)optional.forEach(el=>el.open=true);}
- async function go(target){if(busy||target===stage)return;clearTimeout(idle);busy=true;const outgoing=rows[stage];if(outgoing&&!motion.matches){await outgoing.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(-40px)'}],{duration:220,easing:'ease-in',fill:'none'}).finished;}stage=target;render();const incoming=rows[stage];if(incoming&&!motion.matches)incoming.animate([{opacity:0,transform:'translateX(40px)'},{opacity:1,transform:'translateX(0)'}],{duration:250,easing:'ease-out'});busy=false;if(stage<4)fields[stage].focus({preventScroll:true});else optional[0]?.querySelector('summary')?.focus({preventScroll:true});}
+ async function go(target){if(busy||target===stage)return;busy=true;const outgoing=rows[stage];if(outgoing&&!motion.matches){await outgoing.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(-40px)'}],{duration:220,easing:'ease-in',fill:'none'}).finished;}stage=target;render();const incoming=rows[stage];if(incoming&&!motion.matches)incoming.animate([{opacity:0,transform:'translateX(40px)'},{opacity:1,transform:'translateX(0)'}],{duration:250,easing:'ease-out'});busy=false;if(stage<4)fields[stage].focus({preventScroll:true});else optional[0]?.querySelector('summary')?.focus({preventScroll:true});}
  function advance(report=false){if(stage>=4||busy)return;if(valid(stage)){go(stage+1);}else if(report){fields[stage].reportValidity();if(stage===1){const error=form.querySelector('#contact-error');if(error)error.hidden=false;fields[stage].focus();}}}
  back.addEventListener('click',()=>go(Math.max(0,stage-1)));next.addEventListener('click',()=>advance(true));
- fields.forEach((field,i)=>{field.addEventListener('input',()=>{clearTimeout(idle);if(i!==stage)return;const error=form.querySelector('#contact-error');if(error)error.hidden=true;idle=setTimeout(()=>advance(),i===3?3000:1800);});field.addEventListener('change',()=>{if(i===stage&&valid(i))advance();});});
+ fields.forEach(field=>field.addEventListener('input',()=>{const error=form.querySelector('#contact-error');if(error)error.hidden=true;}));
+ // The hero Continue button is an explicit request to continue with the supplied name.
+ form.addEventListener('quote-name-continue',()=>{if(stage===0)advance(true);});
  form.addEventListener('keydown',event=>{if(event.key==='Enter'&&stage<4&&event.target===fields[stage]&&event.target.tagName!=='TEXTAREA'){event.preventDefault();advance(true);}},true);
  form.addEventListener('submit',event=>{if(stage<4){event.preventDefault();event.stopImmediatePropagation();advance(true);return;}const invalid=fields.findIndex((field,i)=>!valid(i));if(invalid>=0){event.preventDefault();event.stopImmediatePropagation();go(invalid);}},true);
  render();
