@@ -18,9 +18,10 @@ function validateEnquiry(body) {
   const name = text(body.name, 100, true), location = text(body.location, 80, true), details = text(body.details, 2000, true);
   if (name.length < 2 || location.length < 2 || details.length < 10) throw new HttpError(400, 'Please provide your name, location and project details.');
   const email = text(body.email, 160), phone = text(body.phone, 30);
-  if (!email && !phone) throw new HttpError(400, 'Provide an email address or phone number.');
+  if (!phone) throw new HttpError(400, 'Enter your phone number.');
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new HttpError(400, 'Check your email address.');
-  if (phone && (!/^[+\d\s().-]+$/.test(phone) || phone.replace(/\D/g,'').length < 7 || phone.replace(/\D/g,'').length > 15)) throw new HttpError(400, 'Check your phone number.');
+  const phoneDigits = phone.replace(/\D/g, '').length;
+  if (!/^\+?[\d\s().-]+$/.test(phone) || phoneDigits < 7 || phoneDigits > 15) throw new HttpError(400, 'Enter a valid phone number.');
   if (!/^[a-f0-9-]{36}$/i.test(body.requestId || '')) throw new HttpError(400, 'Refresh the page and try again.');
   return { name, location, details, email, phone, services, property: text(body.property,80), timeframe: text(body.timeframe,100), budget: text(body.budget,100), source: text(body.source,200), attribution: sanitize(body.attribution), request_id: body.requestId };
 }

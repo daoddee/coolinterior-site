@@ -1,6 +1,6 @@
 const test=require('node:test');const assert=require('node:assert/strict');const crypto=require('node:crypto');
 const core=require('../server/enquiries-core');const handler=require('../api/enquiries');
-const base={name:'Test Customer',services:['Tiling'],location:'NW10',details:'Bathroom wall and floor tiling',email:'test@example.com',phone:'',requestId:crypto.randomUUID()};
+const base={name:'Test Customer',services:['Tiling'],location:'NW10',details:'Bathroom wall and floor tiling',email:'test@example.com',phone:'07700 900123',requestId:crypto.randomUUID()};
 test('reject invalid enquiries before storage',()=>{assert.throws(()=>core.validateEnquiry({...base,email:'not-email'}));assert.throws(()=>core.validateEnquiry({...base,services:['Unsupported']}));assert.throws(()=>core.validateEnquiry({...base,services:{}}));assert.throws(()=>core.validateEnquiry({...base,email:'',phone:''}));assert.throws(()=>core.validateEnquiry({...base,details:'a'.repeat(2001)}));assert.equal(core.validateEnquiry(base).name,base.name);});
 test('signed sessions reject tampering, expiry and wrong secret',()=>{const secret='s'.repeat(48),token=core.sign({role:'owner',exp:Date.now()+10000},secret);assert.equal(core.verify(token,secret),true);assert.equal(core.verify(token+'x',secret),false);assert.equal(core.verify(token,'t'.repeat(48)),false);assert.equal(core.verify(core.sign({role:'owner',exp:Date.now()-1},secret),secret),false);});
 test('passwords require matching scrypt hash',()=>{const salt=crypto.randomBytes(16).toString('hex'),hash=salt+':'+crypto.scryptSync('a safe test passphrase',salt,64).toString('hex');assert.equal(core.verifyPassword('a safe test passphrase',hash),true);assert.equal(core.verifyPassword('wrong',hash),false);});
@@ -14,8 +14,14 @@ try{
  res=response();await handler(request('login','POST',{password:'wrong'}),res);assert.equal(res.code,401);
  res=response();await handler(request('login','POST',{password:'a safe test passphrase'}),res);assert.equal(res.code,200);assert.match(res.headers['Set-Cookie'],/HttpOnly; Secure; SameSite=Strict/);const cookie=res.headers['Set-Cookie'].split(';')[0];
  res=response();await handler(request('submit','POST',{...base,email:'bad'}),res);assert.equal(res.code,400);assert.equal(stored.length,0);
- res=response();await handler(request('submit','POST',base),res);assert.equal(res.code,201);const reference=res.result.reference;
- res=response();await handler(request('submit','POST',base),res);assert.equal(res.result.reference,reference);assert.equal(stored.length,1);
+ for (const phone of [undefined, '   ', 'test@example.com', '12345']) {
+  res=response();await handler(request('submit','POST',{...base,phone}),res);
+  assert.equal(res.code,400);assert.match(res.result.error,/phone number/);assert.equal(stored.length,0);
+ }
+ const submission={...base,email:undefined,phone:'+44 (0)7700 900123'};
+ res=response();await handler(request('submit','POST',submission),res);assert.equal(res.code,201);const reference=res.result.reference;
+ assert.equal(stored[0].phone,submission.phone);
+ res=response();await handler(request('submit','POST',submission),res);assert.equal(res.result.reference,reference);assert.equal(stored.length,1);
  res=response();await handler(request('list','GET',undefined,cookie),res);assert.equal(res.code,200);assert.equal(res.result.records.length,1);assert.equal(res.headers['Cache-Control'],'no-store');
  res=response();await handler(request('health'),res);assert.equal(res.result.accepting,true);
  process.env.ENQUIRIES_ENABLED='false';res=response();await handler(request('submit','POST',base),res);assert.equal(res.code,503);

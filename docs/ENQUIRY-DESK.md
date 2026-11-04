@@ -78,7 +78,7 @@ Desktop notifications are optional and require the owner's explicit browser perm
 Apply database/owner-alerts.sql once to provision the private alert table, service-only RPCs, trigger and cron job. Gateway RPC paths are allowlisted. No public alert reads or writes are permitted.
 
 ## Phase 3: compact enquiry and contact intent
-All 34 public enquiry forms use a single visible form requiring name, one phone number or email, postcode and a short description. Photos and service/property/timing/budget details are optional disclosures. The service defaults to the relevant page and can be changed. Submitting saves directly; no separate review-stage confirmation click is required. The editable brief and safe retry controls remain available if saving or photo transfer fails. A response target of one working day is displayed before sending and on confirmation, as confirmed by the owner.
+All 34 public enquiry forms use a single visible form requiring name, phone number, postcode and a short description. Photos and service/property/timing/budget details are optional disclosures. The service defaults to the relevant page and can be changed. Submitting saves directly; no separate review-stage confirmation click is required. The editable brief and safe retry controls remain available if saving or photo transfer fails. A response target of one working day is displayed before sending and on confirmation, as confirmed by the owner.
 
 The mobile contact bar provides Call, Get a quote and WhatsApp, with safe-area spacing. It hides during input focus, keyboard display or an open dialog. WhatsApp opens the business number +44 7365 155 414 with a generic project introduction; no form fields are automatically forwarded.
 

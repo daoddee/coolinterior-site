@@ -26,5 +26,5 @@ test('private upload flow reserves, verifies and reads photos only for signed-in
   const stolen=photos.ticket({id,request_id:crypto.randomUUID()},secret);r=response();await handler(req('photo-prepare',{token:stolen,photos:[file]}),r);assert.equal(r.code,404);
  }finally{global.fetch=original;}
 });
-test('service selection accepts the form labels',()=>{const b={name:'Test Customer',location:'NW10',details:'A bathroom project to discuss',email:'test@example.invalid',requestId:crypto.randomUUID(),services:['Natural Stone Installation']};assert.deepEqual(core.validateEnquiry(b).services,['Natural stone installation']);});
+test('service selection accepts the form labels',()=>{const b={name:'Test Customer',location:'NW10',details:'A bathroom project to discuss',phone:'07700 900123',requestId:crypto.randomUUID(),services:['Natural Stone Installation']};assert.deepEqual(core.validateEnquiry(b).services,['Natural stone installation']);});
 test('portal CSP permits only the configured private photo host',()=>{const config=require('../vercel.json');for(const path of ['/admin','/admin.html']){const policy=config.headers.find(x=>x.source===path).headers.find(x=>x.key==='Content-Security-Policy').value;assert.match(policy,/img-src 'self' data: https:\/\/ysvmbvnnwpsqtqgnsccb\.supabase\.co;/);assert.match(policy,/connect-src 'self';/);}});

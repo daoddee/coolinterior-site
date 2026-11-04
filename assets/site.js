@@ -1,4 +1,8 @@
 'use strict';
+const isEnquiryPhone = value => {
+  const digitCount = value.replace(/\D/g, '').length;
+  return value.length <= 30 && /^\+?[\d\s().-]+$/.test(value) && digitCount >= 7 && digitCount <= 15;
+};
 (() => {
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -162,10 +166,13 @@
     if(compact){
       if(window.CIPhotos?.isPreparing()){alert('Please wait for your photos to finish preparing.');return false;}
       for(const input of $$('input:not([type=hidden]),textarea,select',form)){if(input.required)input.value=input.value.trim();if(!input.checkValidity()){input.closest('details')?.setAttribute('open','');input.reportValidity();input.focus();return false;}}
-      const value=$('#contact').value.trim(),isEmail=value.includes('@');
-      const valid=isEmail?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value):/^[+\d\s().-]+$/.test(value)&&value.replace(/\D/g,'').length>=7&&value.replace(/\D/g,'').length<=15;
-      $('#contact-error').hidden=valid;$('#contact').setAttribute('aria-invalid',String(!valid));if(!valid){$('#contact').focus();return false;}
-      $('#email').value=isEmail?value:'';$('#phone').value=isEmail?'':value;if(!selected.size){selected.add(defaultService);syncServices();}return true;
+      const phoneField = $('#phone');
+      const valid = isEnquiryPhone(phoneField.value);
+      $('#contact-error').hidden = valid;
+      phoneField.setAttribute('aria-invalid', String(!valid));
+      if (!valid) { phoneField.focus(); return false; }
+      if (!selected.size) { selected.add(defaultService); syncServices(); }
+      return true;
     }
     if (step === 1) {
       if (!selected.size) { $('#service-error').hidden = false; $('.service-choice').focus(); return false; }
@@ -178,10 +185,7 @@
       if (!input.checkValidity()) { input.reportValidity(); input.focus(); return false; }
     }
     if (step === 3) {
-      const phoneValue = $('#phone').value.trim();
-      const emailValue = $('#email').value.trim();
-      const phoneValid = !phoneValue || (/^[+\d\s().-]+$/.test(phoneValue) && phoneValue.replace(/\D/g,'').length >= 7 && phoneValue.replace(/\D/g,'').length <= 15);
-      if ((!phoneValue && !emailValue) || !phoneValid) { $('#contact-error').hidden = false; $('#phone').focus(); return false; }
+      if (!isEnquiryPhone($('#phone').value.trim())) { $('#contact-error').hidden = false; $('#phone').focus(); return false; }
       $('#contact-error').hidden = true;
     }
     return true;
@@ -367,7 +371,7 @@
 // Customer-controlled quote steps: typing and pauses never advance the form.
 document.addEventListener('DOMContentLoaded',()=>{
  const form=document.querySelector('form.compact-enquiry');if(!form)return;
- const fields=['customer-name','contact','location','details'].map(id=>form.querySelector('#'+id));
+ const fields=['customer-name','phone','location','details'].map(id=>form.querySelector('#'+id));
  if(fields.some(field=>!field))return;
  const rows=fields.map(field=>field.closest('.field'));
  const optional=[...form.querySelectorAll('.compact-photos,.compact-extras')];
@@ -379,7 +383,10 @@ document.addEventListener('DOMContentLoaded',()=>{
  const next=document.createElement('button');next.type='button';next.className='button';next.textContent='Continue →';
  controls.append(back,progress,next);form.querySelector('.fields').after(controls);
  form.classList.add('quote-single-question');let stage=0,busy=false;
- const valid=i=>{const field=fields[i],value=field.value.trim();if(!value||!field.checkValidity())return false;if(i!==1)return true;return value.includes('@')?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value):/^[+\d\s().-]+$/.test(value)&&value.replace(/\D/g,'').length>=7&&value.replace(/\D/g,'').length<=15;};
+ const valid=i=>{
+   const field=fields[i], value=field.value.trim();
+   return Boolean(value) && field.checkValidity() && (field.id!=='phone' || isEnquiryPhone(value));
+ };
  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
  function render(){rows.forEach((row,i)=>row.hidden=i!==stage);[...optional,...finish].forEach(el=>el.hidden=stage!==4);back.hidden=stage===0;next.hidden=stage===4;progress.textContent=stage===4?'Ready to send':`Question ${stage+1} of 4`;if(stage===4)optional.forEach(el=>el.open=true);}
  async function go(target){if(busy||target===stage)return;busy=true;const outgoing=rows[stage];if(outgoing&&!motion.matches){await outgoing.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(-40px)'}],{duration:220,easing:'ease-in',fill:'none'}).finished;}stage=target;render();const incoming=rows[stage];if(incoming&&!motion.matches)incoming.animate([{opacity:0,transform:'translateX(40px)'},{opacity:1,transform:'translateX(0)'}],{duration:250,easing:'ease-out'});busy=false;if(stage<4)fields[stage].focus({preventScroll:true});else optional[0]?.querySelector('summary')?.focus({preventScroll:true});}
