@@ -4,8 +4,8 @@
  if(!core)return;
  let analytics=false,advertising=false,state=null;
  const params=new URLSearchParams(location.search);
- let host='';try{const ref=new URL(document.referrer);if(ref.origin!==location.origin)host=ref.hostname;}catch{}
- const landing={at:new Date().toISOString(),landing_path:location.pathname,...(host?{referrer_host:host}:{})};
+ let host='',referrerPath='';try{const ref=new URL(document.referrer);if(ref.origin!==location.origin){host=ref.hostname;referrerPath=ref.pathname;}}catch{}
+ const landing={at:new Date().toISOString(),landing_path:location.pathname,...(host?{referrer_host:host,...(!/(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com)$/.test(host)&&referrerPath?{referrer_path:referrerPath}:{})}:{})};
  for(const k of [...core.utms,...core.clicks])if(params.has(k))landing[k]=params.get(k);
  const campaign=core.utms.concat(core.clicks).some(k=>landing[k]);
  const clear=()=>{state=null;try{localStorage.removeItem(key);}catch{}};
@@ -24,6 +24,6 @@
   refresh();
  }
  document.addEventListener('cookieyes_consent_update',consent);document.addEventListener('cookieyes_banner_load',consent);
- window.CIAttribution={get:()=>analytics?core.sanitize(state):{}};
+ window.CIAttribution={get:()=>analytics?core.sanitize({...state,enquiry_path:location.pathname}):{}};
  consent();
 })();

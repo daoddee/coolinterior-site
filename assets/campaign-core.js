@@ -12,13 +12,17 @@
    for(const k of utms){const v=clean(t[k]);if(v&&!v.includes('@'))out[k]=v;}
    if(ads)for(const k of clicks){const v=clean(t[k],256);if(/^[A-Za-z0-9_.~-]{1,256}$/.test(v))out[k]=v;}
    const path=clean(t.landing_path,200).split(/[?#]/)[0];if(path.startsWith('/')&&!path.startsWith('//'))out.landing_path=path;
+   const refPath=clean(t.referrer_path,200).split(/[?#]/)[0];if(refPath.startsWith('/')&&!refPath.startsWith('//'))out.referrer_path=refPath;
    const host=clean(t.referrer_host,120).toLowerCase();if(/^[a-z0-9.-]+$/.test(host))out.referrer_host=host;
    if(typeof t.at==='string'&&Number.isFinite(Date.parse(t.at)))out.at=new Date(t.at).toISOString();
    return out;
   };
-  return {version:1,analytics_consent:true,advertising_consent:ads,first:touch(raw.first),last:touch(raw.last)};
+  const result={version:1,analytics_consent:true,advertising_consent:ads,first:touch(raw.first),last:touch(raw.last)};
+  const submission=clean(raw.enquiry_path,200).split(/[?#]/)[0];if(submission.startsWith('/')&&!submission.startsWith('//'))result.enquiry_path=submission;
+  return result;
  }
- function label(a){const t=a?.last||a?.first;if(!t)return 'Unattributed';return [t.utm_source||(t.gclid||t.gbraid||t.wbraid?'Google Ads':t.referrer_host||'Direct'),t.utm_medium,t.utm_campaign].filter(Boolean).join(' / ');}
+ function organicSource(host){if(!host)return 'Direct / unknown';if(/(^|\.)google\.[a-z.]+$/.test(host))return 'Google / organic search';if(/(^|\.)bing\.com$/.test(host))return 'Bing / organic search';if(/(^|\.)(duckduckgo\.com|search\.yahoo\.com)$/.test(host))return host+' / organic search';return host+' / referral';}
+ function label(a){const t=a?.last||a?.first;if(!t)return 'Unattributed';return [t.utm_source||(t.gclid||t.gbraid||t.wbraid?'Google Ads':organicSource(t.referrer_host)),t.utm_medium,t.utm_campaign].filter(Boolean).join(' / ');}
  function summarize(records){const groups=new Map();for(const r of records){const key=label(r.attribution);const g=groups.get(key)||{source:key,enquiries:0,qualified:0,won:0,value:0};g.enquiries++;if(r.qualified_at||['Site visit','Quoted','Won'].includes(r.status))g.qualified++;if(r.status==='Won'){g.won++;g.value+=Number(r.value)||0;}groups.set(key,g);}return [...groups.values()].sort((a,b)=>b.won-a.won||b.enquiries-a.enquiries);}
  return {utms,clicks,sanitize,label,summarize};
 });
